@@ -41,6 +41,8 @@
             this.entityListView = new System.Windows.Forms.ListView();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tbEntitiesList = new System.Windows.Forms.TabPage();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOpenInWebApp = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tbEntitiesList.SuspendLayout();
@@ -56,7 +58,9 @@
             this.tsbEntityColumns,
             this.toolStripSeparator3,
             this.tslSearch,
-            this.tstxtFilter});
+            this.tstxtFilter,
+            this.toolStripSeparator4,
+            this.tsbOpenInWebApp});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -135,6 +139,7 @@
             this.entityListView.UseCompatibleStateImageBehavior = false;
             this.entityListView.View = System.Windows.Forms.View.Details;
             this.entityListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
+            this.entityListView.SelectedIndexChanged += new System.EventHandler(this.entityListView_SelectedIndexChanged);
             this.entityListView.DoubleClick += new System.EventHandler(this.entityListView_DoubleClick);
             // 
             // mainTabControl
@@ -146,17 +151,32 @@
             this.mainTabControl.SelectedIndex = 0;
             this.mainTabControl.Size = new System.Drawing.Size(1162, 713);
             this.mainTabControl.TabIndex = 7;
+            this.mainTabControl.SelectedIndexChanged += new System.EventHandler(this.mainTabControl_SelectedIndexChanged);
             // 
             // tbEntitiesList
             // 
             this.tbEntitiesList.Controls.Add(this.entityListView);
             this.tbEntitiesList.Location = new System.Drawing.Point(4, 29);
             this.tbEntitiesList.Name = "tbEntitiesList";
-            this.tbEntitiesList.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tbEntitiesList.Padding = new System.Windows.Forms.Padding(3);
             this.tbEntitiesList.Size = new System.Drawing.Size(1154, 680);
             this.tbEntitiesList.TabIndex = 0;
             this.tbEntitiesList.Text = "Entities";
             this.tbEntitiesList.UseVisualStyleBackColor = true;
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 32);
+            // 
+            // tsbOpenInWebApp
+            // 
+            this.tsbOpenInWebApp.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpenInWebApp.Image")));
+            this.tsbOpenInWebApp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOpenInWebApp.Name = "tsbOpenInWebApp";
+            this.tsbOpenInWebApp.Size = new System.Drawing.Size(169, 29);
+            this.tsbOpenInWebApp.Text = "Open in web app";
+            this.tsbOpenInWebApp.Click += new System.EventHandler(this.tsbOpenInWebApp_Click);
             // 
             // MainControl
             // 
@@ -189,5 +209,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel tslSearch;
         private System.Windows.Forms.ToolStripTextBox tstxtFilter;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripButton tsbOpenInWebApp;
     }
 }

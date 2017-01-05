@@ -9,6 +9,7 @@ using MsCrmTools.MetadataBrowser.Forms;
 using MsCrmTools.MetadataBrowser.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         private EntityMetadata emd;
         private ListViewColumnsSettings lvcSettings;
         private Thread searchThread;
+        private ConnectionDetail connectionDetail;
 
         public EntityPropertiesControl(EntityMetadata emd, ListViewColumnsSettings lvcSettings, ConnectionDetail connectionDetail)
         {
@@ -35,6 +37,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
 
             this.emd = emd;
+            this.connectionDetail = connectionDetail;
             this.lvcSettings = (ListViewColumnsSettings)lvcSettings.Clone();
 
             ListViewColumnHelper.AddColumnsHeader(attributeListView, typeof(AttributeMetadataInfo), ListViewColumnsSettings.AttributeFirstColumns, this.lvcSettings.AttributeSelectedAttributes, new string[] { });
@@ -54,7 +57,12 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             RefreshContent(emd);
         }
 
+        public int SelectedTabIndex => tabControl1.SelectedIndex;
+
         public event EventHandler<ColumnSettingsUpdatedEventArgs> OnColumnSettingsUpdated;
+
+        public event EventHandler<EventArgs> OnSelectedTabChanged;
+
 
         public void RefreshColumns(ListViewColumnsSettings lvcUpdatedSettings)
         {
@@ -826,6 +834,24 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                 searchThread = new Thread(FilterAttributeList);
                 searchThread.Start(((ToolStripTextBox)sender).Text);
             }
+        }
+
+        private void TabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            OnSelectedTabChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void tsbOpenInWebApp_Click(object sender, EventArgs e)
+        {
+            if (attributeListView.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
+
+            Process.Start(
+              $"{connectionDetail.WebApplicationUrl}/tools/systemcustomization/attributes/manageAttribute.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&attributeId={amd.MetadataId}&entityId={emd.MetadataId.Value}");
         }
     }
 }

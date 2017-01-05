@@ -7,6 +7,7 @@ using MsCrmTools.MetadataBrowser.Helpers;
 using MsCrmTools.MetadataBrowser.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -286,6 +287,7 @@ namespace MsCrmTools.MetadataBrowser
                             Dock = DockStyle.Fill,
                             Name = emdFull.SchemaName
                         };
+                        epc.OnSelectedTabChanged += (s, evt2) => { mainTabControl_SelectedIndexChanged(mainTabControl, new EventArgs()); };
                         epc.OnColumnSettingsUpdated += epc_OnColumnSettingsUpdated;
                         tab.Controls.Add(epc);
                         mainTabControl.SelectTab(tab);
@@ -379,6 +381,8 @@ namespace MsCrmTools.MetadataBrowser
                 tstxtFilter.Text = string.Empty;
                 tstxtFilter.TextChanged += tstxtFilter_TextChanged;
             }
+
+            mainTabControl.SelectedIndex = 0;
         }
 
         private void tstxtFilter_TextChanged(object sender, EventArgs e)
@@ -390,6 +394,29 @@ namespace MsCrmTools.MetadataBrowser
 
             searchThread = new Thread(FilterEntityList);
             searchThread.Start(tstxtFilter.Text);
+        }
+
+        private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tstxtFilter.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex != 1;
+            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex == 0; ;
+        }
+
+        private void entityListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tsbOpenInWebApp.Enabled = entityListView.SelectedItems.Count > 0;
+        }
+
+        private void tsbOpenInWebApp_Click(object sender, EventArgs e)
+        {
+            if (entityListView.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var emd = (EntityMetadata) entityListView.SelectedItems[0].Tag;
+            Process.Start(
+                $"{ConnectionDetail.WebApplicationUrl}/tools/systemcustomization/Entities/manageEntity.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&entityId=%7b{emd.MetadataId.Value}%7d");
         }
     }
 }

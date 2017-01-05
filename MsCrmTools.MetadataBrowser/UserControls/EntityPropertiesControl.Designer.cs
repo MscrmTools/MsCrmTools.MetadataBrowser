@@ -1,4 +1,6 @@
-﻿namespace MsCrmTools.MetadataBrowser.UserControls
+﻿using System;
+
+namespace MsCrmTools.MetadataBrowser.UserControls
 {
     partial class EntityPropertiesControl
     {
@@ -44,6 +46,13 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tslSearchAttr = new System.Windows.Forms.ToolStripLabel();
             this.tstxtSearchContact = new System.Windows.Forms.ToolStripTextBox();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.keySplitContainer = new System.Windows.Forms.SplitContainer();
+            this.keyListView = new System.Windows.Forms.ListView();
+            this.keyPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.keysToolStrip = new System.Windows.Forms.ToolStrip();
+            this.tsbHideKeyPanel = new System.Windows.Forms.ToolStripButton();
+            this.tsbKeyColumns = new System.Windows.Forms.ToolStripButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.oneToManySplitContainer = new System.Windows.Forms.SplitContainer();
             this.OneToManyListView = new System.Windows.Forms.ListView();
@@ -72,13 +81,8 @@
             this.privilegeToolStrip = new System.Windows.Forms.ToolStrip();
             this.tsbHidePrivilegePanel = new System.Windows.Forms.ToolStripButton();
             this.tsbPrivilegeColumns = new System.Windows.Forms.ToolStripButton();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.keysToolStrip = new System.Windows.Forms.ToolStrip();
-            this.tsbHideKeyPanel = new System.Windows.Forms.ToolStripButton();
-            this.tsbKeyColumns = new System.Windows.Forms.ToolStripButton();
-            this.keySplitContainer = new System.Windows.Forms.SplitContainer();
-            this.keyListView = new System.Windows.Forms.ListView();
-            this.keyPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbOpenInWebApp = new System.Windows.Forms.ToolStripButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.entityToolStrip.SuspendLayout();
@@ -88,6 +92,12 @@
             this.attributesSplitContainer.Panel2.SuspendLayout();
             this.attributesSplitContainer.SuspendLayout();
             this.attributeToolStrip.SuspendLayout();
+            this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.keySplitContainer)).BeginInit();
+            this.keySplitContainer.Panel1.SuspendLayout();
+            this.keySplitContainer.Panel2.SuspendLayout();
+            this.keySplitContainer.SuspendLayout();
+            this.keysToolStrip.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.oneToManySplitContainer)).BeginInit();
             this.oneToManySplitContainer.Panel1.SuspendLayout();
@@ -112,12 +122,6 @@
             this.privilegeSplitContainer.Panel2.SuspendLayout();
             this.privilegeSplitContainer.SuspendLayout();
             this.privilegeToolStrip.SuspendLayout();
-            this.tabPage7.SuspendLayout();
-            this.keysToolStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.keySplitContainer)).BeginInit();
-            this.keySplitContainer.Panel1.SuspendLayout();
-            this.keySplitContainer.Panel2.SuspendLayout();
-            this.keySplitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -135,6 +139,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(948, 808);
             this.tabControl1.TabIndex = 4;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -142,7 +147,7 @@
             this.tabPage1.Controls.Add(this.entityToolStrip);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(940, 775);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Entity";
@@ -162,7 +167,6 @@
             // 
             // entityToolStrip
             // 
-            this.entityToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.entityToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHideEntityPanel});
             this.entityToolStrip.Location = new System.Drawing.Point(3, 3);
@@ -177,7 +181,7 @@
             this.tsbHideEntityPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideEntityPanel.Image")));
             this.tsbHideEntityPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHideEntityPanel.Name = "tsbHideEntityPanel";
-            this.tsbHideEntityPanel.Size = new System.Drawing.Size(83, 29);
+            this.tsbHideEntityPanel.Size = new System.Drawing.Size(75, 29);
             this.tsbHideEntityPanel.Text = "Close";
             this.tsbHideEntityPanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
             // 
@@ -187,7 +191,7 @@
             this.tabPage4.Controls.Add(this.attributeToolStrip);
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(940, 775);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Attributes";
@@ -237,13 +241,14 @@
             // 
             // attributeToolStrip
             // 
-            this.attributeToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.attributeToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHideAttributePanel,
             this.tsbAttributeColumns,
             this.toolStripSeparator1,
             this.tslSearchAttr,
-            this.tstxtSearchContact});
+            this.tstxtSearchContact,
+            this.toolStripSeparator2,
+            this.tsbOpenInWebApp});
             this.attributeToolStrip.Location = new System.Drawing.Point(3, 3);
             this.attributeToolStrip.Name = "attributeToolStrip";
             this.attributeToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -256,7 +261,7 @@
             this.tsbHideAttributePanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideAttributePanel.Image")));
             this.tsbHideAttributePanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHideAttributePanel.Name = "tsbHideAttributePanel";
-            this.tsbHideAttributePanel.Size = new System.Drawing.Size(125, 29);
+            this.tsbHideAttributePanel.Size = new System.Drawing.Size(117, 29);
             this.tsbHideAttributePanel.Text = "Hide panel";
             this.tsbHideAttributePanel.Visible = false;
             this.tsbHideAttributePanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
@@ -266,7 +271,7 @@
             this.tsbAttributeColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbAttributeColumns.Image")));
             this.tsbAttributeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAttributeColumns.Name = "tsbAttributeColumns";
-            this.tsbAttributeColumns.Size = new System.Drawing.Size(122, 29);
+            this.tsbAttributeColumns.Size = new System.Drawing.Size(114, 29);
             this.tsbAttributeColumns.Text = "Columns...";
             this.tsbAttributeColumns.Click += new System.EventHandler(this.tsbColumns_Click);
             // 
@@ -290,13 +295,97 @@
             this.tstxtSearchContact.Enter += new System.EventHandler(this.tstxtSearch_Enter);
             this.tstxtSearchContact.TextChanged += new System.EventHandler(this.tstxtSearch_TextChanged);
             // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.keySplitContainer);
+            this.tabPage7.Controls.Add(this.keysToolStrip);
+            this.tabPage7.Location = new System.Drawing.Point(4, 29);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7.Size = new System.Drawing.Size(940, 775);
+            this.tabPage7.TabIndex = 6;
+            this.tabPage7.Text = "Keys";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // keySplitContainer
+            // 
+            this.keySplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.keySplitContainer.Location = new System.Drawing.Point(3, 35);
+            this.keySplitContainer.Name = "keySplitContainer";
+            // 
+            // keySplitContainer.Panel1
+            // 
+            this.keySplitContainer.Panel1.Controls.Add(this.keyListView);
+            // 
+            // keySplitContainer.Panel2
+            // 
+            this.keySplitContainer.Panel2.Controls.Add(this.keyPropertyGrid);
+            this.keySplitContainer.Size = new System.Drawing.Size(934, 737);
+            this.keySplitContainer.SplitterDistance = 311;
+            this.keySplitContainer.TabIndex = 5;
+            // 
+            // keyListView
+            // 
+            this.keyListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.keyListView.FullRowSelect = true;
+            this.keyListView.GridLines = true;
+            this.keyListView.HideSelection = false;
+            this.keyListView.Location = new System.Drawing.Point(0, 0);
+            this.keyListView.Name = "keyListView";
+            this.keyListView.Size = new System.Drawing.Size(311, 737);
+            this.keyListView.TabIndex = 2;
+            this.keyListView.UseCompatibleStateImageBehavior = false;
+            this.keyListView.View = System.Windows.Forms.View.Details;
+            this.keyListView.DoubleClick += new System.EventHandler(this.keyListView_DoubleClick);
+            // 
+            // keyPropertyGrid
+            // 
+            this.keyPropertyGrid.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))));
+            this.keyPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.keyPropertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.keyPropertyGrid.Name = "keyPropertyGrid";
+            this.keyPropertyGrid.Size = new System.Drawing.Size(619, 737);
+            this.keyPropertyGrid.TabIndex = 1;
+            this.keyPropertyGrid.ViewForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))));
+            // 
+            // keysToolStrip
+            // 
+            this.keysToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbHideKeyPanel,
+            this.tsbKeyColumns});
+            this.keysToolStrip.Location = new System.Drawing.Point(3, 3);
+            this.keysToolStrip.Name = "keysToolStrip";
+            this.keysToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.keysToolStrip.Size = new System.Drawing.Size(934, 32);
+            this.keysToolStrip.TabIndex = 4;
+            this.keysToolStrip.Text = "toolStrip3";
+            // 
+            // tsbHideKeyPanel
+            // 
+            this.tsbHideKeyPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideKeyPanel.Image")));
+            this.tsbHideKeyPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbHideKeyPanel.Name = "tsbHideKeyPanel";
+            this.tsbHideKeyPanel.Size = new System.Drawing.Size(117, 29);
+            this.tsbHideKeyPanel.Text = "Hide panel";
+            this.tsbHideKeyPanel.Visible = false;
+            this.tsbHideKeyPanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
+            // 
+            // tsbKeyColumns
+            // 
+            this.tsbKeyColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbKeyColumns.Image")));
+            this.tsbKeyColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbKeyColumns.Name = "tsbKeyColumns";
+            this.tsbKeyColumns.Size = new System.Drawing.Size(114, 29);
+            this.tsbKeyColumns.Text = "Columns...";
+            this.tsbKeyColumns.Click += new System.EventHandler(this.tsbColumns_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.oneToManySplitContainer);
             this.tabPage2.Controls.Add(this.manyToOneToolStrip);
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(940, 775);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "OneToManyRelationships";
@@ -346,7 +435,6 @@
             // 
             // manyToOneToolStrip
             // 
-            this.manyToOneToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.manyToOneToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHideOneToManyPanel,
             this.tsbOneToManyColumns});
@@ -362,7 +450,7 @@
             this.tsbHideOneToManyPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideOneToManyPanel.Image")));
             this.tsbHideOneToManyPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHideOneToManyPanel.Name = "tsbHideOneToManyPanel";
-            this.tsbHideOneToManyPanel.Size = new System.Drawing.Size(125, 29);
+            this.tsbHideOneToManyPanel.Size = new System.Drawing.Size(117, 29);
             this.tsbHideOneToManyPanel.Text = "Hide panel";
             this.tsbHideOneToManyPanel.Visible = false;
             this.tsbHideOneToManyPanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
@@ -372,7 +460,7 @@
             this.tsbOneToManyColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbOneToManyColumns.Image")));
             this.tsbOneToManyColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbOneToManyColumns.Name = "tsbOneToManyColumns";
-            this.tsbOneToManyColumns.Size = new System.Drawing.Size(122, 29);
+            this.tsbOneToManyColumns.Size = new System.Drawing.Size(114, 29);
             this.tsbOneToManyColumns.Text = "Columns...";
             // 
             // tabPage6
@@ -381,7 +469,7 @@
             this.tabPage6.Controls.Add(this.toolStrip2);
             this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage6.Size = new System.Drawing.Size(940, 775);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "ManyToOneRelationships";
@@ -431,7 +519,6 @@
             // 
             // toolStrip2
             // 
-            this.toolStrip2.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHideManyToOnePanel,
             this.tsbManyToOneColumns});
@@ -447,7 +534,7 @@
             this.tsbHideManyToOnePanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideManyToOnePanel.Image")));
             this.tsbHideManyToOnePanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHideManyToOnePanel.Name = "tsbHideManyToOnePanel";
-            this.tsbHideManyToOnePanel.Size = new System.Drawing.Size(125, 29);
+            this.tsbHideManyToOnePanel.Size = new System.Drawing.Size(117, 29);
             this.tsbHideManyToOnePanel.Text = "Hide panel";
             this.tsbHideManyToOnePanel.Visible = false;
             this.tsbHideManyToOnePanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
@@ -457,7 +544,7 @@
             this.tsbManyToOneColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbManyToOneColumns.Image")));
             this.tsbManyToOneColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbManyToOneColumns.Name = "tsbManyToOneColumns";
-            this.tsbManyToOneColumns.Size = new System.Drawing.Size(122, 29);
+            this.tsbManyToOneColumns.Size = new System.Drawing.Size(114, 29);
             this.tsbManyToOneColumns.Text = "Columns...";
             // 
             // tabPage3
@@ -466,7 +553,7 @@
             this.tabPage3.Controls.Add(this.manyToManyToolStrip);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(940, 775);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "ManyToManyRelationships";
@@ -516,7 +603,6 @@
             // 
             // manyToManyToolStrip
             // 
-            this.manyToManyToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.manyToManyToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHideManyToManyPanel,
             this.tsbManyToManyColumns});
@@ -532,7 +618,7 @@
             this.tsbHideManyToManyPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideManyToManyPanel.Image")));
             this.tsbHideManyToManyPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHideManyToManyPanel.Name = "tsbHideManyToManyPanel";
-            this.tsbHideManyToManyPanel.Size = new System.Drawing.Size(125, 29);
+            this.tsbHideManyToManyPanel.Size = new System.Drawing.Size(117, 29);
             this.tsbHideManyToManyPanel.Text = "Hide panel";
             this.tsbHideManyToManyPanel.Visible = false;
             this.tsbHideManyToManyPanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
@@ -542,7 +628,7 @@
             this.tsbManyToManyColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbManyToManyColumns.Image")));
             this.tsbManyToManyColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbManyToManyColumns.Name = "tsbManyToManyColumns";
-            this.tsbManyToManyColumns.Size = new System.Drawing.Size(122, 29);
+            this.tsbManyToManyColumns.Size = new System.Drawing.Size(114, 29);
             this.tsbManyToManyColumns.Text = "Columns...";
             // 
             // tabPage5
@@ -551,7 +637,7 @@
             this.tabPage5.Controls.Add(this.privilegeToolStrip);
             this.tabPage5.Location = new System.Drawing.Point(4, 29);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(940, 775);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Privileges";
@@ -601,7 +687,6 @@
             // 
             // privilegeToolStrip
             // 
-            this.privilegeToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
             this.privilegeToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbHidePrivilegePanel,
             this.tsbPrivilegeColumns});
@@ -617,7 +702,7 @@
             this.tsbHidePrivilegePanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHidePrivilegePanel.Image")));
             this.tsbHidePrivilegePanel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbHidePrivilegePanel.Name = "tsbHidePrivilegePanel";
-            this.tsbHidePrivilegePanel.Size = new System.Drawing.Size(125, 29);
+            this.tsbHidePrivilegePanel.Size = new System.Drawing.Size(117, 29);
             this.tsbHidePrivilegePanel.Text = "Hide panel";
             this.tsbHidePrivilegePanel.Visible = false;
             this.tsbHidePrivilegePanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
@@ -627,93 +712,22 @@
             this.tsbPrivilegeColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbPrivilegeColumns.Image")));
             this.tsbPrivilegeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbPrivilegeColumns.Name = "tsbPrivilegeColumns";
-            this.tsbPrivilegeColumns.Size = new System.Drawing.Size(122, 29);
+            this.tsbPrivilegeColumns.Size = new System.Drawing.Size(114, 29);
             this.tsbPrivilegeColumns.Text = "Columns...";
             // 
-            // tabPage7
+            // toolStripSeparator2
             // 
-            this.tabPage7.Controls.Add(this.keySplitContainer);
-            this.tabPage7.Controls.Add(this.keysToolStrip);
-            this.tabPage7.Location = new System.Drawing.Point(4, 29);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(940, 775);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "Keys";
-            this.tabPage7.UseVisualStyleBackColor = true;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 32);
             // 
-            // keysToolStrip
+            // tsbOpenInWebApp
             // 
-            this.keysToolStrip.ImageScalingSize = new System.Drawing.Size(16, 16);
-            this.keysToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbHideKeyPanel,
-            this.tsbKeyColumns});
-            this.keysToolStrip.Location = new System.Drawing.Point(3, 3);
-            this.keysToolStrip.Name = "keysToolStrip";
-            this.keysToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.keysToolStrip.Size = new System.Drawing.Size(934, 32);
-            this.keysToolStrip.TabIndex = 4;
-            this.keysToolStrip.Text = "toolStrip3";
-            // 
-            // tsbHideKeyPanel
-            // 
-            this.tsbHideKeyPanel.Image = ((System.Drawing.Image)(resources.GetObject("tsbHideKeyPanel.Image")));
-            this.tsbHideKeyPanel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbHideKeyPanel.Name = "tsbHideKeyPanel";
-            this.tsbHideKeyPanel.Size = new System.Drawing.Size(125, 29);
-            this.tsbHideKeyPanel.Text = "Hide panel";
-            this.tsbHideKeyPanel.Visible = false;
-            this.tsbHideKeyPanel.Click += new System.EventHandler(this.tsbHidePanel_Click);
-            // 
-            // tsbKeyColumns
-            // 
-            this.tsbKeyColumns.Image = ((System.Drawing.Image)(resources.GetObject("tsbKeyColumns.Image")));
-            this.tsbKeyColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbKeyColumns.Name = "tsbKeyColumns";
-            this.tsbKeyColumns.Size = new System.Drawing.Size(122, 29);
-            this.tsbKeyColumns.Text = "Columns...";
-            this.tsbKeyColumns.Click += new System.EventHandler(this.tsbColumns_Click);
-            // 
-            // keySplitContainer
-            // 
-            this.keySplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.keySplitContainer.Location = new System.Drawing.Point(3, 35);
-            this.keySplitContainer.Name = "keySplitContainer";
-            // 
-            // keySplitContainer.Panel1
-            // 
-            this.keySplitContainer.Panel1.Controls.Add(this.keyListView);
-            // 
-            // keySplitContainer.Panel2
-            // 
-            this.keySplitContainer.Panel2.Controls.Add(this.keyPropertyGrid);
-            this.keySplitContainer.Size = new System.Drawing.Size(934, 737);
-            this.keySplitContainer.SplitterDistance = 311;
-            this.keySplitContainer.TabIndex = 5;
-            // 
-            // keyListView
-            // 
-            this.keyListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.keyListView.FullRowSelect = true;
-            this.keyListView.GridLines = true;
-            this.keyListView.HideSelection = false;
-            this.keyListView.Location = new System.Drawing.Point(0, 0);
-            this.keyListView.Name = "keyListView";
-            this.keyListView.Size = new System.Drawing.Size(311, 737);
-            this.keyListView.TabIndex = 2;
-            this.keyListView.UseCompatibleStateImageBehavior = false;
-            this.keyListView.View = System.Windows.Forms.View.Details;
-            this.keyListView.DoubleClick += new System.EventHandler(this.keyListView_DoubleClick);
-            // 
-            // keyPropertyGrid
-            // 
-            this.keyPropertyGrid.DisabledItemForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))));
-            this.keyPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.keyPropertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.keyPropertyGrid.Name = "keyPropertyGrid";
-            this.keyPropertyGrid.Size = new System.Drawing.Size(619, 737);
-            this.keyPropertyGrid.TabIndex = 1;
-            this.keyPropertyGrid.ViewForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(1)))), ((int)(((byte)(1)))));
+            this.tsbOpenInWebApp.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpenInWebApp.Image")));
+            this.tsbOpenInWebApp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbOpenInWebApp.Name = "tsbOpenInWebApp";
+            this.tsbOpenInWebApp.Size = new System.Drawing.Size(169, 29);
+            this.tsbOpenInWebApp.Text = "Open in web app";
+            this.tsbOpenInWebApp.Click += new System.EventHandler(this.tsbOpenInWebApp_Click);
             // 
             // EntityPropertiesControl
             // 
@@ -735,6 +749,14 @@
             this.attributesSplitContainer.ResumeLayout(false);
             this.attributeToolStrip.ResumeLayout(false);
             this.attributeToolStrip.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
+            this.keySplitContainer.Panel1.ResumeLayout(false);
+            this.keySplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.keySplitContainer)).EndInit();
+            this.keySplitContainer.ResumeLayout(false);
+            this.keysToolStrip.ResumeLayout(false);
+            this.keysToolStrip.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.oneToManySplitContainer.Panel1.ResumeLayout(false);
@@ -767,14 +789,6 @@
             this.privilegeSplitContainer.ResumeLayout(false);
             this.privilegeToolStrip.ResumeLayout(false);
             this.privilegeToolStrip.PerformLayout();
-            this.tabPage7.ResumeLayout(false);
-            this.tabPage7.PerformLayout();
-            this.keysToolStrip.ResumeLayout(false);
-            this.keysToolStrip.PerformLayout();
-            this.keySplitContainer.Panel1.ResumeLayout(false);
-            this.keySplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.keySplitContainer)).EndInit();
-            this.keySplitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -831,5 +845,7 @@
         private System.Windows.Forms.ToolStrip keysToolStrip;
         private System.Windows.Forms.ToolStripButton tsbHideKeyPanel;
         private System.Windows.Forms.ToolStripButton tsbKeyColumns;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton tsbOpenInWebApp;
     }
 }
