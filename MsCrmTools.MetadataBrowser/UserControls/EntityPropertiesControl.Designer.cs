@@ -291,7 +291,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             this.tstxtSearchContact.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.tstxtSearchContact.Name = "tstxtSearchContact";
             this.tstxtSearchContact.Size = new System.Drawing.Size(298, 32);
-            this.tstxtSearchContact.Text = "by logical and displayname";
+            this.tstxtSearchContact.Text = "Logical/Display Name or GUID";
             this.tstxtSearchContact.Enter += new System.EventHandler(this.tstxtSearch_Enter);
             this.tstxtSearchContact.TextChanged += new System.EventHandler(this.tstxtSearch_TextChanged);
             // 

@@ -122,7 +122,7 @@
             this.tstxtFilter.ForeColor = System.Drawing.SystemColors.InactiveCaption;
             this.tstxtFilter.Name = "tstxtFilter";
             this.tstxtFilter.Size = new System.Drawing.Size(298, 32);
-            this.tstxtFilter.Text = "by display or logical name...";
+            this.tstxtFilter.Text = "Logical/Display Name or GUID";
             this.tstxtFilter.Enter += new System.EventHandler(this.tstxtFilter_Enter);
             this.tstxtFilter.TextChanged += new System.EventHandler(this.tstxtFilter_TextChanged);
             // 
