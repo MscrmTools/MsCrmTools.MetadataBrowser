@@ -211,7 +211,7 @@ namespace MsCrmTools.MetadataBrowser
                 return;
             }
 
-            string filterText = filter?.ToString();
+            string filterText = filter?.ToString()?.ToLower();
             if (filter == null)
             {
                 return;
@@ -223,9 +223,7 @@ namespace MsCrmTools.MetadataBrowser
                 entityListView.Items.AddRange(
                     BuildEntityItems(currentAllMetadata
                         .ToList()
-                        ).Where(item => ((EntityMetadata)item.Tag).LogicalName.Contains(filterText)
-                        || (
-                            ((EntityMetadata)item.Tag).DisplayName?.UserLocalizedLabel != null && ((EntityMetadata)item.Tag).DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filterText.ToLower())))
+                        ).Where(item => MatchEntitiesByFilter(item, filterText))
                         .ToArray());
             });
 
@@ -237,6 +235,26 @@ namespace MsCrmTools.MetadataBrowser
             {
                 action();
             }
+        }
+
+        private static bool MatchEntitiesByFilter(ListViewItem item, string filterText)
+        {
+            // Demystified code for readability, knowing it can be made more compact/efficient -Jonas Rapp
+            var entity = (EntityMetadata)item.Tag;
+            if (entity.LogicalName.Contains(filterText))
+            {
+                return true;
+            }
+            if (entity.DisplayName?.UserLocalizedLabel != null &&
+                entity.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filterText))
+            {
+                return true;
+            }
+            if (entity.MetadataId.ToString().ToLower().Contains(filterText))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)

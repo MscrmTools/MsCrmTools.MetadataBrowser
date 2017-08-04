@@ -124,7 +124,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             LoadKeys(emd.Keys);
         }
 
-       
+
 
         protected virtual void RaiseOnColumnSettingsUpdated(ColumnSettingsUpdatedEventArgs e)
         {
@@ -164,7 +164,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                     var cascadeConfigurationInfoValue = value as CascadeConfigurationInfo;
                     var associatedMenuBehaviorInfoValue = value as AssociatedMenuConfigurationInfo;
                     var requiredLevelInfoValue = value as AttributeRequiredLevelManagedPropertyInfo;
-                    
+
                     if (labelInfoValue != null)
                     {
                         item.SubItems.Add(labelInfoValue.UserLocalizedLabel != null
@@ -268,7 +268,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var action = new MethodInvoker(delegate
             {
-                LoadAttributes(emd.Attributes, filterText);
+                LoadAttributes(emd.Attributes, filterText.ToLower());
             });
 
             if (attributeListView.InvokeRequired)
@@ -292,8 +292,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var attribute in attributes.ToList().OrderBy(a => a.LogicalName).Where(a => string.IsNullOrEmpty(filter) || a.LogicalName.Contains(filter.ToLower())
-            || a.DisplayName?.UserLocalizedLabel != null && a.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filter.ToLower())
+            foreach (var attribute in attributes.ToList().OrderBy(a => a.LogicalName).Where(a => MatchAttributesByFilter(a, filter)
             ))
             {
                 var amd = new AttributeMetadataInfo(attribute);
@@ -415,6 +414,29 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
             attributeListView.Items.Clear();
             attributeListView.Items.AddRange(items.ToArray());
+        }
+
+        private static bool MatchAttributesByFilter(AttributeMetadata attribute, string filter)
+        {
+            // Demystified code for readability, knowing it can be made more compact/efficient -Jonas Rapp
+            if (string.IsNullOrEmpty(filter))
+            {
+                return true;
+            }
+            if (attribute.LogicalName.Contains(filter))
+            {
+                return true;
+            }
+            if (attribute.DisplayName?.UserLocalizedLabel != null && 
+                attribute.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filter))
+            {
+                return true;
+            }
+            if (attribute.MetadataId.ToString().ToLower().Contains(filter))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void LoadManyToManyRelationships(IEnumerable<ManyToManyRelationshipMetadata> rels)
