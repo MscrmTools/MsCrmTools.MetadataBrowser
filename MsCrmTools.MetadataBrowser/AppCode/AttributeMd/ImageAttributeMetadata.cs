@@ -12,19 +12,10 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public bool IsPrimaryImage
-        {
-            get { return amd.IsPrimaryImage.HasValue && amd.IsPrimaryImage.Value; }
-        }
+        public bool IsPrimaryImage => amd.IsPrimaryImage.HasValue && amd.IsPrimaryImage.Value;
 
-        public int MaxHeight
-        {
-            get { return amd.MaxHeight.HasValue ? amd.MaxHeight.Value : -1; }
-        }
+        public int MaxHeight => amd.MaxHeight ?? -1;
 
-        public int MaxWidth
-        {
-            get { return amd.MaxWidth.HasValue ? amd.MaxWidth.Value : -1; }
-        }
+        public int MaxWidth => amd.MaxWidth ?? -1;
     }
 }

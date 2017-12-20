@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows.Forms;
 using MsCrmTools.MetadataBrowser.AppCode.Keys;
 using McTools.Xrm.Connection;
+using MsCrmTools.MetadataBrowser.AppCode.Excel;
 
 namespace MsCrmTools.MetadataBrowser.UserControls
 {
@@ -62,7 +63,6 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         public event EventHandler<ColumnSettingsUpdatedEventArgs> OnColumnSettingsUpdated;
 
         public event EventHandler<EventArgs> OnSelectedTabChanged;
-
 
         public void RefreshColumns(ListViewColumnsSettings lvcUpdatedSettings)
         {
@@ -123,8 +123,6 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             LoadPrivileges(emd.Privileges);
             LoadKeys(emd.Keys);
         }
-
-
 
         protected virtual void RaiseOnColumnSettingsUpdated(ColumnSettingsUpdatedEventArgs e)
         {
@@ -427,7 +425,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             {
                 return true;
             }
-            if (attribute.DisplayName?.UserLocalizedLabel != null && 
+            if (attribute.DisplayName?.UserLocalizedLabel != null &&
                 attribute.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filter))
             {
                 return true;
@@ -874,6 +872,102 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             Process.Start(
               $"{connectionDetail.WebApplicationUrl}/tools/systemcustomization/attributes/manageAttribute.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&attributeId={amd.MetadataId}&entityId={emd.MetadataId.Value}");
+        }
+
+        private void tsbExportAttributesExcel_Click(object sender, EventArgs e)
+        {
+            if (attributeListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, attributeListView, $"{emd.SchemaName} attributes", this);
+            }
+        }
+
+        private void tsbExportPrivExcel_Click(object sender, EventArgs e)
+        {
+            if (privilegeListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, privilegeListView, $"{emd.SchemaName} privileges", this);
+            }
+        }
+
+        private void tsbExportMmRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (manyToManyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, manyToManyListView, $"{emd.SchemaName} NN relationships", this);
+            }
+        }
+
+        private void tsbExportMoRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (manyToOneListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, manyToOneListView, $"{emd.SchemaName} N1 relationships", this);
+            }
+        }
+
+        private void tsbExportOmRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (OneToManyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, OneToManyListView, $"{emd.SchemaName} 1N relationships", this);
+            }
+        }
+
+        private void tsbExportKeysExcel_Click(object sender, EventArgs e)
+        {
+            if (keyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, keyListView, $"{emd.SchemaName} keys", this);
+            }
         }
     }
 }

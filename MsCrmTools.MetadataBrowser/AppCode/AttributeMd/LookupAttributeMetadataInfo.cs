@@ -12,9 +12,6 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public string[] Targets
-        {
-            get { return amd.Targets; }
-        }
+        public string[] Targets => amd.Targets;
     }
 }

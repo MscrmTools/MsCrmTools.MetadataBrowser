@@ -7,7 +7,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
     public class ListViewColumnsSettings : ICloneable
     {
         private static readonly string[] attributeFirstColumns = { "LogicalName", "SchemaName", "AttributeType" };
-        private static readonly string[] entityAttributesToIgnore = { "Attributes", "Privileges", "OneToManyRelationships", "ManyToOneRelationships", "ManyToManyRelationships" };
+        private static readonly string[] entityAttributesToIgnore = { "Attributes", "Privileges", "OneToManyRelationships", "ManyToOneRelationships", "ManyToManyRelationships", "Keys" };
         private static readonly string[] entityFirstColumns = { "LogicalName", "SchemaName", "ObjectTypeCode" };
         private static readonly string[] privFirstColumns = { "Name" };
         private static readonly string[] relFirstColumns = { "SchemaName" };
@@ -28,11 +28,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             get { return entityFirstColumns; }
         }
 
-
         public static string[] PrivFirstColumns
         {
             get { return privFirstColumns; }
         }
+
         public static string[] KeyFirstColumns
         {
             get { return keyFirstColumns; }

@@ -22,10 +22,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             this.emd = emd;
         }
 
-        public int ActivityTypeMask
-        {
-            get { return emd.ActivityTypeMask.Value; }
-        }
+        public int ActivityTypeMask => emd.ActivityTypeMask.Value;
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AttributeMetadataCollectionConverter))]
@@ -114,7 +111,17 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
                         case AttributeTypeCode.Picklist:
                             {
-                                collection.Add(new PicklistAttributeMetadataInfo((PicklistAttributeMetadata)rmd));
+                                var pamd = rmd as PicklistAttributeMetadata;
+                                if (pamd != null)
+                                {
+                                    collection.Add(new PicklistAttributeMetadataInfo(pamd));
+                                }
+
+                                var mpamd = rmd as MultiSelectPicklistAttributeMetadata;
+                                if (mpamd != null)
+                                {
+                                    collection.Add(new MultiSelectPicklistAttributeMetadataInfo(mpamd));
+                                }
                             }
                             break;
 
@@ -148,260 +155,152 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             }
         }
 
-        public bool AutoCreateAccessTeams
-        {
-            get { return emd.AutoCreateAccessTeams.HasValue && emd.AutoCreateAccessTeams.Value; }
-        }
+        public bool AutoCreateAccessTeams => emd.AutoCreateAccessTeams.HasValue && emd.AutoCreateAccessTeams.Value;
 
-        public bool AutoRouteToOwnerQueue
-        {
-            get { return emd.AutoRouteToOwnerQueue.HasValue && emd.AutoRouteToOwnerQueue.Value; }
-        }
+        public bool AutoRouteToOwnerQueue => emd.AutoRouteToOwnerQueue.HasValue && emd.AutoRouteToOwnerQueue.Value;
 
-        public bool CanBeInManyToMany
-        {
-            get { return emd.CanBeInManyToMany.Value; }
-        }
+        public bool CanBeInManyToMany => emd.CanBeInManyToMany.Value;
 
-        public bool CanBePrimaryEntityInRelationship
-        {
-            get { return emd.CanBePrimaryEntityInRelationship.Value; }
-        }
+        public bool CanBePrimaryEntityInRelationship => emd.CanBePrimaryEntityInRelationship.Value;
 
-        public bool CanBeRelatedEntityInRelationship
-        {
-            get { return emd.CanBeRelatedEntityInRelationship.Value; }
-        }
+        public bool CanBeRelatedEntityInRelationship => emd.CanBeRelatedEntityInRelationship.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo CanChangeHierarchicalRelationship
-        {
-            get { return new BooleanManagedPropertyInfo(emd.CanChangeHierarchicalRelationship); }
-        }
+        public BooleanManagedPropertyInfo CanChangeHierarchicalRelationship => new BooleanManagedPropertyInfo(emd.CanChangeHierarchicalRelationship);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo CanChangeTrackingBeEnabled { get { return new BooleanManagedPropertyInfo(emd.CanChangeTrackingBeEnabled); } }
+        public BooleanManagedPropertyInfo CanChangeTrackingBeEnabled => new BooleanManagedPropertyInfo(emd.CanChangeTrackingBeEnabled);
+
+        public bool CanCreateAttributes => emd.CanCreateAttributes.Value;
+
+        public bool CanCreateCharts => emd.CanCreateCharts.Value;
+
+        public bool CanCreateForms => emd.CanCreateForms.Value;
+
+        public bool CanCreateViews => emd.CanCreateViews.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo CanEnableSyncToExternalSearchIndex { get { return new BooleanManagedPropertyInfo(emd.CanEnableSyncToExternalSearchIndex); } }
-        
+        public BooleanManagedPropertyInfo CanEnableSyncToExternalSearchIndex => new BooleanManagedPropertyInfo(emd.CanEnableSyncToExternalSearchIndex);
 
-        public bool CanCreateAttributes
-        {
-            get { return emd.CanCreateAttributes.Value; }
-        }
+        public bool CanModifyAdditionalSettings => emd.CanModifyAdditionalSettings.Value;
 
-        public bool CanCreateCharts
-        {
-            get { return emd.CanCreateCharts.Value; }
-        }
+        public bool CanTriggerWorkflow => emd.CanTriggerWorkflow.HasValue && emd.CanTriggerWorkflow.Value;
 
-        public bool CanCreateForms
-        {
-            get { return emd.CanCreateForms.Value; }
-        }
+        public bool ChangeTrackingEnabled => emd.ChangeTrackingEnabled.HasValue && emd.ChangeTrackingEnabled.Value;
 
-        public bool CanCreateViews
-        {
-            get { return emd.CanCreateViews.Value; }
-        }
+        public string CollectionSchemaName => emd.CollectionSchemaName;
 
-        public bool CanModifyAdditionalSettings
-        {
-            get { return emd.CanModifyAdditionalSettings.Value; }
-        }
+        public Guid? DataProviderId => emd.DataProviderId;
+        public Guid? DataSourceId => emd.DataSourceId;
 
-        public bool CanTriggerWorkflow
-        {
-            get { return emd.CanTriggerWorkflow.HasValue && emd.CanTriggerWorkflow.Value; }
-        }
-
-        public bool ChangeTrackingEnabled { get { return emd.ChangeTrackingEnabled.HasValue && emd.ChangeTrackingEnabled.Value; } }
-        
-        [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo Description
-        {
-            get { return new LabelInfo(emd.Description); }
-        }
+        public int DaysSinceRecordLastModified => emd.DaysSinceRecordLastModified ?? -1;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo DisplayCollectionName
-        {
-            get { return new LabelInfo(emd.DisplayCollectionName); }
-        }
+        public LabelInfo Description => new LabelInfo(emd.Description);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo DisplayName
-        {
-            get { return new LabelInfo(emd.DisplayName); }
-        }
-
-        public bool EnforceStateTransitions { get { return emd.EnforceStateTransitions.HasValue && emd.EnforceStateTransitions.Value; } }
-        public Color EntityColor { get { return ColorTranslator.FromHtml(emd.EntityColor); } }
-        public string EntityHelpUrl { get { return emd.EntityHelpUrl; } }
-        public string EntitySetName { get { return emd.EntitySetName; } }
-        public bool EntityHelpUrlEnabled { get { return emd.EntityHelpUrlEnabled.HasValue && emd.EntityHelpUrlEnabled.Value; } }
-    
-        public string ExtensionData
-        {
-            get { return emd.ExtensionData == null ? "" : emd.ExtensionData.ToString(); }
-        }
-
-        public bool HasChanged
-        {
-            get { return emd.HasChanged.HasValue && emd.HasChanged.Value; }
-        }
-
-        public string IconLargeName
-        {
-            get { return emd.IconLargeName; }
-        }
-
-        public string IconMediumName
-        {
-            get { return emd.IconMediumName; }
-        }
-
-        public string IconSmallName
-        {
-            get { return emd.IconSmallName; }
-        }
-
-        public string IntroducedVersion { get { return emd.IntroducedVersion; } }
-
-        public bool IsAIRUpdated { get { return emd.IsAIRUpdated.HasValue && emd.IsAIRUpdated.Value; } }
-
-        public bool IsActivity
-        {
-            get { return emd.IsActivity.HasValue && emd.IsActivity.Value; }
-        }
-
-        public bool IsActivityParty
-        {
-            get { return emd.IsActivityParty.HasValue && emd.IsActivityParty.Value; }
-        }
-
-        public bool IsAuditEnabled
-        {
-            get { return emd.IsAuditEnabled.Value; }
-        }
-
-        public bool IsAvailableOffline
-        {
-            get { return emd.IsAvailableOffline.HasValue && emd.IsAvailableOffline.Value; }
-        }
-        public bool IsBusinessProcessEnabled { get { return emd.IsBusinessProcessEnabled.HasValue && emd.IsBusinessProcessEnabled.Value; } }
-
-        public bool IsChildEntity
-        {
-            get { return emd.IsChildEntity.HasValue && emd.IsChildEntity.Value; }
-        }
-
-        public bool IsConnectionsEnabled
-        {
-            get { return emd.IsConnectionsEnabled.Value; }
-        }
-
-        public bool IsCustomEntity
-        {
-            get { return emd.IsCustomEntity.HasValue && emd.IsCustomEntity.Value; }
-        }
-
-        public bool IsCustomizable
-        {
-            get { return emd.IsCustomizable.Value; }
-        }
-
-        public bool IsDocumentManagementEnabled
-        {
-            get { return emd.IsDocumentManagementEnabled.HasValue && emd.IsDocumentManagementEnabled.Value; }
-        }
-
-        public bool IsDocumentRecommendationsEnabled { get { return emd.IsDocumentRecommendationsEnabled.HasValue && emd.IsDocumentRecommendationsEnabled.Value; } }
-        
-        public bool IsDuplicateDetectionEnabled
-        {
-            get { return emd.IsDuplicateDetectionEnabled.Value; }
-        }
-
-        public bool IsEnabledForCharts
-        {
-            get { return emd.IsEnabledForCharts.HasValue && emd.IsEnabledForCharts.Value; }
-        }
-        public bool IsEnabledForExternalChannels { get { return emd.IsEnabledForExternalChannels.HasValue && emd.IsEnabledForExternalChannels.Value; } }
-        public bool IsEnabledForTrace { get { return emd.IsEnabledForTrace.HasValue && emd.IsEnabledForTrace.Value; } }
-     
-        public bool IsImportable
-        {
-            get { return emd.IsImportable.HasValue && emd.IsImportable.Value; }
-        }
-        public bool IsInteractionCentricEnabled { get { return emd.IsInteractionCentricEnabled.HasValue && emd.IsInteractionCentricEnabled.Value; } }
-
-        public bool IsIntersect
-        {
-            get { return emd.IsIntersect.HasValue && emd.IsIntersect.Value; }
-        }
-        public bool IsKnowledgeManagementEnabled { get { return emd.IsKnowledgeManagementEnabled.HasValue && emd.IsKnowledgeManagementEnabled.Value; } }
-      
-        public bool IsMailMergeEnabled
-        {
-            get { return emd.IsMailMergeEnabled.Value; }
-        }
-
-        public bool IsManaged
-        {
-            get { return emd.IsManaged.HasValue && emd.IsManaged.Value; }
-        }
-
-        public bool IsMappable
-        {
-            get { return emd.IsMappable.Value; }
-        }
+        public LabelInfo DisplayCollectionName => new LabelInfo(emd.DisplayCollectionName);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo IsOfflineInMobileClient { get { return new BooleanManagedPropertyInfo(emd.IsOfflineInMobileClient); } }
-        public bool IsOneNoteIntegrationEnabled { get { return emd.IsOneNoteIntegrationEnabled.HasValue && emd.IsOneNoteIntegrationEnabled.Value; } }
-        public bool IsOptimisticConcurrencyEnabled { get { return emd.IsOptimisticConcurrencyEnabled.HasValue && emd.IsOptimisticConcurrencyEnabled.Value; } }
-        public bool IsPrivate { get { return emd.IsPrivate.HasValue && emd.IsPrivate.Value; } }
-        public bool IsQuickCreateEnabled { get { return emd.IsQuickCreateEnabled.HasValue && emd.IsQuickCreateEnabled.Value; } }
+        public LabelInfo DisplayName => new LabelInfo(emd.DisplayName);
+
+        public bool EnforceStateTransitions => emd.EnforceStateTransitions.HasValue && emd.EnforceStateTransitions.Value;
+        public Color EntityColor => ColorTranslator.FromHtml(emd.EntityColor);
+        public string EntityHelpUrl => emd.EntityHelpUrl;
+        public bool EntityHelpUrlEnabled => emd.EntityHelpUrlEnabled.HasValue && emd.EntityHelpUrlEnabled.Value;
+        public string EntitySetName => emd.EntitySetName;
+        public string ExtensionData => emd.ExtensionData?.ToString() ?? "";
+
+        public bool HasChanged => emd.HasChanged.HasValue && emd.HasChanged.Value;
+
+        public string IconLargeName => emd.IconLargeName;
+
+        public string IconMediumName => emd.IconMediumName;
+
+        public string IconSmallName => emd.IconSmallName;
+
+        public string IconVectorName => emd.IconVectorName;
+
+        public string IntroducedVersion => emd.IntroducedVersion;
+
+        public bool IsActivity => emd.IsActivity.HasValue && emd.IsActivity.Value;
+        public bool IsActivityParty => emd.IsActivityParty.HasValue && emd.IsActivityParty.Value;
+        public bool IsAIRUpdated => emd.IsAIRUpdated.HasValue && emd.IsAIRUpdated.Value;
+        public bool IsAuditEnabled => emd.IsAuditEnabled.Value;
+
+        public bool IsAvailableOffline => emd.IsAvailableOffline.HasValue && emd.IsAvailableOffline.Value;
+
+        public bool IsBPFEntity => emd.IsBPFEntity.HasValue && emd.IsBPFEntity.Value;
+
+        public bool IsBusinessProcessEnabled => emd.IsBusinessProcessEnabled.HasValue && emd.IsBusinessProcessEnabled.Value;
+
+        public bool IsChildEntity => emd.IsChildEntity.HasValue && emd.IsChildEntity.Value;
+
+        public bool IsConnectionsEnabled => emd.IsConnectionsEnabled.Value;
+
+        public bool IsCustomEntity => emd.IsCustomEntity.HasValue && emd.IsCustomEntity.Value;
+
+        public bool IsCustomizable => emd.IsCustomizable.Value;
+
+        public bool IsDocumentManagementEnabled => emd.IsDocumentManagementEnabled.HasValue && emd.IsDocumentManagementEnabled.Value;
+
+        public bool IsDocumentRecommendationsEnabled => emd.IsDocumentRecommendationsEnabled.HasValue && emd.IsDocumentRecommendationsEnabled.Value;
+
+        public bool IsDuplicateDetectionEnabled => emd.IsDuplicateDetectionEnabled.Value;
+
+        public bool IsEnabledForCharts => emd.IsEnabledForCharts.HasValue && emd.IsEnabledForCharts.Value;
+
+        public bool IsEnabledForExternalChannels => emd.IsEnabledForExternalChannels.HasValue && emd.IsEnabledForExternalChannels.Value;
+        public bool IsEnabledForTrace => emd.IsEnabledForTrace.HasValue && emd.IsEnabledForTrace.Value;
+
+        public bool IsImportable => emd.IsImportable.HasValue && emd.IsImportable.Value;
+
+        public bool IsInteractionCentricEnabled => emd.IsInteractionCentricEnabled.HasValue && emd.IsInteractionCentricEnabled.Value;
+
+        public bool IsIntersect => emd.IsIntersect.HasValue && emd.IsIntersect.Value;
+
+        public bool IsKnowledgeManagementEnabled => emd.IsKnowledgeManagementEnabled.HasValue && emd.IsKnowledgeManagementEnabled.Value;
+
+        public bool IsLogicalEntity => emd.IsLogicalEntity.HasValue && emd.IsLogicalEntity.Value;
+
+        public bool IsMailMergeEnabled => emd.IsMailMergeEnabled.Value;
+
+        public bool IsManaged => emd.IsManaged.HasValue && emd.IsManaged.Value;
+
+        public bool IsMappable => emd.IsMappable.Value;
+
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo IsReadOnlyInMobileClient { get { return new BooleanManagedPropertyInfo(emd.IsReadOnlyInMobileClient); } }
-        public bool IsReadingPaneEnabled
-        {
-            get { return emd.IsReadingPaneEnabled.HasValue && emd.IsReadingPaneEnabled.Value; }
-        }
+        public BooleanManagedPropertyInfo IsOfflineInMobileClient => new BooleanManagedPropertyInfo(emd.IsOfflineInMobileClient);
 
-        public bool IsRenameable
-        {
-            get { return emd.IsRenameable.Value; }
-        }
-        public bool IsSLAEnabled { get { return emd.IsSLAEnabled.HasValue && emd.IsSLAEnabled.Value; } }
-        public bool IsStateModelAware { get { return emd.IsStateModelAware.HasValue && emd.IsStateModelAware.Value; } }
+        public bool IsOneNoteIntegrationEnabled => emd.IsOneNoteIntegrationEnabled.HasValue && emd.IsOneNoteIntegrationEnabled.Value;
+        public bool IsOptimisticConcurrencyEnabled => emd.IsOptimisticConcurrencyEnabled.HasValue && emd.IsOptimisticConcurrencyEnabled.Value;
+        public bool IsPrivate => emd.IsPrivate.HasValue && emd.IsPrivate.Value;
+        public bool IsQuickCreateEnabled => emd.IsQuickCreateEnabled.HasValue && emd.IsQuickCreateEnabled.Value;
 
-        public bool IsValidForAdvancedFind
-        {
-            get { return emd.IsValidForAdvancedFind.HasValue && emd.IsValidForAdvancedFind.Value; }
-        }
-
-        public bool IsValidForQueue
-        {
-            get { return emd.IsValidForQueue.Value; }
-        }
+        public bool IsReadingPaneEnabled => emd.IsReadingPaneEnabled.HasValue && emd.IsReadingPaneEnabled.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo IsVisibleInMobile
-        {
-            get { return new BooleanManagedPropertyInfo(emd.IsVisibleInMobile); }
-        }
+        public BooleanManagedPropertyInfo IsReadOnlyInMobileClient => new BooleanManagedPropertyInfo(emd.IsReadOnlyInMobileClient);
+
+        public bool IsRenameable => emd.IsRenameable.Value;
+
+        public bool IsSLAEnabled => emd.IsSLAEnabled.HasValue && emd.IsSLAEnabled.Value;
+        public bool IsStateModelAware => emd.IsStateModelAware.HasValue && emd.IsStateModelAware.Value;
+
+        public bool IsValidForAdvancedFind => emd.IsValidForAdvancedFind.HasValue && emd.IsValidForAdvancedFind.Value;
+
+        public bool IsValidForQueue => emd.IsValidForQueue.Value;
+
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo IsVisibleInMobileClient
-        {
-            get { return new BooleanManagedPropertyInfo(emd.IsVisibleInMobileClient); }
-        }
+        public BooleanManagedPropertyInfo IsVisibleInMobile => new BooleanManagedPropertyInfo(emd.IsVisibleInMobile);
+
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public BooleanManagedPropertyInfo IsVisibleInMobileClient => new BooleanManagedPropertyInfo(emd.IsVisibleInMobileClient);
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(KeyCollectionConverter))]
-        public KeyCollection Keys {
+        public KeyCollection Keys
+        {
             get
             {
                 var collection = new KeyCollection();
@@ -416,15 +315,12 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                 }
 
                 return collection;
-
-            } }
-
-        public string LogicalCollectionName { get { return emd.LogicalCollectionName; } }
-
-        public string LogicalName
-        {
-            get { return emd.LogicalName; }
+            }
         }
+
+        public string LogicalCollectionName => emd.LogicalCollectionName;
+
+        public string LogicalName => emd.LogicalName;
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ManyToManyRelationshipCollectionConverter))]
@@ -468,17 +364,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             }
         }
 
-        public Guid MetadataId
-        {
-            get { return emd.MetadataId.Value; }
-        }
+        public Guid MetadataId => emd.MetadataId.Value;
 
-        public string MobileOfflineFilters { get { return emd.MobileOfflineFilters; } }
+        public string MobileOfflineFilters => emd.MobileOfflineFilters;
 
-        public int ObjectTypeCode
-        {
-            get { return emd.ObjectTypeCode.Value; }
-        }
+        public int ObjectTypeCode => emd.ObjectTypeCode.Value;
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(OneToManyRelationshipCollectionConverter))]
@@ -501,22 +391,13 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             }
         }
 
-        public OwnershipTypes OwnershipType
-        {
-            get { return emd.OwnershipType.Value; }
-        }
+        public OwnershipTypes OwnershipType => emd.OwnershipType.Value;
 
-        public string PrimaryIdAttribute
-        {
-            get { return emd.PrimaryIdAttribute; }
-        }
+        public string PrimaryIdAttribute => emd.PrimaryIdAttribute;
 
-        public string PrimaryImageAttribute { get { return emd.PrimaryImageAttribute; } }
+        public string PrimaryImageAttribute => emd.PrimaryImageAttribute;
 
-        public string PrimaryNameAttribute
-        {
-            get { return emd.PrimaryNameAttribute; }
-        }
+        public string PrimaryNameAttribute => emd.PrimaryNameAttribute;
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(SecurityPrivilegeCollectionConverter))]
@@ -539,24 +420,15 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             }
         }
 
-        public string RecurrenceBaseEntityLogicalName
-        {
-            get { return emd.RecurrenceBaseEntityLogicalName; }
-        }
+        public string RecurrenceBaseEntityLogicalName => emd.RecurrenceBaseEntityLogicalName;
 
-        public string ReportViewName
-        {
-            get { return emd.ReportViewName; }
-        }
+        public string ReportViewName => emd.ReportViewName;
 
-        public string SchemaName
-        {
-            get
-            {
-                return emd.SchemaName;
-            }
-        }
+        public string SchemaName => emd.SchemaName;
 
-        public bool SyncToExternalSearchIndex { get { return emd.SyncToExternalSearchIndex.HasValue && emd.SyncToExternalSearchIndex.Value; } }
+        public bool SyncToExternalSearchIndex => emd.SyncToExternalSearchIndex.HasValue && emd.SyncToExternalSearchIndex.Value;
+
+        public bool UsesBusinessDataLabelTable => emd.UsesBusinessDataLabelTable.HasValue &&
+                                                  emd.UsesBusinessDataLabelTable.Value;
     }
 }

@@ -12,24 +12,12 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public StringFormat Format
-        {
-            get { return amd.Format.Value; }
-        }
+        public StringFormat Format => amd.Format.Value;
 
-        public ImeMode ImeMode
-        {
-            get { return amd.ImeMode.Value; }
-        }
+        public ImeMode ImeMode => amd.ImeMode.Value;
 
-        public int MaxLength
-        {
-            get { return amd.MaxLength.Value; }
-        }
+        public int MaxLength => amd.MaxLength.Value;
 
-        public bool IsLocalizable
-        {
-            get { return amd.IsLocalizable.HasValue && amd.IsLocalizable.Value; }
-        }
+        public bool IsLocalizable => amd.IsLocalizable.HasValue && amd.IsLocalizable.Value;
     }
 }

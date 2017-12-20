@@ -15,40 +15,61 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionMd
         }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo Description
-        {
-            get { return new LabelInfo(amd.Description); }
-        }
+        public LabelInfo Description => new LabelInfo(amd.Description);
 
-        public string ExtensionData
-        {
-            get { return amd.ExtensionData != null ? amd.ExtensionData.ToString() : ""; }
-        }
+        public string ExtensionData => amd.ExtensionData?.ToString() ?? "";
 
-        public bool HasChanged
-        {
-            get { return amd.HasChanged.HasValue && amd.HasChanged.Value; }
-        }
+        public bool HasChanged => amd.HasChanged.HasValue && amd.HasChanged.Value;
 
-        public bool IsManaged
-        {
-            get { return amd.IsManaged.HasValue && amd.IsManaged.Value; }
-        }
+        public bool IsManaged => amd.IsManaged.HasValue && amd.IsManaged.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo Label
+        public LabelInfo Label => new LabelInfo(amd.Label);
+
+        public string MetadataId => amd.MetadataId != null ? amd.MetadataId.Value.ToString() : "";
+
+        public int Value => amd.Value.Value;
+
+        public string State
         {
-            get { return new LabelInfo(amd.Label); }
+            get
+            {
+                var somd = amd as StatusOptionMetadata;
+                if (somd != null)
+                {
+                    return (somd.State ?? -1).ToString();
+                }
+
+                return "Not relevant";
+            }
         }
 
-        public string MetadataId
+        public string DefaultStatus
         {
-            get { return amd.MetadataId != null ? amd.MetadataId.Value.ToString() : ""; }
+            get
+            {
+                var somd = amd as StateOptionMetadata;
+                if (somd != null)
+                {
+                    return (somd.DefaultStatus ?? -1).ToString();
+                }
+
+                return "Not relevant";
+            }
         }
 
-        public int Value
+        public string InvariantName
         {
-            get { return amd.Value.Value; }
+            get
+            {
+                var somd = amd as StateOptionMetadata;
+                if (somd != null)
+                {
+                    return somd.InvariantName;
+                }
+
+                return "Not relevant";
+            }
         }
 
         public override string ToString()

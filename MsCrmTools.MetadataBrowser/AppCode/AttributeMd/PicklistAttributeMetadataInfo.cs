@@ -14,17 +14,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public int DefaultFormValue
-        {
-            get { return amd.DefaultFormValue.Value; }
-        }
+        public int DefaultFormValue => amd.DefaultFormValue.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public OptionSetMetadataInfo OptionSet
-        {
-            get { return new OptionSetMetadataInfo(amd.OptionSet); }
-        }
+        public OptionSetMetadataInfo OptionSet => new OptionSetMetadataInfo(amd.OptionSet);
 
-        public string FormulaDefinition { get { return amd.FormulaDefinition; } }
+        public string FormulaDefinition => amd.FormulaDefinition;
     }
 }

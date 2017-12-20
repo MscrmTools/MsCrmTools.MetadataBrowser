@@ -116,7 +116,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public bool IsFilterable
         {
-            get {return amd.IsFilterable.HasValue && amd.IsFilterable.Value; }
+            get { return amd.IsFilterable.HasValue && amd.IsFilterable.Value; }
         }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]

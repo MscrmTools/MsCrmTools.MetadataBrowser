@@ -12,37 +12,18 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public string CalculationOf
-        {
-            get { return amd.CalculationOf; }
-        }
+        public string CalculationOf => amd.CalculationOf;
 
-        public ImeMode ImeMode
-        {
-            get { return amd.ImeMode.Value; }
-        }
+        public ImeMode ImeMode => amd.ImeMode.Value;
 
-        public bool IsBaseCurrency
-        {
-            get { return amd.IsBaseCurrency.HasValue && amd.IsBaseCurrency.Value; }
-        }
+        public bool IsBaseCurrency => amd.IsBaseCurrency.HasValue && amd.IsBaseCurrency.Value;
 
-        public double MaxValue
-        {
-            get { return amd.MaxValue.Value; }
-        }
+        public double MaxValue => amd.MaxValue.Value;
 
-        public double MinValue
-        {
-            get { return amd.MinValue.Value; }
-        }
+        public double MinValue => amd.MinValue.Value;
 
-        public decimal Precision
-        {
-            get { return amd.Precision.Value; }
-        }
+        public decimal Precision => amd.Precision.Value;
 
-        public string FormulaDefinition { get { return amd.FormulaDefinition; } }
-
+        public string FormulaDefinition => amd.FormulaDefinition;
     }
 }

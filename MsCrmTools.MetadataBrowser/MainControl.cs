@@ -10,9 +10,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using MsCrmTools.MetadataBrowser.AppCode.Excel;
 using XrmToolBox.Extensibility;
 using XrmToolBox.Extensibility.Interfaces;
 
@@ -104,6 +107,7 @@ namespace MsCrmTools.MetadataBrowser
                     var cascadeConfigurationInfoValue = value as CascadeConfigurationInfo;
                     var associatedMenuBehaviorInfoValue = value as AssociatedMenuConfigurationInfo;
                     var requiredLevelInfoValue = value as AttributeRequiredLevelManagedPropertyInfo;
+
                     if (labelInfoValue != null)
                     {
                         item.SubItems.Add(labelInfoValue.UserLocalizedLabel != null
@@ -121,6 +125,11 @@ namespace MsCrmTools.MetadataBrowser
                     else if (cascadeConfigurationInfoValue != null || associatedMenuBehaviorInfoValue != null)
                     {
                         item.SubItems.Add("(Open row to see details)");
+                    }
+                    else if (value is Color)
+                    {
+                        var color = (Color)value;
+                        item.SubItems.Add(color.Name);
                     }
                     else
                     {
@@ -417,7 +426,9 @@ namespace MsCrmTools.MetadataBrowser
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             tstxtFilter.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex != 1;
-            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex == 0; ;
+            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex == 0;
+            toolStripSeparator5.Visible = mainTabControl.SelectedIndex == 0;
+            tsbExportExcel.Visible = mainTabControl.SelectedIndex == 0;
         }
 
         private void entityListView_SelectedIndexChanged(object sender, EventArgs e)
@@ -432,9 +443,25 @@ namespace MsCrmTools.MetadataBrowser
                 return;
             }
 
-            var emd = (EntityMetadata) entityListView.SelectedItems[0].Tag;
+            var emd = (EntityMetadata)entityListView.SelectedItems[0].Tag;
             Process.Start(
                 $"{ConnectionDetail.WebApplicationUrl}/tools/systemcustomization/Entities/manageEntity.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&entityId=%7b{emd.MetadataId.Value}%7d");
+        }
+
+        private void tsbExportExcel_Click(object sender, EventArgs e)
+        {
+            if (entityListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, entityListView, "Entities", this);
+            }
         }
     }
 }

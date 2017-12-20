@@ -12,24 +12,12 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public ImeMode ImeMode
-        {
-            get { return amd.ImeMode.Value; }
-        }
+        public ImeMode ImeMode => amd.ImeMode.Value;
 
-        public double MaxValue
-        {
-            get { return amd.MaxValue.Value; }
-        }
+        public double MaxValue => amd.MaxValue.Value;
 
-        public double MinValue
-        {
-            get { return amd.MinValue.Value; }
-        }
+        public double MinValue => amd.MinValue.Value;
 
-        public decimal Precision
-        {
-            get { return amd.Precision.Value; }
-        }
+        public decimal Precision => amd.Precision.Value;
     }
 }

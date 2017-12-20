@@ -12,36 +12,17 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public StringFormat Format
-        {
-            get { return amd.Format.Value; }
-        }
+        public string AutoNumberFormat => amd.AutoNumberFormat;
+        public int? DataBaseLenght => amd.DatabaseLength;
+        public StringFormat Format => amd.Format ?? StringFormat.Text;
 
-        public string FormatName
-        {
-            get { return amd.FormatName != null ? amd.FormatName.Value : ""; }
-        }
+        public string FormatName => amd.FormatName != null ? amd.FormatName.Value : "";
 
-        public ImeMode ImeMode
-        {
-            get { return amd.ImeMode.Value; }
-        }
+        public string FormulaDefinition => amd.FormulaDefinition;
+        public ImeMode ImeMode => amd.ImeMode ?? ImeMode.Auto;
 
-        public int MaxLength
-        {
-            get { return amd.MaxLength.Value; }
-        }
-
-        public string FormulaDefinition { get { return amd.FormulaDefinition; } }
-
-        public bool IsLocalizable
-        {
-            get { return amd.IsLocalizable.HasValue && amd.IsLocalizable.Value; }
-        }
-
-        public string YomiOf
-        {
-            get { return amd.YomiOf ; }
-        }
+        public bool IsLocalizable => amd.IsLocalizable.HasValue && amd.IsLocalizable.Value;
+        public int MaxLength => amd.MaxLength ?? -1;
+        public string YomiOf => amd.YomiOf;
     }
 }

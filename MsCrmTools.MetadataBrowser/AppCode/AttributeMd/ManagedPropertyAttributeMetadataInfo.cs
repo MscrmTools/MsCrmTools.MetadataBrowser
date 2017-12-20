@@ -12,19 +12,12 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public string ManagedPropertyLogicalName
-        {
-            get { return amd.ManagedPropertyLogicalName; }
-        }
+        public string ManagedPropertyLogicalName => amd.ManagedPropertyLogicalName;
 
-        public string ParentAttributeName
-        {
-            get { return amd.ParentAttributeName; }
-        }
+        public string ParentAttributeName => amd.ParentAttributeName;
 
-        public int ParentComponentType
-        {
-            get { return amd.ParentComponentType.Value; }
-        }
+        public int ParentComponentType => amd.ParentComponentType.Value;
+
+        public string ValueAttributeTypeCode => amd.ValueAttributeTypeCode.ToString();
     }
 }
