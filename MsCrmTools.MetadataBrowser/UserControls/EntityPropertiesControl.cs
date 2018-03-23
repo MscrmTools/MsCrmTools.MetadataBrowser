@@ -400,6 +400,11 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                             {
                                 item.Tag = new ImageAttributeMetadataInfo((ImageAttributeMetadata)attribute);
                             }
+
+                            if (attribute is MultiSelectPicklistAttributeMetadata mspamd)
+                            {
+                                item.Tag = new MultiSelectPicklistAttributeMetadataInfo(mspamd);
+                            }
                             else
                             {
                                 item.Tag = new AttributeMetadataInfo(attribute);

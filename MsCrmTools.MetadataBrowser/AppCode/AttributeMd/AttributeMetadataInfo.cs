@@ -21,12 +21,26 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public AttributeTypeCode AttributeType
         {
-            get { return amd.AttributeType.Value; }
+            get
+            {
+                if (amd is MultiSelectPicklistAttributeMetadata)
+                {
+                    return AttributeTypeCode.Picklist;
+                }
+                return amd.AttributeType.Value;
+            }
         }
 
         public string AttributeTypeName
         {
-            get { return amd.AttributeTypeName != null ? amd.AttributeTypeName.Value : ""; }
+            get
+            {
+                if (amd is MultiSelectPicklistAttributeMetadata)
+                {
+                    return "MultiSelect Picklist";
+                }
+                return amd.AttributeTypeName != null ? amd.AttributeTypeName.Value : "";
+            }
         }
 
         public bool CanBeSecuredForCreate
@@ -226,6 +240,10 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public override string ToString()
         {
+            if (amd is MultiSelectPicklistAttributeMetadata)
+            {
+                return "MultiSelect Picklist";
+            }
             return amd.AttributeType.Value.ToString();
         }
     }

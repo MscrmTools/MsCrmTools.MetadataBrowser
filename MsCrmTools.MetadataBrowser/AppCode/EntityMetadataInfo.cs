@@ -116,12 +116,6 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                                 {
                                     collection.Add(new PicklistAttributeMetadataInfo(pamd));
                                 }
-
-                                var mpamd = rmd as MultiSelectPicklistAttributeMetadata;
-                                if (mpamd != null)
-                                {
-                                    collection.Add(new MultiSelectPicklistAttributeMetadataInfo(mpamd));
-                                }
                             }
                             break;
 
@@ -145,7 +139,14 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
                         default:
                             {
-                                collection.Add(new AttributeMetadataInfo(rmd));
+                                if (rmd is MultiSelectPicklistAttributeMetadata mpamd)
+                                {
+                                    collection.Add(new MultiSelectPicklistAttributeMetadataInfo(mpamd));
+                                }
+                                else
+                                {
+                                    collection.Add(new AttributeMetadataInfo(rmd));
+                                }
                             }
                             break;
                     }
