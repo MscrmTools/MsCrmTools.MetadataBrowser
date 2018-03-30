@@ -51,10 +51,15 @@ namespace MsCrmTools.MetadataBrowser
             get { return "MscrmTools"; }
         }
 
-        public void LoadEntities()
+        public void LoadEntities(bool initialLoading = false)
         {
-            // Loads listview header column for entities
-            ListViewColumnHelper.AddColumnsHeader(entityListView, typeof(EntityMetadataInfo), ListViewColumnsSettings.EntityFirstColumns, lvcSettings.EntitySelectedAttributes, ListViewColumnsSettings.EntityAttributesToIgnore);
+            if (initialLoading)
+            {
+                // Loads listview header column for entities
+                ListViewColumnHelper.AddColumnsHeader(entityListView, typeof(EntityMetadataInfo),
+                    ListViewColumnsSettings.EntityFirstColumns, lvcSettings.EntitySelectedAttributes,
+                    ListViewColumnsSettings.EntityAttributesToIgnore);
+            }
 
             WorkAsync(new WorkAsyncInfo
             {
@@ -325,15 +330,12 @@ namespace MsCrmTools.MetadataBrowser
 
         private void MainControl_Enter(object sender, EventArgs e)
         {
-            if (sender != null)
+            if (sender is MainControl control)
             {
-                if (sender is MainControl)
+                if (control.Service != null && !initialized)
                 {
-                    if (((MainControl)sender).Service != null && !initialized)
-                    {
-                        ExecuteMethod(LoadEntities);
-                        initialized = true;
-                    }
+                    ExecuteMethod(LoadEntities, true);
+                    initialized = true;
                 }
             }
         }
@@ -396,7 +398,7 @@ namespace MsCrmTools.MetadataBrowser
 
         private void tsbLoadEntities_Click(object sender, EventArgs e)
         {
-            ExecuteMethod(LoadEntities);
+            ExecuteMethod(LoadEntities, false);
         }
 
         private void tstxtFilter_Enter(object sender, EventArgs e)
