@@ -197,6 +197,12 @@
     <Compile Include="Forms\ColumnSelector.Designer.cs">
       <DependentUpon>ColumnSelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SolutionPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SolutionPicker.designer.cs">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\ListViewColumnHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="MainControl.cs">
@@ -224,6 +230,9 @@
     <EmbeddedResource Include="Forms\ColumnSelector.resx">
       <DependentUpon>ColumnSelector.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SolutionPicker.resx">
+      <DependentUpon>SolutionPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainControl.resx">
       <DependentUpon>MainControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -238,6 +247,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ico_16_9801.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

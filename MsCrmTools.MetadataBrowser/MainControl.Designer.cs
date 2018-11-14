@@ -32,7 +32,6 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbLoadEntities = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbEntityColumns = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
@@ -45,6 +44,8 @@
             this.entityListView = new System.Windows.Forms.ListView();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.tbEntitiesList = new System.Windows.Forms.TabPage();
+            this.tssbLoadEntities = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsmiLoadEntitiesFromSolution = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.tbEntitiesList.SuspendLayout();
@@ -55,7 +56,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClose,
             this.toolStripSeparator1,
-            this.tsbLoadEntities,
+            this.tssbLoadEntities,
             this.toolStripSeparator2,
             this.tsbEntityColumns,
             this.toolStripSeparator3,
@@ -85,15 +86,6 @@
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbLoadEntities
-            // 
-            this.tsbLoadEntities.Image = ((System.Drawing.Image)(resources.GetObject("tsbLoadEntities.Image")));
-            this.tsbLoadEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbLoadEntities.Name = "tsbLoadEntities";
-            this.tsbLoadEntities.Size = new System.Drawing.Size(94, 22);
-            this.tsbLoadEntities.Text = "Load Entities";
-            this.tsbLoadEntities.Click += new System.EventHandler(this.tsbLoadEntities_Click);
             // 
             // toolStripSeparator2
             // 
@@ -153,7 +145,7 @@
             this.tsbExportExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsbExportExcel.Image")));
             this.tsbExportExcel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbExportExcel.Name = "tsbExportExcel";
-            this.tsbExportExcel.Size = new System.Drawing.Size(103, 22);
+            this.tsbExportExcel.Size = new System.Drawing.Size(103, 20);
             this.tsbExportExcel.Text = "Export to Excel";
             this.tsbExportExcel.Click += new System.EventHandler(this.tsbExportExcel_Click);
             // 
@@ -198,6 +190,25 @@
             this.tbEntitiesList.Text = "Entities";
             this.tbEntitiesList.UseVisualStyleBackColor = true;
             // 
+            // tssbLoadEntities
+            // 
+            this.tssbLoadEntities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiLoadEntitiesFromSolution});
+            this.tssbLoadEntities.Image = global::MsCrmTools.MetadataBrowser.Properties.Resources.ico_16_9801;
+            this.tssbLoadEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tssbLoadEntities.Name = "tssbLoadEntities";
+            this.tssbLoadEntities.Size = new System.Drawing.Size(106, 22);
+            this.tssbLoadEntities.Text = "Load Entities";
+            this.tssbLoadEntities.ToolTipText = "Load all entities from the connected organization";
+            this.tssbLoadEntities.ButtonClick += new System.EventHandler(this.tssbLoadEntities_ButtonClick);
+            // 
+            // tsmiLoadEntitiesFromSolution
+            // 
+            this.tsmiLoadEntitiesFromSolution.Name = "tsmiLoadEntitiesFromSolution";
+            this.tsmiLoadEntitiesFromSolution.Size = new System.Drawing.Size(229, 22);
+            this.tsmiLoadEntitiesFromSolution.Text = "Load Entities from solution(s)";
+            this.tsmiLoadEntitiesFromSolution.Click += new System.EventHandler(this.tsmiLoadEntitiesFromSolution_Click);
+            // 
             // MainControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -222,7 +233,6 @@
         private System.Windows.Forms.ToolStripButton tsbClose;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ListView entityListView;
-        private System.Windows.Forms.ToolStripButton tsbLoadEntities;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton tsbEntityColumns;
         private System.Windows.Forms.TabControl mainTabControl;
@@ -234,5 +244,7 @@
         private System.Windows.Forms.ToolStripButton tsbOpenInWebApp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbExportExcel;
+        private System.Windows.Forms.ToolStripSplitButton tssbLoadEntities;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadEntitiesFromSolution;
     }
 }

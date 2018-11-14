@@ -59,5 +59,15 @@ namespace MsCrmTools.MetadataBrowser.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ico_16_9801 {
+            get {
+                object obj = ResourceManager.GetObject("ico_16_9801", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
