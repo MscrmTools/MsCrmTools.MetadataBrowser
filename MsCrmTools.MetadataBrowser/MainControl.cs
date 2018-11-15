@@ -403,7 +403,7 @@ namespace MsCrmTools.MetadataBrowser
                     {
                         Conditions =
                         {
-                            new MetadataConditionExpression("LogicalName", MetadataConditionOperator.Equals, "filterout"),
+                            new MetadataConditionExpression("SchemaName", MetadataConditionOperator.Equals, "filterout"),
                         }
                     }
                 }
