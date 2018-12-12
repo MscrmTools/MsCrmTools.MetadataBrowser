@@ -365,14 +365,6 @@ namespace MsCrmTools.MetadataBrowser
 
             EntityQueryExpression entityQueryExpression2 = new EntityQueryExpression
             {
-                Criteria = new MetadataFilterExpression(LogicalOperator.Or)
-                {
-                    Conditions =
-                        {
-                            new MetadataConditionExpression("IsCustomizable", MetadataConditionOperator.Equals, true),
-                            new MetadataConditionExpression("IsManaged", MetadataConditionOperator.Equals, false),
-                        }
-                },
                 Properties = new MetadataPropertiesExpression
                 {
                     AllProperties = true
