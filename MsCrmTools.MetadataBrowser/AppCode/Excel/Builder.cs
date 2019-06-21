@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using OfficeOpenXml;
-using OfficeOpenXml.Style;
 
 namespace MsCrmTools.MetadataBrowser.AppCode.Excel
 {
@@ -53,7 +48,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.Excel
                         $"File saved to {path}!\n\nWould you like to open it now? (Requires Microsoft Excel)",
                         "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information))
                 {
-                    Process.Start("Excel.exe", path);
+                    Process.Start("Excel.exe", $"\"{path}\"");
                 }
             }
         }
