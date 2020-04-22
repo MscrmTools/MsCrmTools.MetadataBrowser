@@ -23,7 +23,7 @@ namespace MsCrmTools.MetadataBrowser.Forms
             this.currentAttributes = currentAttributes;
         }
 
-        public string[] UpdatedCurrentAttributes { get { return currentAttributes; } }
+        public string[] UpdatedCurrentAttributes => currentAttributes;
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

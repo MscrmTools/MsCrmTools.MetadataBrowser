@@ -15,15 +15,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.LocalizedLabelMd
             list = new List<LocalizedLabelInfo>();
         }
 
-        public new int Count
-        {
-            get { return list.Count; }
-        }
+        public new int Count => list.Count;
 
-        public LocalizedLabelInfo this[int index]
-        {
-            get { return list[index]; }
-        }
+        public LocalizedLabelInfo this[int index] => list[index];
 
         public void Add(LocalizedLabelInfo info)
         {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk.Metadata;
-using System;
-using System.ComponentModel;
 using MsCrmTools.MetadataBrowser.AppCode.LabelMd;
+using System.ComponentModel;
 
 namespace MsCrmTools.MetadataBrowser.AppCode.Keys
 {
@@ -15,19 +14,21 @@ namespace MsCrmTools.MetadataBrowser.AppCode.Keys
             this.ekm = ekm;
         }
 
-        public string AsyncJob { get { return ekm.AsyncJob != null ? ekm.AsyncJob.Id.ToString("B") : "N/A"; } }
+        public string AsyncJob => ekm.AsyncJob != null ? ekm.AsyncJob.Id.ToString("B") : "N/A";
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo DisplayName { get { return new LabelInfo(ekm.DisplayName); } }
-        public string EntityKeyIndexStatus { get { return ekm.EntityKeyIndexStatus.ToString(); } }
-        public string EntityLogicalName { get { return ekm.EntityLogicalName; } }
-        public string IntroducedVersion { get { return ekm.IntroducedVersion; } }
-        public bool IsCustomizable { get { return ekm.IsCustomizable.Value; } }
-        public bool IsManaged { get { return ekm.IsManaged.HasValue && ekm.IsManaged.Value; } }
-        public string[] KeyAttributes { get { return ekm.KeyAttributes; } }
-        public string LogicalName { get { return ekm.LogicalName; } }
-        public string SchemaName { get { return ekm.SchemaName; } }
-        public string MetadataId { get { return ekm.MetadataId.Value.ToString("B"); } }
+        public LabelInfo DisplayName => new LabelInfo(ekm.DisplayName);
+
+        public string EntityKeyIndexStatus => ekm.EntityKeyIndexStatus.ToString();
+        public string EntityLogicalName => ekm.EntityLogicalName;
+        public string IntroducedVersion => ekm.IntroducedVersion;
+        public bool IsCustomizable => ekm.IsCustomizable.Value;
+        public bool IsManaged => ekm.IsManaged.HasValue && ekm.IsManaged.Value;
+        public bool IsSynchronous => ekm.IsSynchronous.HasValue && ekm.IsSynchronous.Value;
+        public string[] KeyAttributes => ekm.KeyAttributes;
+        public string LogicalName => ekm.LogicalName;
+        public string MetadataId => ekm.MetadataId.Value.ToString("B");
+        public string SchemaName => ekm.SchemaName;
 
         public override string ToString()
         {

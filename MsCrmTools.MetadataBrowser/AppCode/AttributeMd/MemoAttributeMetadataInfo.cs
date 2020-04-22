@@ -16,8 +16,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public ImeMode ImeMode => amd.ImeMode.Value;
 
-        public int MaxLength => amd.MaxLength.Value;
-
         public bool IsLocalizable => amd.IsLocalizable.HasValue && amd.IsLocalizable.Value;
+        public int MaxLength => amd.MaxLength.Value;
     }
 }

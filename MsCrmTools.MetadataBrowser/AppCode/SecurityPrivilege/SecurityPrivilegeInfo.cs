@@ -14,45 +14,21 @@ namespace MsCrmTools.MetadataBrowser.AppCode.SecurityPrivilege
             this.p = p;
         }
 
-        public bool CanBeBasic
-        {
-            get { return p.CanBeBasic; }
-        }
+        public bool CanBeBasic => p.CanBeBasic;
 
-        public bool CanBeDeep
-        {
-            get { return p.CanBeDeep; }
-        }
+        public bool CanBeDeep => p.CanBeDeep;
 
-        public bool CanBeGlobal
-        {
-            get { return p.CanBeGlobal; }
-        }
+        public bool CanBeGlobal => p.CanBeGlobal;
 
-        public bool CanBeLocal
-        {
-            get { return p.CanBeLocal; }
-        }
+        public bool CanBeLocal => p.CanBeLocal;
 
-        public string ExtensionData
-        {
-            get { return p.ExtensionData != null ? p.ExtensionData.ToString() : ""; }
-        }
+        public string ExtensionData => p.ExtensionData != null ? p.ExtensionData.ToString() : "";
 
-        public string Name
-        {
-            get { return p.Name; }
-        }
+        public string Name => p.Name;
 
-        public Guid PrivilegeId
-        {
-            get { return p.PrivilegeId; }
-        }
+        public Guid PrivilegeId => p.PrivilegeId;
 
-        public PrivilegeType PrivilegeType
-        {
-            get { return p.PrivilegeType; }
-        }
+        public PrivilegeType PrivilegeType => p.PrivilegeType;
 
         public override string ToString()
         {

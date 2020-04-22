@@ -14,10 +14,10 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public IntegerFormat Format => amd.Format.Value;
 
+        public string FormulaDefinition => amd.FormulaDefinition;
         public double MaxValue => amd.MaxValue.Value;
 
         public double MinValue => amd.MinValue.Value;
-
-        public string FormulaDefinition => amd.FormulaDefinition;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
     }
 }

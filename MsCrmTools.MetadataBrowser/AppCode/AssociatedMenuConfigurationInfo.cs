@@ -14,26 +14,14 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             this.configuration = configuration;
         }
 
-        public AssociatedMenuBehavior Behavior
-        {
-            get { return configuration.Behavior != null ? configuration.Behavior.Value : AssociatedMenuBehavior.UseCollectionName; }
-        }
+        public AssociatedMenuBehavior Behavior => configuration.Behavior != null ? configuration.Behavior.Value : AssociatedMenuBehavior.UseCollectionName;
 
-        public AssociatedMenuGroup Group
-        {
-            get { return configuration.Group != null ? configuration.Group.Value : AssociatedMenuGroup.Details; }
-        }
+        public AssociatedMenuGroup Group => configuration.Group != null ? configuration.Group.Value : AssociatedMenuGroup.Details;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LabelInfo Label
-        {
-            get { return new LabelInfo(configuration.Label); }
-        }
+        public LabelInfo Label => new LabelInfo(configuration.Label);
 
-        public int Order
-        {
-            get { return configuration.Order.HasValue ? configuration.Order.Value : -1; }
-        }
+        public int Order => configuration.Order.HasValue ? configuration.Order.Value : -1;
 
         public override string ToString()
         {

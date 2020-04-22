@@ -9,39 +9,18 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         private static readonly string[] attributeFirstColumns = { "LogicalName", "SchemaName", "AttributeType" };
         private static readonly string[] entityAttributesToIgnore = { "Attributes", "Privileges", "OneToManyRelationships", "ManyToOneRelationships", "ManyToManyRelationships", "Keys" };
         private static readonly string[] entityFirstColumns = { "LogicalName", "SchemaName", "ObjectTypeCode" };
+        private static readonly string[] keyFirstColumns = { "SchemaName" };
         private static readonly string[] privFirstColumns = { "Name" };
         private static readonly string[] relFirstColumns = { "SchemaName" };
-        private static readonly string[] keyFirstColumns = { "SchemaName" };
+        public static string[] AttributeFirstColumns => attributeFirstColumns;
 
-        public static string[] AttributeFirstColumns
-        {
-            get { return attributeFirstColumns; }
-        }
+        public static string[] EntityAttributesToIgnore => entityAttributesToIgnore;
 
-        public static string[] EntityAttributesToIgnore
-        {
-            get { return entityAttributesToIgnore; }
-        }
+        public static string[] EntityFirstColumns => entityFirstColumns;
 
-        public static string[] EntityFirstColumns
-        {
-            get { return entityFirstColumns; }
-        }
-
-        public static string[] PrivFirstColumns
-        {
-            get { return privFirstColumns; }
-        }
-
-        public static string[] KeyFirstColumns
-        {
-            get { return keyFirstColumns; }
-        }
-
-        public static string[] RelFirstColumns
-        {
-            get { return relFirstColumns; }
-        }
+        public static string[] KeyFirstColumns => keyFirstColumns;
+        public static string[] PrivFirstColumns => privFirstColumns;
+        public static string[] RelFirstColumns => relFirstColumns;
 
         public string[] AttributeSelectedAttributes { get; set; }
         public string[] EntitySelectedAttributes { get; set; }

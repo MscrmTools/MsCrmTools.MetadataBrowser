@@ -12,6 +12,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
+        public string Format => amd.Format.ToString();
+
         public string[] Targets => amd.Targets;
     }
 }

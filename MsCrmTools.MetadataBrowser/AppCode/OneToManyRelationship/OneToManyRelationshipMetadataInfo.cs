@@ -15,90 +15,45 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OneToManyRelationship
         }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public AssociatedMenuConfigurationInfo AssociatedMenuConfiguration
-        {
-            get
-            {
-                return new AssociatedMenuConfigurationInfo(otmmd.AssociatedMenuConfiguration);
-            }
-        }
+        public AssociatedMenuConfigurationInfo AssociatedMenuConfiguration => new AssociatedMenuConfigurationInfo(otmmd.AssociatedMenuConfiguration);
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public CascadeConfigurationInfo CascadeConfiguration
-        {
-            get { return new CascadeConfigurationInfo(otmmd.CascadeConfiguration); }
-        }
+        public CascadeConfigurationInfo CascadeConfiguration => new CascadeConfigurationInfo(otmmd.CascadeConfiguration);
 
-        public string ExtensionData
-        {
-            get { return otmmd.ExtensionData != null ? otmmd.ExtensionData.ToString() : ""; }
-        }
+        public string ExtensionData => otmmd.ExtensionData != null ? otmmd.ExtensionData.ToString() : "";
 
-        public bool HasChanged
-        {
-            get { return otmmd.HasChanged.HasValue && otmmd.HasChanged.Value; }
-        }
+        public bool HasChanged => otmmd.HasChanged.HasValue && otmmd.HasChanged.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public BooleanManagedPropertyInfo IsCustomizable
-        {
-            get { return new BooleanManagedPropertyInfo(otmmd.IsCustomizable); }
-        }
+        public BooleanManagedPropertyInfo IsCustomizable => new BooleanManagedPropertyInfo(otmmd.IsCustomizable);
 
-        public bool IsCustomRelationship
-        {
-            get { return otmmd.IsCustomRelationship.HasValue && otmmd.IsCustomRelationship.Value; }
-        }
+        public bool IsCustomRelationship => otmmd.IsCustomRelationship.HasValue && otmmd.IsCustomRelationship.Value;
 
-        public bool IsManaged
-        {
-            get { return otmmd.IsManaged.HasValue && otmmd.IsManaged.Value; }
-        }
+        public bool IsHierarchical => otmmd.IsHierarchical.HasValue && otmmd.IsHierarchical.Value;
 
-        public bool IsValidForAdvancedFind
-        {
-            get { return otmmd.IsValidForAdvancedFind.HasValue && otmmd.IsValidForAdvancedFind.Value; }
-        }
+        public bool IsManaged => otmmd.IsManaged.HasValue && otmmd.IsManaged.Value;
 
-        public Guid MetadataId
-        {
-            get { return otmmd.MetadataId.Value; }
-        }
+        public bool IsValidForAdvancedFind => otmmd.IsValidForAdvancedFind.HasValue && otmmd.IsValidForAdvancedFind.Value;
 
-        public string ReferencedAttribute
-        {
-            get { return otmmd.ReferencedAttribute; }
-        }
+        public Guid MetadataId => otmmd.MetadataId.Value;
 
-        public string ReferencedEntity
-        {
-            get { return otmmd.ReferencedEntity; }
-        }
+        public string ReferencedAttribute => otmmd.ReferencedAttribute;
 
-        public string ReferencingAttribute
-        {
-            get { return otmmd.ReferencingAttribute; }
-        }
+        public string ReferencedEntity => otmmd.ReferencedEntity;
 
-        public string ReferencingEntity
-        {
-            get { return otmmd.ReferencingEntity; }
-        }
+        public string ReferencedEntityNavigationPropertyName => otmmd.ReferencedEntityNavigationPropertyName;
 
-        public RelationshipType RelationshipType
-        {
-            get { return otmmd.RelationshipType; }
-        }
+        public string ReferencingAttribute => otmmd.ReferencingAttribute;
 
-        public string SchemaName
-        {
-            get { return otmmd.SchemaName; }
-        }
+        public string ReferencingEntity => otmmd.ReferencingEntity;
 
-        public SecurityTypes SecurityTypes
-        {
-            get { return otmmd.SecurityTypes.Value; }
-        }
+        public string ReferencingEntityNavigationPropertyName => otmmd.ReferencingEntityNavigationPropertyName;
+
+        public RelationshipType RelationshipType => otmmd.RelationshipType;
+
+        public string SchemaName => otmmd.SchemaName;
+
+        public SecurityTypes SecurityTypes => otmmd.SecurityTypes.Value;
 
         public override string ToString()
         {

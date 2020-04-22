@@ -12,14 +12,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public long MaxValue
-        {
-            get { return amd.MaxValue.Value; }
-        }
+        public long MaxValue => amd.MaxValue.Value;
 
-        public long MinValue
-        {
-            get { return amd.MinValue.Value; }
-        }
+        public long MinValue => amd.MinValue.Value;
     }
 }

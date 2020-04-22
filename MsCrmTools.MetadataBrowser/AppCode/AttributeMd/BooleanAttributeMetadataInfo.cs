@@ -15,8 +15,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public bool DefaultValue => amd.DefaultValue.HasValue && amd.DefaultValue.Value;
 
-        public BooleanOptionSetMetadataInfo OptionSet => new BooleanOptionSetMetadataInfo(amd.OptionSet);
-
         public string FormulaDefinition => amd.FormulaDefinition;
+        public BooleanOptionSetMetadataInfo OptionSet => new BooleanOptionSetMetadataInfo(amd.OptionSet);
     }
 }

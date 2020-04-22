@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk.Metadata;
 using MsCrmTools.MetadataBrowser.AppCode.AttributeMd;
+using MsCrmTools.MetadataBrowser.AppCode.Keys;
 using MsCrmTools.MetadataBrowser.AppCode.LabelMd;
 using MsCrmTools.MetadataBrowser.AppCode.ManyToManyRelationship;
 using MsCrmTools.MetadataBrowser.AppCode.OneToManyRelationship;
@@ -9,7 +10,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
-using MsCrmTools.MetadataBrowser.AppCode.Keys;
 
 namespace MsCrmTools.MetadataBrowser.AppCode
 {
@@ -143,6 +143,14 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                                 {
                                     collection.Add(new MultiSelectPicklistAttributeMetadataInfo(mpamd));
                                 }
+                                else if (rmd is FileAttributeMetadata famd)
+                                {
+                                    collection.Add(new FileAttributeMetadataInfo(famd));
+                                }
+                                else if (rmd is ImageAttributeMetadata iamd)
+                                {
+                                    collection.Add(new ImageAttributeMetadataInfo(iamd));
+                                }
                                 else
                                 {
                                     collection.Add(new AttributeMetadataInfo(rmd));
@@ -160,6 +168,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public bool AutoRouteToOwnerQueue => emd.AutoRouteToOwnerQueue.HasValue && emd.AutoRouteToOwnerQueue.Value;
 
+        public bool CanBeInCustomEntityAssociation => emd.CanBeInCustomEntityAssociation.Value;
         public bool CanBeInManyToMany => emd.CanBeInManyToMany.Value;
 
         public bool CanBePrimaryEntityInRelationship => emd.CanBePrimaryEntityInRelationship.Value;
@@ -211,8 +220,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         public bool EntityHelpUrlEnabled => emd.EntityHelpUrlEnabled.HasValue && emd.EntityHelpUrlEnabled.Value;
         public string EntitySetName => emd.EntitySetName;
         public string ExtensionData => emd.ExtensionData?.ToString() ?? "";
-
+        public string ExternalCollectionName => emd.ExternalCollectionName;
+        public bool HasActivities => emd.HasActivities.HasValue && emd.HasActivities.Value;
         public bool HasChanged => emd.HasChanged.HasValue && emd.HasChanged.Value;
+        public bool HasFeedback => emd.HasFeedback.HasValue && emd.HasFeedback.Value;
+        public bool HasNotes => emd.HasNotes.HasValue && emd.HasNotes.Value;
 
         public string IconLargeName => emd.IconLargeName;
 
@@ -265,10 +277,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         public bool IsLogicalEntity => emd.IsLogicalEntity.HasValue && emd.IsLogicalEntity.Value;
 
         public bool IsMailMergeEnabled => emd.IsMailMergeEnabled.Value;
-
         public bool IsManaged => emd.IsManaged.HasValue && emd.IsManaged.Value;
-
         public bool IsMappable => emd.IsMappable.Value;
+        public bool IsMSTeamsIntegrationEnabled => emd.IsMSTeamsIntegrationEnabled ?? false;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public BooleanManagedPropertyInfo IsOfflineInMobileClient => new BooleanManagedPropertyInfo(emd.IsOfflineInMobileClient);

@@ -17,10 +17,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.LabelMd
             this.amd = amd;
         }
 
-        public string ExtensionData
-        {
-            get { return amd.ExtensionData != null ? amd.ExtensionData.ToString() : ""; }
-        }
+        public string ExtensionData => amd.ExtensionData != null ? amd.ExtensionData.ToString() : "";
 
         [Editor(typeof(CustomCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(LocalizedLabelCollectionConverter))]
@@ -39,10 +36,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.LabelMd
         }
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LocalizedLabelInfo UserLocalizedLabel
-        {
-            get { return new LocalizedLabelInfo(amd.UserLocalizedLabel); }
-        }
+        public LocalizedLabelInfo UserLocalizedLabel => new LocalizedLabelInfo(amd.UserLocalizedLabel);
 
         public override string ToString()
         {

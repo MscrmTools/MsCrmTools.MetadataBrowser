@@ -14,15 +14,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OneToManyRelationship
             list = new List<OneToManyRelationshipMetadataInfo>();
         }
 
-        public new int Count
-        {
-            get { return list.Count; }
-        }
+        public new int Count => list.Count;
 
-        public OneToManyRelationshipMetadataInfo this[int index]
-        {
-            get { return list[index]; }
-        }
+        public OneToManyRelationshipMetadataInfo this[int index] => list[index];
 
         public void Add(OneToManyRelationshipMetadataInfo info)
         {

@@ -1,6 +1,9 @@
-﻿using Microsoft.Xrm.Sdk.Metadata;
+﻿using McTools.Xrm.Connection;
+using Microsoft.Xrm.Sdk.Metadata;
 using MsCrmTools.MetadataBrowser.AppCode;
 using MsCrmTools.MetadataBrowser.AppCode.AttributeMd;
+using MsCrmTools.MetadataBrowser.AppCode.Excel;
+using MsCrmTools.MetadataBrowser.AppCode.Keys;
 using MsCrmTools.MetadataBrowser.AppCode.LabelMd;
 using MsCrmTools.MetadataBrowser.AppCode.ManyToManyRelationship;
 using MsCrmTools.MetadataBrowser.AppCode.OneToManyRelationship;
@@ -14,18 +17,15 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using MsCrmTools.MetadataBrowser.AppCode.Keys;
-using McTools.Xrm.Connection;
-using MsCrmTools.MetadataBrowser.AppCode.Excel;
 
 namespace MsCrmTools.MetadataBrowser.UserControls
 {
     public partial class EntityPropertiesControl : UserControl
     {
+        private ConnectionDetail connectionDetail;
         private EntityMetadata emd;
         private ListViewColumnsSettings lvcSettings;
         private Thread searchThread;
-        private ConnectionDetail connectionDetail;
 
         public EntityPropertiesControl(EntityMetadata emd, ListViewColumnsSettings lvcSettings, ConnectionDetail connectionDetail)
         {
@@ -58,11 +58,11 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             RefreshContent(emd);
         }
 
-        public int SelectedTabIndex => tabControl1.SelectedIndex;
-
         public event EventHandler<ColumnSettingsUpdatedEventArgs> OnColumnSettingsUpdated;
 
         public event EventHandler<EventArgs> OnSelectedTabChanged;
+
+        public int SelectedTabIndex => tabControl1.SelectedIndex;
 
         public void RefreshColumns(ListViewColumnsSettings lvcUpdatedSettings)
         {
@@ -132,6 +132,29 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             {
                 handler(this, e);
             }
+        }
+
+        private static bool MatchAttributesByFilter(AttributeMetadata attribute, string filter)
+        {
+            // Demystified code for readability, knowing it can be made more compact/efficient -Jonas Rapp
+            if (string.IsNullOrEmpty(filter))
+            {
+                return true;
+            }
+            if (attribute.LogicalName.Contains(filter))
+            {
+                return true;
+            }
+            if (attribute.DisplayName?.UserLocalizedLabel != null &&
+                attribute.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filter))
+            {
+                return true;
+            }
+            if (attribute.MetadataId.ToString().ToLower().Contains(filter))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void AddSecondarySubItems(Type type, string[] firstColumns, string[] selectedAttributes, object o, ListViewItem item)
@@ -279,6 +302,19 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
         }
 
+        private void keyListView_DoubleClick(object sender, EventArgs e)
+        {
+            if (keyListView.SelectedItems.Count == 0)
+                return;
+
+            var kmi = (KeyMetadataInfo)keyListView.SelectedItems[0].Tag;
+            keyPropertyGrid.SelectedObject = kmi;
+            keySplitContainer.Panel1Collapsed = true;
+            keySplitContainer.Panel2Collapsed = false;
+            tsbHideKeyPanel.Visible = true;
+            tsbKeyColumns.Visible = false;
+        }
+
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             var list = (ListView)sender;
@@ -400,8 +436,11 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                             {
                                 item.Tag = new ImageAttributeMetadataInfo((ImageAttributeMetadata)attribute);
                             }
-
-                            if (attribute is MultiSelectPicklistAttributeMetadata mspamd)
+                            else if (attribute.AttributeTypeName == AttributeTypeDisplayName.FileType)
+                            {
+                                item.Tag = new FileAttributeMetadataInfo((FileAttributeMetadata)attribute);
+                            }
+                            else if (attribute is MultiSelectPicklistAttributeMetadata mspamd)
                             {
                                 item.Tag = new MultiSelectPicklistAttributeMetadataInfo(mspamd);
                             }
@@ -419,27 +458,27 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             attributeListView.Items.AddRange(items.ToArray());
         }
 
-        private static bool MatchAttributesByFilter(AttributeMetadata attribute, string filter)
+        private void LoadKeys(EntityKeyMetadata[] keys)
         {
-            // Demystified code for readability, knowing it can be made more compact/efficient -Jonas Rapp
-            if (string.IsNullOrEmpty(filter))
+            if (keys == null)
             {
-                return true;
+                return;
             }
-            if (attribute.LogicalName.Contains(filter))
+
+            var items = new List<ListViewItem>();
+
+            foreach (var key in keys.ToList().OrderBy(a => a.SchemaName))
             {
-                return true;
+                var kmi = new KeyMetadataInfo(key);
+
+                var item = new ListViewItem(kmi.SchemaName) { Tag = kmi };
+                AddSecondarySubItems(typeof(KeyMetadataInfo), ListViewColumnsSettings.KeyFirstColumns, lvcSettings.KeySelectedAttributes, kmi, item);
+
+                items.Add(item);
             }
-            if (attribute.DisplayName?.UserLocalizedLabel != null &&
-                attribute.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filter))
-            {
-                return true;
-            }
-            if (attribute.MetadataId.ToString().ToLower().Contains(filter))
-            {
-                return true;
-            }
-            return false;
+
+            keyListView.Items.Clear();
+            keyListView.Items.AddRange(items.ToArray());
         }
 
         private void LoadManyToManyRelationships(IEnumerable<ManyToManyRelationshipMetadata> rels)
@@ -514,29 +553,6 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             privilegeListView.Items.AddRange(items.ToArray());
         }
 
-        private void LoadKeys(EntityKeyMetadata[] keys)
-        {
-            if (keys == null)
-            {
-                return;
-            }
-
-            var items = new List<ListViewItem>();
-
-            foreach (var key in keys.ToList().OrderBy(a => a.SchemaName))
-            {
-                var kmi = new KeyMetadataInfo(key);
-
-                var item = new ListViewItem(kmi.SchemaName) { Tag = kmi };
-                AddSecondarySubItems(typeof(KeyMetadataInfo), ListViewColumnsSettings.KeyFirstColumns, lvcSettings.KeySelectedAttributes, kmi, item);
-
-                items.Add(item);
-            }
-
-            keyListView.Items.Clear();
-            keyListView.Items.AddRange(items.ToArray());
-        }
-
         private void manyToManyListView_DoubleClick(object sender, EventArgs e)
         {
             if (manyToManyListView.SelectedItems.Count == 0)
@@ -589,17 +605,9 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             tsbPrivilegeColumns.Visible = false;
         }
 
-        private void keyListView_DoubleClick(object sender, EventArgs e)
+        private void TabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (keyListView.SelectedItems.Count == 0)
-                return;
-
-            var kmi = (KeyMetadataInfo)keyListView.SelectedItems[0].Tag;
-            keyPropertyGrid.SelectedObject = kmi;
-            keySplitContainer.Panel1Collapsed = true;
-            keySplitContainer.Panel2Collapsed = false;
-            tsbHideKeyPanel.Visible = true;
-            tsbKeyColumns.Visible = false;
+            OnSelectedTabChanged?.Invoke(this, new EventArgs());
         }
 
         private void tsbColumns_Click(object sender, EventArgs e)
@@ -760,6 +768,102 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             RaiseOnColumnSettingsUpdated(new ColumnSettingsUpdatedEventArgs { Settings = lvcSettings, Control = this });
         }
 
+        private void tsbExportAttributesExcel_Click(object sender, EventArgs e)
+        {
+            if (attributeListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, attributeListView, $"{emd.SchemaName} attributes", this);
+            }
+        }
+
+        private void tsbExportKeysExcel_Click(object sender, EventArgs e)
+        {
+            if (keyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, keyListView, $"{emd.SchemaName} keys", this);
+            }
+        }
+
+        private void tsbExportMmRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (manyToManyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, manyToManyListView, $"{emd.SchemaName} NN relationships", this);
+            }
+        }
+
+        private void tsbExportMoRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (manyToOneListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, manyToOneListView, $"{emd.SchemaName} N1 relationships", this);
+            }
+        }
+
+        private void tsbExportOmRelsExcel_Click(object sender, EventArgs e)
+        {
+            if (OneToManyListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, OneToManyListView, $"{emd.SchemaName} 1N relationships", this);
+            }
+        }
+
+        private void tsbExportPrivExcel_Click(object sender, EventArgs e)
+        {
+            if (privilegeListView.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, privilegeListView, $"{emd.SchemaName} privileges", this);
+            }
+        }
+
         private void tsbHidePanel_Click(object sender, EventArgs e)
         {
             switch (((ToolStripButton)sender).Name)
@@ -835,6 +939,19 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
         }
 
+        private void tsbOpenInWebApp_Click(object sender, EventArgs e)
+        {
+            if (attributeListView.SelectedItems.Count != 1)
+            {
+                return;
+            }
+
+            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
+
+            Process.Start(
+              $"{connectionDetail.WebApplicationUrl}/tools/systemcustomization/attributes/manageAttribute.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&attributeId={amd.MetadataId}&entityId={emd.MetadataId.Value}");
+        }
+
         private void tstxtSearch_Enter(object sender, EventArgs e)
         {
             var textBox = (ToolStripTextBox)sender;
@@ -858,120 +975,6 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             {
                 searchThread = new Thread(FilterAttributeList);
                 searchThread.Start(((ToolStripTextBox)sender).Text);
-            }
-        }
-
-        private void TabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            OnSelectedTabChanged?.Invoke(this, new EventArgs());
-        }
-
-        private void tsbOpenInWebApp_Click(object sender, EventArgs e)
-        {
-            if (attributeListView.SelectedItems.Count != 1)
-            {
-                return;
-            }
-
-            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
-
-            Process.Start(
-              $"{connectionDetail.WebApplicationUrl}/tools/systemcustomization/attributes/manageAttribute.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&attributeId={amd.MetadataId}&entityId={emd.MetadataId.Value}");
-        }
-
-        private void tsbExportAttributesExcel_Click(object sender, EventArgs e)
-        {
-            if (attributeListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, attributeListView, $"{emd.SchemaName} attributes", this);
-            }
-        }
-
-        private void tsbExportPrivExcel_Click(object sender, EventArgs e)
-        {
-            if (privilegeListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, privilegeListView, $"{emd.SchemaName} privileges", this);
-            }
-        }
-
-        private void tsbExportMmRelsExcel_Click(object sender, EventArgs e)
-        {
-            if (manyToManyListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, manyToManyListView, $"{emd.SchemaName} NN relationships", this);
-            }
-        }
-
-        private void tsbExportMoRelsExcel_Click(object sender, EventArgs e)
-        {
-            if (manyToOneListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, manyToOneListView, $"{emd.SchemaName} N1 relationships", this);
-            }
-        }
-
-        private void tsbExportOmRelsExcel_Click(object sender, EventArgs e)
-        {
-            if (OneToManyListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, OneToManyListView, $"{emd.SchemaName} 1N relationships", this);
-            }
-        }
-
-        private void tsbExportKeysExcel_Click(object sender, EventArgs e)
-        {
-            if (keyListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
-            {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
-
-            if (sfd.ShowDialog(this) == DialogResult.OK)
-            {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, keyListView, $"{emd.SchemaName} keys", this);
             }
         }
     }

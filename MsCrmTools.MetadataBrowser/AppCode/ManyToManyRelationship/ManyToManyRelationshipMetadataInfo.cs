@@ -21,12 +21,16 @@ namespace MsCrmTools.MetadataBrowser.AppCode.ManyToManyRelationship
 
         public string Entity1LogicalName => mtmmd.Entity1LogicalName;
 
+        public string Entity1NavigationPropertyName => mtmmd.Entity1NavigationPropertyName;
+
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public AssociatedMenuConfigurationInfo Entity2AssociatedMenuConfiguration => new AssociatedMenuConfigurationInfo(mtmmd.Entity2AssociatedMenuConfiguration);
 
         public string Entity2IntersectAttribute => mtmmd.Entity2IntersectAttribute;
 
         public string Entity2LogicalName => mtmmd.Entity2LogicalName;
+
+        public string Entity2NavigationPropertyName => mtmmd.Entity2NavigationPropertyName;
 
         public string ExtensionData => mtmmd.ExtensionData?.ToString() ?? "";
 

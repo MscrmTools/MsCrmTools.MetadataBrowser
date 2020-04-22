@@ -14,15 +14,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             list = new List<AttributeMetadataInfo>();
         }
 
-        public new int Count
-        {
-            get { return list.Count; }
-        }
+        public new int Count => list.Count;
 
-        public AttributeMetadataInfo this[int index]
-        {
-            get { return list[index]; }
-        }
+        public AttributeMetadataInfo this[int index] => list[index];
 
         public void Add(AttributeMetadataInfo info)
         {

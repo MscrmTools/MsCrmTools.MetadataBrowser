@@ -14,15 +14,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.LabelMd
             list = new List<LabelInfo>();
         }
 
-        public new int Count
-        {
-            get { return list.Count; }
-        }
+        public new int Count => list.Count;
 
-        public LabelInfo this[int index]
-        {
-            get { return list[index]; }
-        }
+        public LabelInfo this[int index] => list[index];
 
         public void Add(LabelInfo info)
         {

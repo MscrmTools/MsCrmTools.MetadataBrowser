@@ -14,6 +14,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public string CalculationOf => amd.CalculationOf;
 
+        public string FormulaDefinition => amd.FormulaDefinition;
         public ImeMode ImeMode => amd.ImeMode.Value;
 
         public bool IsBaseCurrency => amd.IsBaseCurrency.HasValue && amd.IsBaseCurrency.Value;
@@ -23,7 +24,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
         public double MinValue => amd.MinValue.Value;
 
         public decimal Precision => amd.Precision.Value;
-
-        public string FormulaDefinition => amd.FormulaDefinition;
+        public decimal PrecisionSource => amd.PrecisionSource.Value;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
     }
 }

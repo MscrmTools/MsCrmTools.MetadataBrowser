@@ -13,7 +13,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
         }
 
         public string AutoNumberFormat => amd.AutoNumberFormat;
-        public int? DataBaseLenght => amd.DatabaseLength;
+        public int? DataBaseLength => amd.DatabaseLength;
         public StringFormat Format => amd.Format ?? StringFormat.Text;
 
         public string FormatName => amd.FormatName != null ? amd.FormatName.Value : "";
@@ -23,6 +23,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public bool IsLocalizable => amd.IsLocalizable.HasValue && amd.IsLocalizable.Value;
         public int MaxLength => amd.MaxLength ?? -1;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
         public string YomiOf => amd.YomiOf;
     }
 }

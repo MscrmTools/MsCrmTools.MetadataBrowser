@@ -13,30 +13,15 @@ namespace MsCrmTools.MetadataBrowser.AppCode.LocalizedLabelMd
             this.amd = amd;
         }
 
-        public string ExtensionData
-        {
-            get { return amd != null && amd.ExtensionData != null ? amd.ExtensionData.ToString() : ""; }
-        }
+        public string ExtensionData => amd != null && amd.ExtensionData != null ? amd.ExtensionData.ToString() : "";
 
-        public bool HasChanged
-        {
-            get { return amd != null && amd.HasChanged.HasValue && amd.HasChanged.Value; }
-        }
+        public bool HasChanged => amd != null && amd.HasChanged.HasValue && amd.HasChanged.Value;
 
-        public bool IsManaged
-        {
-            get { return amd != null && amd.IsManaged.HasValue && amd.IsManaged.Value; }
-        }
+        public bool IsManaged => amd != null && amd.IsManaged.HasValue && amd.IsManaged.Value;
 
-        public string Label
-        {
-            get { return amd != null ? amd.Label : "N/A"; }
-        }
+        public string Label => amd != null ? amd.Label : "N/A";
 
-        public int LanguageCode
-        {
-            get { return amd != null ? amd.LanguageCode : -1; }
-        }
+        public int LanguageCode => amd != null ? amd.LanguageCode : -1;
 
         public override string ToString()
         {

@@ -14,11 +14,15 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
+        public string[] ChildPicklistLogicalNames => amd.ChildPicklistLogicalNames?.ToArray();
         public int DefaultFormValue => amd.DefaultFormValue.Value;
+
+        public string FormulaDefinition => amd.FormulaDefinition;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public OptionSetMetadataInfo OptionSet => new OptionSetMetadataInfo(amd.OptionSet);
 
-        public string FormulaDefinition => amd.FormulaDefinition;
+        public string ParentPicklistLogicalName => amd.ParentPicklistLogicalName;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
     }
 }

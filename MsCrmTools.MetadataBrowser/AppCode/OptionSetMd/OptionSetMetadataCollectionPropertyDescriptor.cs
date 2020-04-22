@@ -18,15 +18,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionSetMd
             index = idx;
         }
 
-        public override AttributeCollection Attributes
-        {
-            get { return new AttributeCollection(null); }
-        }
+        public override AttributeCollection Attributes => new AttributeCollection(null);
 
-        public override Type ComponentType
-        {
-            get { return collection.GetType(); }
-        }
+        public override Type ComponentType => collection.GetType();
 
         public override string Description
         {
@@ -46,20 +40,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionSetMd
             }
         }
 
-        public override bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public override bool IsReadOnly => true;
 
-        public override string Name
-        {
-            get { return "#" + index; }
-        }
+        public override string Name => "#" + index;
 
-        public override Type PropertyType
-        {
-            get { return collection[index].GetType(); }
-        }
+        public override Type PropertyType => collection[index].GetType();
 
         public override bool CanResetValue(object component)
         {

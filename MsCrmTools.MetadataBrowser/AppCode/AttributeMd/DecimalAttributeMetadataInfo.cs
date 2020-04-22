@@ -12,6 +12,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
+        public string FormulaDefinition => amd.FormulaDefinition;
         public ImeMode ImeMode => amd.ImeMode.Value;
 
         public decimal MaxValue => amd.MaxValue.Value;
@@ -19,6 +20,6 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
         public decimal MinValue => amd.MinValue.Value;
 
         public decimal Precision => amd.Precision.Value;
-        public string FormulaDefinition => amd.FormulaDefinition;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
     }
 }

@@ -4,7 +4,6 @@ using MsCrmTools.MetadataBrowser.AppCode.OptionMd;
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Linq;
 using OptionMetadataCollection = MsCrmTools.MetadataBrowser.AppCode.OptionMd.OptionMetadataCollection;
 
 namespace MsCrmTools.MetadataBrowser.AppCode.OptionSetMd
@@ -26,6 +25,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionSetMd
         public LabelInfo DisplayName => new LabelInfo(amd.DisplayName);
 
         public string ExtensionData => amd.ExtensionData?.ToString() ?? "";
+        public string ExternalTypeName => amd.ExternalTypeName;
 
         public string IntroducedVersion => amd.IntroducedVersion;
 

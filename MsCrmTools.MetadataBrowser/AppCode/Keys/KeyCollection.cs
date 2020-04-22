@@ -14,15 +14,9 @@ namespace MsCrmTools.MetadataBrowser.AppCode.Keys
             list = new List<KeyMetadataInfo>();
         }
 
-        public new int Count
-        {
-            get { return list.Count; }
-        }
+        public new int Count => list.Count;
 
-        public KeyMetadataInfo this[int index]
-        {
-            get { return list[index]; }
-        }
+        public KeyMetadataInfo this[int index] => list[index];
 
         public void Add(KeyMetadataInfo info)
         {

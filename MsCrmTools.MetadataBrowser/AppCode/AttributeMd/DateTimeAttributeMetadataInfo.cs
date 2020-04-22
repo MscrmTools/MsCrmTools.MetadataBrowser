@@ -12,12 +12,12 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
             this.amd = amd;
         }
 
-        public DateTimeFormat Format => amd.Format.Value;
-
-        public ImeMode ImeMode => amd.ImeMode.Value;
-
         public bool CanChangeDateTimeBehavior => amd.CanChangeDateTimeBehavior.Value;
         public string DateTimeBehavior => amd.DateTimeBehavior.Value;
+        public DateTimeFormat Format => amd.Format.Value;
+
         public string FormulaDefinition => amd.FormulaDefinition;
+        public ImeMode ImeMode => amd.ImeMode.Value;
+        public int SourceTypeMask => amd.SourceTypeMask ?? -1;
     }
 }

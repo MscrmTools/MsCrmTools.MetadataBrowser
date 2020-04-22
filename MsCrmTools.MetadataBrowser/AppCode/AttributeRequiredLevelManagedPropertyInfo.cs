@@ -13,20 +13,11 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             this.property = property;
         }
 
-        public bool CanBeChanged
-        {
-            get { return property.CanBeChanged; }
-        }
+        public bool CanBeChanged => property.CanBeChanged;
 
-        public string ManagedPropertyLogicalName
-        {
-            get { return property.ManagedPropertyLogicalName; }
-        }
+        public string ManagedPropertyLogicalName => property.ManagedPropertyLogicalName;
 
-        public AttributeRequiredLevel Value
-        {
-            get { return property.Value; }
-        }
+        public AttributeRequiredLevel Value => property.Value;
 
         public override string ToString()
         {
