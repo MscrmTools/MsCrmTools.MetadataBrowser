@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>MsCrmTools.MetadataBrowser</id>
+    <version>1.2020.4.13</version>
+    <title>Metadata Browser for XrmToolBox</title>
+    <authors>MscrmTools</authors>
+    <owners>MscrmTools</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/MscrmTools/MsCrmTools.MetadataBrowser</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
+    <description>Browse metadata from your Dynamics CRM organization</description>
+    <summary>Browse metadata from your Dynamics CRM organization</summary>
+    <releaseNotes>Added newly introduced metadata properties
+    Optimized properties display
+    Added quick view for OptionSet values
+    Added right click on list to copy some information (logical name, navigation properties, etc.)
+    </releaseNotes>
+    <tags>XrmToolBox Plugin MetadataBrowser</tags>
+    <dependencies>
+      <dependency id="XrmToolBox" version="1.2017.10.19" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Plugins\MsCrmTools.MetadataBrowser.dll" target="lib\net452\Plugins" />
+  </files>
+</package>

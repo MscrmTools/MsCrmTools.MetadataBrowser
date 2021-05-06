@@ -280,6 +280,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="MsCrmTools.MetadataBrowser.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
