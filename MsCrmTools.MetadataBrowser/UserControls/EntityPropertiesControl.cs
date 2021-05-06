@@ -271,12 +271,136 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             if (attributeListView.SelectedItems.Count == 0)
                 return;
 
-            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
-            attributePropertyGrid.SelectedObject = amd;
-            attributesSplitContainer.Panel1Collapsed = true;
+            DisplayAttributeMetadataPanel();
             attributesSplitContainer.Panel2Collapsed = false;
             tsbHideAttributePanel.Visible = true;
             tsbAttributeColumns.Visible = false;
+        }
+
+        private void attributeListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (attributeListView.SelectedItems.Count == 0)
+                return;
+
+            if (!attributesSplitContainer.Panel2Collapsed)
+            {
+                DisplayAttributeMetadataPanel();
+            }
+        }
+
+        private void cmsAttributes_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (attributeListView.SelectedItems.Count == 0)
+                return;
+
+            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
+
+            if (e.ClickedItem == tsmiAttributesCopyLogicalName)
+            {
+                Clipboard.SetText(amd.LogicalName);
+            }
+            else if (e.ClickedItem == tsmiAttributesCopySchemaName)
+            {
+                Clipboard.SetText(amd.SchemaName);
+            }
+        }
+
+        private void cmsNNRelationship_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (manyToManyListView.SelectedItems.Count == 0)
+                return;
+
+            var amd = (ManyToManyRelationshipMetadataInfo)manyToManyListView.SelectedItems[0].Tag;
+
+            if (e.ClickedItem == tsmiRelNNCopySchemaName)
+            {
+                Clipboard.SetText(amd.SchemaName);
+            }
+            else if (e.ClickedItem == tsmiRelNNCopyEntity1NavigationProperty)
+            {
+                Clipboard.SetText(amd.Entity1NavigationPropertyName);
+            }
+            else if (e.ClickedItem == tsmiRelNNCopyEntity2NavigationProperty)
+            {
+                Clipboard.SetText(amd.Entity2NavigationPropertyName);
+            }
+        }
+
+        private void cmsRelationships_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            OneToManyRelationshipMetadataInfo omrmi = null;
+            if (OneToManyListView.Focused && OneToManyListView.SelectedItems.Count > 0)
+            {
+                omrmi = (OneToManyRelationshipMetadataInfo)OneToManyListView.SelectedItems[0].Tag;
+            }
+            else if (manyToOneListView.Focused && manyToOneListView.SelectedItems.Count > 0)
+            {
+                omrmi = (OneToManyRelationshipMetadataInfo)manyToOneListView.SelectedItems[0].Tag;
+            }
+
+            if (omrmi != null)
+            {
+                if (e.ClickedItem == tsmiRelationshipCopySchemaName)
+                {
+                    Clipboard.SetText(omrmi.SchemaName);
+                }
+                else if (e.ClickedItem == tsmiRelationshipCopyReferencedNavigationProperty)
+                {
+                    Clipboard.SetText(omrmi.ReferencedEntityNavigationPropertyName);
+                }
+                else if (e.ClickedItem == tsmiRelationshipCopyReferencingNavigationProperty)
+                {
+                    Clipboard.SetText(omrmi.ReferencingEntityNavigationPropertyName);
+                }
+            }
+        }
+
+        private void DisplayAttributeMetadataPanel()
+        {
+            var amd = (AttributeMetadataInfo)attributeListView.SelectedItems[0].Tag;
+            attributePropertyGrid.SelectedObject = amd;
+
+            bool autoExpandOptions = false;
+
+            if (amd is PicklistAttributeMetadataInfo pami)
+            {
+                pgOptionSet.SelectedObject = pami.OptionSet.Options;
+                scMetadata.Panel1Collapsed = false;
+                autoExpandOptions = true;
+            }
+            else if (amd is MultiSelectPicklistAttributeMetadataInfo mspami)
+            {
+                pgOptionSet.SelectedObject = mspami.OptionSet.Options;
+                scMetadata.Panel1Collapsed = false;
+                autoExpandOptions = true;
+            }
+            else
+            {
+                scMetadata.Panel1Collapsed = true;
+            }
+
+            if (autoExpandOptions)
+            {
+                GridItem root = pgOptionSet.SelectedGridItem;
+                //Get the parent
+                while (root.Parent != null)
+                    root = root.Parent;
+
+                foreach (GridItem g in root.GridItems)
+                {
+                    if (g.GridItemType == GridItemType.Category)
+                    {
+                        foreach (GridItem g2 in g.GridItems)
+                        {
+                            if (g2.GridItemType == GridItemType.Property && g2.Label == "Options")
+                            {
+                                g2.Expanded = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void FilterAttributeList(object filter = null)
@@ -309,10 +433,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var kmi = (KeyMetadataInfo)keyListView.SelectedItems[0].Tag;
             keyPropertyGrid.SelectedObject = kmi;
-            keySplitContainer.Panel1Collapsed = true;
             keySplitContainer.Panel2Collapsed = false;
             tsbHideKeyPanel.Visible = true;
             tsbKeyColumns.Visible = false;
+        }
+
+        private void keyListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (keyListView.SelectedItems.Count == 0)
+                return;
+
+            if (!keySplitContainer.Panel2Collapsed)
+            {
+                var amd = (KeyMetadataInfo)keyListView.SelectedItems[0].Tag;
+                attributePropertyGrid.SelectedObject = amd;
+            }
         }
 
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -326,7 +461,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var attribute in attributes.ToList().OrderBy(a => a.LogicalName).Where(a => MatchAttributesByFilter(a, filter)
+            foreach (var attribute in attributes.OrderBy(a => a.LogicalName).Where(a => MatchAttributesByFilter(a, filter)
             ))
             {
                 var amd = new AttributeMetadataInfo(attribute);
@@ -467,7 +602,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var items = new List<ListViewItem>();
 
-            foreach (var key in keys.ToList().OrderBy(a => a.SchemaName))
+            foreach (var key in keys.OrderBy(a => a.SchemaName))
             {
                 var kmi = new KeyMetadataInfo(key);
 
@@ -485,7 +620,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.ToList().OrderBy(a => a.Entity2LogicalName))
+            foreach (var rel in rels.OrderBy(a => a.Entity2LogicalName))
             {
                 var rmd = new ManyToManyRelationshipMetadataInfo(rel);
 
@@ -503,7 +638,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.ToList().OrderBy(a => a.ReferencedAttribute))
+            foreach (var rel in rels.OrderBy(a => a.ReferencedAttribute))
             {
                 var rmd = new OneToManyRelationshipMetadataInfo(rel);
 
@@ -521,7 +656,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.ToList().OrderBy(a => a.ReferencingEntity))
+            foreach (var rel in rels.OrderBy(a => a.ReferencingEntity))
             {
                 var rmd = new OneToManyRelationshipMetadataInfo(rel);
 
@@ -539,7 +674,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         {
             var items = new List<ListViewItem>();
 
-            foreach (var privilege in privileges.ToList().OrderBy(a => a.Name))
+            foreach (var privilege in privileges.OrderBy(a => a.Name))
             {
                 var pmd = new SecurityPrivilegeInfo(privilege);
 
@@ -560,10 +695,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var rmd = (ManyToManyRelationshipMetadataInfo)manyToManyListView.SelectedItems[0].Tag;
             manyToManyPropertyGrid.SelectedObject = rmd;
-            manyToManySplitContainer.Panel1Collapsed = true;
             manyToManySplitContainer.Panel2Collapsed = false;
             tsbHideManyToManyPanel.Visible = true;
             tsbManyToManyColumns.Visible = false;
+        }
+
+        private void manyToManyListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (manyToManyListView.SelectedItems.Count == 0)
+                return;
+
+            if (!manyToManySplitContainer.Panel2Collapsed)
+            {
+                var amd = (ManyToManyRelationshipMetadataInfo)manyToManyListView.SelectedItems[0].Tag;
+                manyToManyPropertyGrid.SelectedObject = amd;
+            }
         }
 
         private void manyToOneListView_DoubleClick(object sender, EventArgs e)
@@ -573,10 +719,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var rmd = (OneToManyRelationshipMetadataInfo)manyToOneListView.SelectedItems[0].Tag;
             manyToOnePropertyGrid.SelectedObject = rmd;
-            manyToOneSplitContainer.Panel1Collapsed = true;
             manyToOneSplitContainer.Panel2Collapsed = false;
             tsbHideManyToOnePanel.Visible = true;
             tsbManyToOneColumns.Visible = false;
+        }
+
+        private void manyToOneListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (manyToOneListView.SelectedItems.Count == 0)
+                return;
+
+            if (!manyToOneSplitContainer.Panel2Collapsed)
+            {
+                var amd = (OneToManyRelationshipMetadataInfo)manyToOneListView.SelectedItems[0].Tag;
+                manyToOnePropertyGrid.SelectedObject = amd;
+            }
         }
 
         private void OneToManyListView_DoubleClick(object sender, EventArgs e)
@@ -586,10 +743,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var rmd = (OneToManyRelationshipMetadataInfo)OneToManyListView.SelectedItems[0].Tag;
             OneToManyPropertyGrid.SelectedObject = rmd;
-            oneToManySplitContainer.Panel1Collapsed = true;
             oneToManySplitContainer.Panel2Collapsed = false;
             tsbHideOneToManyPanel.Visible = true;
             tsbOneToManyColumns.Visible = false;
+        }
+
+        private void OneToManyListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (OneToManyListView.SelectedItems.Count == 0)
+                return;
+
+            if (!oneToManySplitContainer.Panel2Collapsed)
+            {
+                var amd = (OneToManyRelationshipMetadataInfo)OneToManyListView.SelectedItems[0].Tag;
+                OneToManyPropertyGrid.SelectedObject = amd;
+            }
         }
 
         private void privilegeListView_DoubleClick(object sender, EventArgs e)
@@ -599,10 +767,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             var rmd = (SecurityPrivilegeInfo)privilegeListView.SelectedItems[0].Tag;
             privilegePropertyGrid.SelectedObject = rmd;
-            privilegeSplitContainer.Panel1Collapsed = true;
             privilegeSplitContainer.Panel2Collapsed = false;
             tsbHidePrivilegePanel.Visible = true;
             tsbPrivilegeColumns.Visible = false;
+        }
+
+        private void privilegeListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (privilegeListView.SelectedItems.Count == 0)
+                return;
+
+            if (!privilegeSplitContainer.Panel2Collapsed)
+            {
+                var amd = (SecurityPrivilegeInfo)privilegeListView.SelectedItems[0].Tag;
+                privilegePropertyGrid.SelectedObject = amd;
+            }
         }
 
         private void TabControl1_SelectedIndexChanged(object sender, System.EventArgs e)

@@ -222,6 +222,26 @@ namespace MsCrmTools.MetadataBrowser
             return items;
         }
 
+        private void cmsEntity_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (entityListView.SelectedItems.Count == 0) return;
+
+            var emd = (EntityMetadataInfo)entityListView.SelectedItems[0].Tag;
+
+            if (e.ClickedItem == tsmiEntityCopyLogicalName)
+            {
+                Clipboard.SetText(emd.LogicalName);
+            }
+            else if (e.ClickedItem == tsmiEntityCopyLogicalCollectionName)
+            {
+                Clipboard.SetText(emd.LogicalCollectionName);
+            }
+            else if (e.ClickedItem == tsmiEntityCopySchemaName)
+            {
+                Clipboard.SetText(emd.SchemaName);
+            }
+        }
+
         private void entityListView_DoubleClick(object sender, EventArgs e)
         {
             ExecuteMethod(LoadEntity);
