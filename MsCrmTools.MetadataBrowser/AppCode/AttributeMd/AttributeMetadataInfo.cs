@@ -41,16 +41,13 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
         }
 
         public bool CanBeSecuredForCreate => amd.CanBeSecuredForCreate.HasValue && amd.CanBeSecuredForCreate.Value;
-
         public bool CanBeSecuredForRead => amd.CanBeSecuredForRead.HasValue && amd.CanBeSecuredForRead.Value;
-
         public bool CanBeSecuredForUpdate => amd.CanBeSecuredForUpdate.HasValue && amd.CanBeSecuredForUpdate.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public BooleanManagedPropertyInfo CanModifyAdditionalSettings => new BooleanManagedPropertyInfo(amd.CanModifyAdditionalSettings);
 
         public int ColumnNumber => amd.ColumnNumber.Value;
-
         public string DeprecatedVersion => amd.DeprecatedVersion;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
@@ -115,6 +112,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
         public bool IsValidForRead => amd.IsValidForRead.HasValue && amd.IsValidForRead.Value;
 
         public bool IsValidForUpdate => amd.IsValidForUpdate.HasValue && amd.IsValidForUpdate.Value;
+
+        public bool IsValidODataAttribute => amd.IsValidODataAttribute;
 
         public string LinkedAttributeId => amd.LinkedAttributeId.HasValue ? amd.LinkedAttributeId.Value.ToString("B") : "";
 

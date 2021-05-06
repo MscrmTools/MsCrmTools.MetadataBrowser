@@ -297,8 +297,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         public bool IsRenameable => emd.IsRenameable.Value;
 
         public bool IsSLAEnabled => emd.IsSLAEnabled.HasValue && emd.IsSLAEnabled.Value;
+        public bool IsSolutionAware => emd.IsSolutionAware ?? false;
         public bool IsStateModelAware => emd.IsStateModelAware.HasValue && emd.IsStateModelAware.Value;
-
         public bool IsValidForAdvancedFind => emd.IsValidForAdvancedFind.HasValue && emd.IsValidForAdvancedFind.Value;
 
         public bool IsValidForQueue => emd.IsValidForQueue.Value;

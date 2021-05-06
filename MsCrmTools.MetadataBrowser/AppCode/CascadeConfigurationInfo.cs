@@ -21,6 +21,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public CascadeType Reparent => configuration.Reparent.HasValue ? configuration.Reparent.Value : CascadeType.NoCascade;
 
+        public CascadeType RollupView => configuration.RollupView.HasValue ? configuration.RollupView.Value : CascadeType.NoCascade;
+
         public CascadeType Share => configuration.Share.HasValue ? configuration.Share.Value : CascadeType.NoCascade;
 
         public CascadeType Unshare => configuration.Unshare.HasValue ? configuration.Unshare.Value : CascadeType.NoCascade;
