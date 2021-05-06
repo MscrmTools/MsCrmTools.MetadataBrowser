@@ -374,6 +374,18 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                 scMetadata.Panel1Collapsed = false;
                 autoExpandOptions = true;
             }
+            else if (amd is StateAttributeMetadataInfo sami)
+            {
+                pgOptionSet.SelectedObject = sami.OptionSet.Options;
+                scMetadata.Panel1Collapsed = false;
+                autoExpandOptions = true;
+            }
+            else if (amd is StatusAttributeMetadataInfo sami2)
+            {
+                pgOptionSet.SelectedObject = sami2.OptionSet.Options;
+                scMetadata.Panel1Collapsed = false;
+                autoExpandOptions = true;
+            }
             else
             {
                 scMetadata.Panel1Collapsed = true;
