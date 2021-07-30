@@ -226,7 +226,7 @@ namespace MsCrmTools.MetadataBrowser
         {
             if (entityListView.SelectedItems.Count == 0) return;
 
-            var emd = (EntityMetadataInfo)entityListView.SelectedItems[0].Tag;
+            var emd = (EntityMetadata)entityListView.SelectedItems[0].Tag;
 
             if (e.ClickedItem == tsmiEntityCopyLogicalName)
             {

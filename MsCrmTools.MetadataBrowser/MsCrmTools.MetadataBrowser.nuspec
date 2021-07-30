@@ -11,10 +11,7 @@
     <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
-    <releaseNotes>Added newly introduced metadata properties
-    Optimized properties display
-    Added quick view for OptionSet values
-    Added right click on list to copy some information (logical name, navigation properties, etc.)
+    <releaseNotes>Fixed copy of information from tables list using right click
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>
