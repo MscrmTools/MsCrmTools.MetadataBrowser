@@ -11,7 +11,9 @@
     <iconUrl>https://raw.githubusercontent.com/wiki/MscrmTools/XrmToolBox/Images/logo_0100.png</iconUrl>
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
-    <releaseNotes>Fixed copy of information from tables list using right click
+    <releaseNotes>Converted SourceType integer to string values Standard, Calculated and Rollup
+    Added FormatName for multi line text columns
+    Renamed Entities to Tables and Attributes to Columns
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>
