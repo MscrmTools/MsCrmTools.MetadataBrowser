@@ -126,7 +126,23 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public string SchemaName => amd.SchemaName;
 
-        public int SourceType => amd.SourceType.HasValue ? amd.SourceType.Value : -1;
+        public string SourceType
+        {
+            get
+            {
+                switch (amd.SourceType ?? 0)
+                {
+                    case 1:
+                        return "Calculated";
+
+                    case 2:
+                        return "Rollup";
+
+                    default:
+                        return "Standard";
+                }
+            }
+        }
 
         public override string ToString()
         {
