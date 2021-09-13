@@ -14,6 +14,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public StringFormat Format => amd.Format.Value;
 
+        public string FormatName => amd.FormatName.Value;
+
         public ImeMode ImeMode => amd.ImeMode.Value;
 
         public bool IsLocalizable => amd.IsLocalizable.HasValue && amd.IsLocalizable.Value;
