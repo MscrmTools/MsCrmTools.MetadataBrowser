@@ -183,7 +183,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(1244, 809);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Entity";
+            this.tabPage1.Text = "Table";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // entityPropertyGrid
@@ -227,7 +227,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(1244, 809);
             this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Attributes";
+            this.tabPage4.Text = "Columns";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // attributesSplitContainer

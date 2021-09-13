@@ -212,7 +212,7 @@
             this.tbEntitiesList.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tbEntitiesList.Size = new System.Drawing.Size(1386, 806);
             this.tbEntitiesList.TabIndex = 0;
-            this.tbEntitiesList.Text = "Entities";
+            this.tbEntitiesList.Text = "Tables";
             this.tbEntitiesList.UseVisualStyleBackColor = true;
             // 
             // cmsEntity

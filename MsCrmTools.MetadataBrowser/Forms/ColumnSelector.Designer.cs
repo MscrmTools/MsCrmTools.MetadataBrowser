@@ -156,7 +156,7 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "Attribute";
+            this.columnHeader1.Text = "Column";
             this.columnHeader1.Width = 400;
             // 
             // btnResetToDefault

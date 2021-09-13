@@ -577,7 +577,7 @@ namespace MsCrmTools.MetadataBrowser
             if (sfd.ShowDialog(this) == DialogResult.OK)
             {
                 var builder = new Builder();
-                builder.BuildFile(sfd.FileName, entityListView, "Entities", this);
+                builder.BuildFile(sfd.FileName, entityListView, "Tables", this);
             }
         }
 
