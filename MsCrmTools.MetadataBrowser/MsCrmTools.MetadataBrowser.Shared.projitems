@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>9c6aadaa-cf44-4bce-90c7-79e6c6ef6dec</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>MsCrmTools.MetadataBrowser.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AssociatedMenuConfigurationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\AttributeMetadataCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\AttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\AttributeMetadataPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\BigIntAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\BooleanAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\DateTimeAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\DecimalAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\DoubleAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\FileAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\ImageAttributeMetadata.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\IntegerAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\LookupAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\ManagedPropertyAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\MemoAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\MoneyAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\MultiSelectPicklistAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\PicklistAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\StateAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\StatusAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeMd\StringAttributeMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\AttributeRequiredLevelManagedPropertyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\BooleanManagedPropertyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\BooleanOptionSetMd\BooleanOptionSetMetadataCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\BooleanOptionSetMd\BooleanOptionSetMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\BooleanOptionSetMd\BooleanOptionSetMetadataPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\CascadeConfigurationInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\CustomCollectionEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\EntityMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\Keys\KeyCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\Keys\KeyCollectionPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\Keys\KeyMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LabelMd\LabelCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LabelMd\LabelInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LabelMd\LabelPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\ListViewColumnsSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\ListViewItemComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LocalizedLabelMd\LocalizedLabelCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LocalizedLabelMd\LocalizedLabelInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\LocalizedLabelMd\LocalizedLabelPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\ManyToManyRelationship\ManyToManyRelationshipCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\ManyToManyRelationship\ManyToManyRelationshipCollectionPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\ManyToManyRelationship\ManyToManyRelationshipMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OneToManyRelationship\OneToManyRelationshipCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OneToManyRelationship\OneToManyRelationshipCollectionPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OneToManyRelationship\OneToManyRelationshipMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionMd\OptionMetadataCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionMd\OptionMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionMd\OptionMetadataPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionSetMd\OptionSetMetadataCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionSetMd\OptionSetMetadataCollectionPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\OptionSetMd\OptionSetMetadataInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\SecurityPrivilege\SecurityPrivilegeCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\SecurityPrivilege\SecurityPrivilegeCollectionPropertyDescriptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\SecurityPrivilege\SecurityPrivilegeInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppCode\TypeConverter.cs" />
+  </ItemGroup>
+</Project>
