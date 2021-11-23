@@ -65,5 +65,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppCode\SecurityPrivilege\SecurityPrivilegeCollectionPropertyDescriptor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppCode\SecurityPrivilege\SecurityPrivilegeInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppCode\TypeConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserControls\XRMMetadataControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserControls\XRMMetadataControl.designer.cs" >
+      <DependentUpon>XRMMetadataControl.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UserControls\XRMMetadataControl.resx">
+      <DependentUpon>XRMMetadataControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
