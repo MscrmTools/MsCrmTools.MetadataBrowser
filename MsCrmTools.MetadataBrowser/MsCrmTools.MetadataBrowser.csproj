@@ -315,6 +315,12 @@
     <Compile Include="UserControls\EntityPropertiesControl.Designer.cs">
       <DependentUpon>EntityPropertiesControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\XRMMetadataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\XRMMetadataControl.designer.cs">
+      <DependentUpon>XRMMetadataControl.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\ColumnSelector.resx">
@@ -333,6 +339,9 @@
     <EmbeddedResource Include="UserControls\EntityPropertiesControl.resx">
       <DependentUpon>EntityPropertiesControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\XRMMetadataControl.resx">
+      <DependentUpon>XRMMetadataControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -345,8 +354,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_ConfigurationName="Release" />
-    </VisualStudio>
+		<UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_ConfigurationName="Release" />
+	</VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST "$(TargetDir)Plugins" mkdir "$(TargetDir)Plugins"
