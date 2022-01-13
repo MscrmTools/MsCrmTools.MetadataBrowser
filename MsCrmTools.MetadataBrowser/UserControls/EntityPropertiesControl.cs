@@ -1,4 +1,5 @@
 ﻿using McTools.Xrm.Connection;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using MsCrmTools.MetadataBrowser.AppCode;
 using MsCrmTools.MetadataBrowser.AppCode.AttributeMd;
@@ -27,7 +28,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
         private ListViewColumnsSettings lvcSettings;
         private Thread searchThread;
 
-        public EntityPropertiesControl(EntityMetadata emd, ListViewColumnsSettings lvcSettings, ConnectionDetail connectionDetail)
+        public EntityPropertiesControl(EntityMetadata emd, EntityCollection components, ListViewColumnsSettings lvcSettings, ConnectionDetail connectionDetail)
         {
             InitializeComponent();
 
@@ -55,7 +56,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             privilegeSplitContainer.Panel2Collapsed = true;
             keySplitContainer.Panel2Collapsed = true;
 
-            RefreshContent(emd);
+            RefreshContent(emd, components);
         }
 
         public event EventHandler<ColumnSettingsUpdatedEventArgs> OnColumnSettingsUpdated;
@@ -112,7 +113,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             lvcSettings = lvcUpdatedSettings;
         }
 
-        public void RefreshContent(EntityMetadata newEmd)
+        public void RefreshContent(EntityMetadata newEmd, EntityCollection components)
         {
             emd = newEmd;
             entityPropertyGrid.SelectedObject = new EntityMetadataInfo(emd);
@@ -122,6 +123,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             LoadManyToManyRelationships(emd.ManyToManyRelationships);
             LoadPrivileges(emd.Privileges);
             LoadKeys(emd.Keys);
+            LoadSolutions(components);
         }
 
         protected virtual void RaiseOnColumnSettingsUpdated(ColumnSettingsUpdatedEventArgs e)
@@ -438,6 +440,75 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
         }
 
+        private void FilterM2MList(object filter = null)
+        {
+            string filterText = filter?.ToString();
+            if (filter == null)
+            {
+                return;
+            }
+
+            var action = new MethodInvoker(delegate
+            {
+                LoadManyToManyRelationships(emd.ManyToManyRelationships, filterText.ToLower());
+            });
+
+            if (manyToManyListView.InvokeRequired)
+            {
+                manyToManyListView.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        private void FilterMtoList(object filter = null)
+        {
+            string filterText = filter?.ToString();
+            if (filter == null)
+            {
+                return;
+            }
+
+            var action = new MethodInvoker(delegate
+            {
+                LoadManyToOneRelationships(emd.ManyToOneRelationships, filterText.ToLower());
+            });
+
+            if (manyToOneListView.InvokeRequired)
+            {
+                manyToOneListView.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        private void FilterOtmList(object filter = null)
+        {
+            string filterText = filter?.ToString();
+            if (filter == null)
+            {
+                return;
+            }
+
+            var action = new MethodInvoker(delegate
+            {
+                LoadOneToManyRelationships(emd.OneToManyRelationships, filterText.ToLower());
+            });
+
+            if (OneToManyListView.InvokeRequired)
+            {
+                OneToManyListView.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
         private void keyListView_DoubleClick(object sender, EventArgs e)
         {
             if (keyListView.SelectedItems.Count == 0)
@@ -628,11 +699,20 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             keyListView.Items.AddRange(items.ToArray());
         }
 
-        private void LoadManyToManyRelationships(IEnumerable<ManyToManyRelationshipMetadata> rels)
+        private void LoadManyToManyRelationships(IEnumerable<ManyToManyRelationshipMetadata> rels, string filter = null)
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.OrderBy(a => a.Entity2LogicalName))
+            foreach (var rel in rels
+                .Where(r =>
+                filter == null
+                || r.SchemaName.ToLower().Contains(filter?.ToLower())
+                || r.Entity1LogicalName.ToLower().Contains(filter?.ToLower())
+                || r.Entity1IntersectAttribute.ToLower().Contains(filter?.ToLower())
+                || r.Entity2LogicalName.ToLower().Contains(filter?.ToLower())
+                || r.Entity2IntersectAttribute.ToLower().Contains(filter?.ToLower())
+                )
+                .OrderBy(a => a.Entity2LogicalName))
             {
                 var rmd = new ManyToManyRelationshipMetadataInfo(rel);
 
@@ -646,11 +726,20 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             manyToManyListView.Items.AddRange(items.ToArray());
         }
 
-        private void LoadManyToOneRelationships(IEnumerable<OneToManyRelationshipMetadata> rels)
+        private void LoadManyToOneRelationships(IEnumerable<OneToManyRelationshipMetadata> rels, string filter = null)
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.OrderBy(a => a.ReferencedAttribute))
+            foreach (var rel in rels
+                .Where(r =>
+                filter == null
+                || r.SchemaName.ToLower().Contains(filter?.ToLower())
+                || r.ReferencedEntity.ToLower().Contains(filter?.ToLower())
+                || r.ReferencedAttribute.ToLower().Contains(filter?.ToLower())
+                || r.ReferencingEntity.ToLower().Contains(filter?.ToLower())
+                || r.ReferencingAttribute.ToLower().Contains(filter?.ToLower())
+                )
+                .OrderBy(a => a.ReferencedAttribute))
             {
                 var rmd = new OneToManyRelationshipMetadataInfo(rel);
 
@@ -664,11 +753,20 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             manyToOneListView.Items.AddRange(items.ToArray());
         }
 
-        private void LoadOneToManyRelationships(IEnumerable<OneToManyRelationshipMetadata> rels)
+        private void LoadOneToManyRelationships(IEnumerable<OneToManyRelationshipMetadata> rels, string filter = null)
         {
             var items = new List<ListViewItem>();
 
-            foreach (var rel in rels.OrderBy(a => a.ReferencingEntity))
+            foreach (var rel in rels
+                .Where(r =>
+                filter == null
+                || r.SchemaName.ToLower().Contains(filter?.ToLower())
+                || r.ReferencedEntity.ToLower().Contains(filter?.ToLower())
+                || r.ReferencedAttribute.ToLower().Contains(filter?.ToLower())
+                || r.ReferencingEntity.ToLower().Contains(filter?.ToLower())
+                || r.ReferencingAttribute.ToLower().Contains(filter?.ToLower())
+                )
+                .OrderBy(a => a.ReferencingEntity))
             {
                 var rmd = new OneToManyRelationshipMetadataInfo(rel);
 
@@ -698,6 +796,31 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
             privilegeListView.Items.Clear();
             privilegeListView.Items.AddRange(items.ToArray());
+        }
+
+        private void LoadSolutions(EntityCollection components)
+        {
+            var items = new List<ListViewItem>();
+
+            foreach (var component in components.Entities)
+            {
+                var item = new ListViewItem(component.GetAttributeValue<AliasedValue>("solution.friendlyname").Value.ToString())
+                {
+                    SubItems =
+                    {
+                        new ListViewItem.ListViewSubItem{Text =component.GetAttributeValue<AliasedValue>("solution.uniquename").Value.ToString() },
+                        new ListViewItem.ListViewSubItem{Text =component.GetAttributeValue<AliasedValue>("solution.version").Value.ToString() },
+                        new ListViewItem.ListViewSubItem{Text = (bool)component.GetAttributeValue<AliasedValue>("solution.ismanaged").Value ? "Managed" : "Unmanaged" },
+                        new ListViewItem.ListViewSubItem{Text = emd.SchemaName },
+                        new ListViewItem.ListViewSubItem{Text = component.FormattedValues["rootcomponentbehavior"] }
+                    }
+                };
+
+                items.Add(item);
+            }
+
+            lvSolutions.Items.Clear();
+            lvSolutions.Items.AddRange(items.ToArray());
         }
 
         private void manyToManyListView_DoubleClick(object sender, EventArgs e)
@@ -975,6 +1098,22 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             }
         }
 
+        private void tsbExportExcelSolutions_Click(object sender, EventArgs e)
+        {
+            if (lvSolutions.Items.Count == 0) return;
+
+            var sfd = new SaveFileDialog
+            {
+                Filter = @"Excel file (*.xlsx)|*.xlsx"
+            };
+
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                var builder = new Builder();
+                builder.BuildFile(sfd.FileName, lvSolutions, $"{emd.SchemaName} solutions", this);
+            }
+        }
+
         private void tsbExportKeysExcel_Click(object sender, EventArgs e)
         {
             if (keyListView.Items.Count == 0) return;
@@ -1165,6 +1304,21 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             if (sender == tstxtSearchContact)
             {
                 searchThread = new Thread(FilterAttributeList);
+                searchThread.Start(((ToolStripTextBox)sender).Text);
+            }
+            else if (sender == tstxtSearchOtm)
+            {
+                searchThread = new Thread(FilterOtmList);
+                searchThread.Start(((ToolStripTextBox)sender).Text);
+            }
+            else if (sender == tstxtSearchMtO)
+            {
+                searchThread = new Thread(FilterMtoList);
+                searchThread.Start(((ToolStripTextBox)sender).Text);
+            }
+            else if (sender == tstxtSearchM2M)
+            {
+                searchThread = new Thread(FilterM2MList);
                 searchThread.Start(((ToolStripTextBox)sender).Text);
             }
         }

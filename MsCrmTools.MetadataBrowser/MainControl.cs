@@ -458,27 +458,62 @@ namespace MsCrmTools.MetadataBrowser
                         LogicalName = ((EntityMetadataInfo)e.Argument).LogicalName
                     };
                     var response = (RetrieveEntityResponse)Service.Execute(request);
-                    e.Result = response.EntityMetadata;
+
+                    var solutionComponents = Service.RetrieveMultiple(new QueryExpression("solutioncomponent")
+                    {
+                        NoLock = true,
+                        ColumnSet = new ColumnSet("rootcomponentbehavior"),
+                        Criteria = new FilterExpression
+                        {
+                            Conditions =
+                            {
+                                new ConditionExpression("objectid", ConditionOperator.Equal, emd.MetadataId)
+                            }
+                        },
+                        LinkEntities =
+                        {
+                            new LinkEntity
+                            {
+                                LinkFromEntityName =    "solutioncomponent",
+                                LinkFromAttributeName = "solutionid",
+                                LinkToAttributeName ="solutionid",
+                                LinkToEntityName = "solution",
+                                Columns = new ColumnSet("friendlyname","uniquename","version", "ismanaged"),
+                                EntityAlias = "solution",
+                                LinkCriteria = new FilterExpression
+                                {
+                                    Conditions =
+                                    {
+                                        new ConditionExpression("isvisible", ConditionOperator.Equal, true)
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    var tuple = new Tuple<EntityMetadata, EntityCollection>(response.EntityMetadata, solutionComponents);
+
+                    e.Result = tuple;
                 },
                 PostWorkCallBack = e =>
                 {
-                    var emdFull = (EntityMetadata)e.Result;
+                    var tuple = (Tuple<EntityMetadata, EntityCollection>)e.Result;
 
                     TabPage tab;
                     if (mainTabControl.TabPages.ContainsKey(emd.SchemaName))
                     {
                         tab = mainTabControl.TabPages[emd.SchemaName];
-                        ((EntityPropertiesControl)tab.Controls[0]).RefreshContent(emdFull);
+                        ((EntityPropertiesControl)tab.Controls[0]).RefreshContent(tuple.Item1, tuple.Item2);
                     }
                     else
                     {
                         mainTabControl.TabPages.Add(emd.SchemaName, emd.SchemaName);
                         tab = mainTabControl.TabPages[emd.SchemaName];
 
-                        var epc = new EntityPropertiesControl(emdFull, lvcSettings, ConnectionDetail)
+                        var epc = new EntityPropertiesControl(tuple.Item1, tuple.Item2, lvcSettings, ConnectionDetail)
                         {
                             Dock = DockStyle.Fill,
-                            Name = emdFull.SchemaName
+                            Name = tuple.Item1.SchemaName
                         };
                         epc.OnSelectedTabChanged += (s, evt2) => { mainTabControl_SelectedIndexChanged(mainTabControl, new EventArgs()); };
                         epc.OnColumnSettingsUpdated += epc_OnColumnSettingsUpdated;

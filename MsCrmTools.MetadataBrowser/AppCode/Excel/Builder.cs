@@ -11,6 +11,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode.Excel
     {
         public void BuildFile(string path, ListView list, string sheetName, Control parent = null)
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
             ExcelPackage innerWorkBook = new ExcelPackage();
             ExcelWorksheet sheet = innerWorkBook.Workbook.Worksheets.Add(sheetName);
 
