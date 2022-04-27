@@ -10,22 +10,22 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         private static readonly string[] entityAttributesToIgnore = { "Attributes", "Privileges", "OneToManyRelationships", "ManyToOneRelationships", "ManyToManyRelationships", "Keys" };
         private static readonly string[] entityFirstColumns = { "LogicalName", "SchemaName", "ObjectTypeCode" };
         private static readonly string[] keyFirstColumns = { "SchemaName" };
+        private static readonly string[] optionSetFirstColumns = { "Name" };
         private static readonly string[] privFirstColumns = { "Name" };
         private static readonly string[] relFirstColumns = { "SchemaName" };
         public static string[] AttributeFirstColumns => attributeFirstColumns;
-
         public static string[] EntityAttributesToIgnore => entityAttributesToIgnore;
-
         public static string[] EntityFirstColumns => entityFirstColumns;
-
         public static string[] KeyFirstColumns => keyFirstColumns;
+        public static string[] OptionSetAttributesToIgnore { get; internal set; }
+        public static string[] OptionSetFirstColumns => optionSetFirstColumns;
         public static string[] PrivFirstColumns => privFirstColumns;
         public static string[] RelFirstColumns => relFirstColumns;
-
         public string[] AttributeSelectedAttributes { get; set; }
         public string[] EntitySelectedAttributes { get; set; }
         public string[] KeySelectedAttributes { get; internal set; }
         public string[] MtmRelSelectedAttributes { get; set; }
+        public string[] OptionSetSelectedAttributes { get; internal set; }
         public string[] OtmRelSelectedAttributes { get; set; }
         public string[] PrivSelectedAttributes { get; set; }
 
@@ -48,6 +48,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                         MtmRelSelectedAttributes = string.IsNullOrEmpty(settings[3]) ? null : settings[3].Split(';'),
                         PrivSelectedAttributes = string.IsNullOrEmpty(settings[4]) ? null : settings[4].Split(';'),
                         KeySelectedAttributes = string.IsNullOrEmpty(settings.Length == 6 ? settings[5] : null) ? null : settings[5].Split(';'),
+                        OptionSetSelectedAttributes = string.IsNullOrEmpty(settings.Length == 7 ? settings[6] : null) ? null : settings[6].Split(';'),
                     };
                 }
             }
@@ -64,6 +65,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                 MtmRelSelectedAttributes = MtmRelSelectedAttributes == null ? null : (string[])MtmRelSelectedAttributes.Clone(),
                 OtmRelSelectedAttributes = OtmRelSelectedAttributes == null ? null : (string[])OtmRelSelectedAttributes.Clone(),
                 PrivSelectedAttributes = PrivSelectedAttributes == null ? null : (string[])PrivSelectedAttributes.Clone(),
+                OptionSetSelectedAttributes = OptionSetSelectedAttributes == null ? null : (string[])OptionSetSelectedAttributes.Clone(),
                 KeySelectedAttributes = KeySelectedAttributes == null ? null : (string[])KeySelectedAttributes.Clone()
             };
         }
@@ -78,7 +80,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode
                 OtmRelSelectedAttributes != null ? String.Join(";", OtmRelSelectedAttributes) : "",
                 MtmRelSelectedAttributes != null ? String.Join(";", MtmRelSelectedAttributes) : "",
                 PrivSelectedAttributes != null ? String.Join(";", PrivSelectedAttributes) : "",
-                KeySelectedAttributes != null ? String.Join(";", KeySelectedAttributes) : "");
+                KeySelectedAttributes != null ? String.Join(";", KeySelectedAttributes) : "",
+                OptionSetSelectedAttributes != null ? String.Join(";", OptionSetSelectedAttributes) : "");
 
             using (var writer = new StreamWriter(fileName, false))
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using McTools.Xrm.Connection;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Metadata.Query;
@@ -6,12 +7,13 @@ using Microsoft.Xrm.Sdk.Query;
 using MsCrmTools.MetadataBrowser.AppCode;
 using MsCrmTools.MetadataBrowser.AppCode.Excel;
 using MsCrmTools.MetadataBrowser.AppCode.LabelMd;
+using MsCrmTools.MetadataBrowser.AppCode.OptionMd;
+using MsCrmTools.MetadataBrowser.AppCode.OptionSetMd;
 using MsCrmTools.MetadataBrowser.Forms;
 using MsCrmTools.MetadataBrowser.Helpers;
 using MsCrmTools.MetadataBrowser.UserControls;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
@@ -25,6 +27,7 @@ namespace MsCrmTools.MetadataBrowser
     public partial class MainControl : PluginControlBase, IGitHubPlugin, IHelpPlugin
     {
         private List<EntityMetadata> currentAllMetadata;
+        private List<OptionSetMetadata> currentAllOptionSet;
         private bool initialized;
         private bool initialLoading = true;
         private ListViewColumnsSettings lvcSettings;
@@ -34,6 +37,7 @@ namespace MsCrmTools.MetadataBrowser
         {
             InitializeComponent();
             lvcSettings = ListViewColumnsSettings.LoadSettings();
+            scOptionSet.Panel2Collapsed = true;
 
             if (initialLoading)
             {
@@ -41,6 +45,10 @@ namespace MsCrmTools.MetadataBrowser
                 ListViewColumnHelper.AddColumnsHeader(entityListView, typeof(EntityMetadataInfo),
                     ListViewColumnsSettings.EntityFirstColumns, lvcSettings.EntitySelectedAttributes,
                     ListViewColumnsSettings.EntityAttributesToIgnore);
+
+                ListViewColumnHelper.AddColumnsHeader(lvChoices, typeof(OptionSetMetadataInfo),
+                   ListViewColumnsSettings.OptionSetFirstColumns, lvcSettings.OptionSetSelectedAttributes,
+                   ListViewColumnsSettings.OptionSetAttributesToIgnore);
 
                 initialLoading = false;
             }
@@ -78,33 +86,65 @@ namespace MsCrmTools.MetadataBrowser
 
                     currentAllMetadata = GetEntities(solutions);
                     // return listview items
-                    e.Result = BuildEntityItems(currentAllMetadata.ToList());
+                    var items = BuildEntityItems(currentAllMetadata.ToList());
+
+                    bw.ReportProgress(0, "Loading Choices...");
+                    currentAllOptionSet = GetOptionSets(solutions);
+
+                    items.AddRange(BuildOptionSetItems(currentAllOptionSet));
+
+                    e.Result = items;
+                },
+                ProgressChanged = e =>
+                {
+                    SetWorkingMessage(e.UserState.ToString());
                 },
                 PostWorkCallBack = e =>
                 {
                     entityListView.Items.Clear();
                     // Add listview items to listview
-                    entityListView.Items.AddRange(((List<ListViewItem>)e.Result).ToArray());
+                    entityListView.Items.AddRange(((List<ListViewItem>)e.Result).Where(i => i.Tag is EntityMetadata).ToArray());
+
+                    lvChoices.Items.Clear();
+                    lvChoices.Items.AddRange(((List<ListViewItem>)e.Result).Where(i => i.Tag is OptionSetMetadata).ToArray());
                 }
             });
         }
 
-        private static bool MatchEntitiesByFilter(ListViewItem item, string filterText)
+        private static bool MatchItemsByFilter(ListViewItem item, string filterText)
         {
             // Demystified code for readability, knowing it can be made more compact/efficient -Jonas Rapp
-            var entity = (EntityMetadata)item.Tag;
-            if (entity.LogicalName.Contains(filterText))
+            if (item.Tag is EntityMetadata entity)
             {
-                return true;
+                if (entity.LogicalName.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+                if (entity.DisplayName?.UserLocalizedLabel != null &&
+                    entity.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+                if (entity.MetadataId.ToString().ToLower().Contains(filterText))
+                {
+                    return true;
+                }
             }
-            if (entity.DisplayName?.UserLocalizedLabel != null &&
-                entity.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filterText))
+            else if (item.Tag is OptionSetMetadata omd)
             {
-                return true;
-            }
-            if (entity.MetadataId.ToString().ToLower().Contains(filterText))
-            {
-                return true;
+                if (omd.Name.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+                if (omd.DisplayName?.UserLocalizedLabel != null &&
+                    omd.DisplayName.UserLocalizedLabel.Label.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+                if (omd.MetadataId.ToString().ToLower().Contains(filterText))
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -127,7 +167,7 @@ namespace MsCrmTools.MetadataBrowser
                     {
                         value = prop.GetValue(o, null);
                     }
-                    catch
+                    catch (Exception error)
                     {
                         //MessageBox.Show(error.ToString());
                     }
@@ -222,6 +262,26 @@ namespace MsCrmTools.MetadataBrowser
             return items;
         }
 
+        private List<ListViewItem> BuildOptionSetItems(IEnumerable<OptionSetMetadata> omds)
+        {
+            if (omds == null) return new List<ListViewItem>();
+
+            var items = new List<ListViewItem>();
+
+            // Stores each property in a listviewitem
+            foreach (var metadata in omds.OrderBy(m => m.Name))
+            {
+                var omd = new OptionSetMetadataInfo(metadata);
+
+                var item = new ListViewItem(omd.Name) { Tag = metadata };
+                AddSecondarySubItems(typeof(OptionSetMetadataInfo), ListViewColumnsSettings.OptionSetFirstColumns, lvcSettings.OptionSetSelectedAttributes, omd, item);
+
+                items.Add(item);
+            }
+
+            return items;
+        }
+
         private void cmsEntity_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             if (entityListView.SelectedItems.Count == 0) return;
@@ -242,14 +302,38 @@ namespace MsCrmTools.MetadataBrowser
             }
         }
 
+        private void cmsPicklist_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == copyValueToolStripMenuItem)
+            {
+                Clipboard.SetText(pgOptionSetValues.SelectedGridItem.Label);
+            }
+            else if (e.ClickedItem == copyDisplayNameToolStripMenuItem)
+            {
+                Clipboard.SetText(((OptionMetadataInfo)pgOptionSetValues.SelectedGridItem.Value).Label.UserLocalizedLabel.Label);
+            }
+        }
+
         private void entityListView_DoubleClick(object sender, EventArgs e)
         {
-            ExecuteMethod(LoadEntity);
+            if (sender == entityListView)
+            {
+                ExecuteMethod(LoadEntity);
+            }
+            else if (sender == lvChoices)
+            {
+                var item = lvChoices.SelectedItems.Cast<ListViewItem>().FirstOrDefault();
+                if (item == null) return;
+
+                pgOptionSet.SelectedObject = new OptionSetMetadataInfo((OptionSetMetadata)item.Tag);
+                pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo((OptionSetMetadata)item.Tag).Options;
+                scOptionSet.Panel2Collapsed = false;
+            }
         }
 
         private void entityListView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tsbOpenInWebApp.Enabled = entityListView.SelectedItems.Count > 0;
+            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 && entityListView.SelectedItems.Count > 0 || mainTabControl.SelectedIndex == 1 && lvChoices.SelectedItems.Count > 0;
         }
 
         private void epc_OnColumnSettingsUpdated(object sender, ColumnSettingsUpdatedEventArgs e)
@@ -259,7 +343,7 @@ namespace MsCrmTools.MetadataBrowser
 
             foreach (TabPage page in mainTabControl.TabPages)
             {
-                if (page.TabIndex == 0) continue;
+                if (page.TabIndex == 0 || page.TabIndex == 1) continue;
                 var ctrl = ((EntityPropertiesControl)page.Controls[0]);
                 if (ctrl.Name != e.Control.Name)
                 {
@@ -268,9 +352,10 @@ namespace MsCrmTools.MetadataBrowser
             }
         }
 
-        private void FilterEntityList(object filter = null)
+        private void FilterItemsList(object filter = null)
         {
-            if (currentAllMetadata == null)
+            if (mainTabControl.SelectedIndex == 0 && currentAllMetadata == null
+                || mainTabControl.SelectedIndex == 1 && currentAllOptionSet == null)
             {
                 return;
             }
@@ -281,24 +366,25 @@ namespace MsCrmTools.MetadataBrowser
                 return;
             }
 
-            var action = new MethodInvoker(delegate
+            Invoke(new Action(() =>
             {
-                entityListView.Items.Clear();
-                entityListView.Items.AddRange(
-                    BuildEntityItems(currentAllMetadata
-                        .ToList()
-                        ).Where(item => MatchEntitiesByFilter(item, filterText))
+                if (mainTabControl.SelectedIndex == 0)
+                {
+                    entityListView.Items.Clear();
+                    entityListView.Items.AddRange(
+                        BuildEntityItems(currentAllMetadata.ToList())
+                        .Where(item => MatchItemsByFilter(item, filterText))
                         .ToArray());
-            });
-
-            if (entityListView.InvokeRequired)
-            {
-                entityListView.Invoke(action);
-            }
-            else
-            {
-                action();
-            }
+                }
+                else if (mainTabControl.SelectedIndex == 1)
+                {
+                    lvChoices.Items.Clear();
+                    lvChoices.Items.AddRange(
+                        BuildOptionSetItems(currentAllOptionSet.ToList())
+                        .Where(item => MatchItemsByFilter(item, filterText))
+                        .ToArray());
+                }
+            }));
         }
 
         private List<EntityMetadata> GetEntities(List<Entity> solutions)
@@ -432,6 +518,42 @@ namespace MsCrmTools.MetadataBrowser
             return response2.EntityMetadata.ToList();
         }
 
+        private List<OptionSetMetadata> GetOptionSets(List<Entity> solutions)
+        {
+            var request = new RetrieveAllOptionSetsRequest();
+            var response = (RetrieveAllOptionSetsResponse)Service.Execute(request);
+
+            if (solutions.Count > 0)
+            {
+                var components = Service.RetrieveMultiple(new QueryExpression("solutioncomponent")
+                {
+                    ColumnSet = new ColumnSet("objectid"),
+                    NoLock = true,
+                    Criteria = new FilterExpression
+                    {
+                        Conditions =
+                        {
+                            new ConditionExpression("solutionid", ConditionOperator.In,
+                                solutions.Select(s => s.Id).ToArray()),
+                            new ConditionExpression("componenttype", ConditionOperator.Equal, 9)
+                        }
+                    }
+                }).Entities;
+
+                var list = components.Select(component => component.GetAttributeValue<Guid>("objectid"))
+                    .ToList();
+
+                if (list.Count > 0)
+                {
+                    return response.OptionSetMetadata.Where(o => list.Contains(o.MetadataId.Value)).OfType<OptionSetMetadata>().ToList();
+                }
+
+                return new List<OptionSetMetadata>();
+            }
+
+            return response.OptionSetMetadata.OfType<OptionSetMetadata>().ToList();
+        }
+
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             var list = (ListView)sender;
@@ -538,10 +660,10 @@ namespace MsCrmTools.MetadataBrowser
 
         private void mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tstxtFilter.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex != 1;
-            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || ((EntityPropertiesControl)mainTabControl.SelectedTab.Controls[0]).SelectedTabIndex == 0;
-            toolStripSeparator5.Visible = mainTabControl.SelectedIndex == 0;
-            tsbExportExcel.Visible = mainTabControl.SelectedIndex == 0;
+            tstxtFilter.Enabled = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1 || mainTabControl.SelectedTab.Controls[0] is EntityPropertiesControl epc && epc.SelectedTabIndex != 1;
+            tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1 || mainTabControl.SelectedTab.Controls[0] is EntityPropertiesControl epc2 && epc2.SelectedTabIndex == 0;
+            toolStripSeparator5.Visible = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1;
+            tsbExportExcel.Visible = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1;
         }
 
         private void tsbClose_Click(object sender, EventArgs e)
@@ -602,17 +724,35 @@ namespace MsCrmTools.MetadataBrowser
 
         private void tsbExportExcel_Click(object sender, EventArgs e)
         {
-            if (entityListView.Items.Count == 0) return;
-
-            var sfd = new SaveFileDialog
+            if (mainTabControl.SelectedIndex == 0)
             {
-                Filter = @"Excel file (*.xlsx)|*.xlsx"
-            };
+                if (entityListView.Items.Count == 0) return;
 
-            if (sfd.ShowDialog(this) == DialogResult.OK)
+                var sfd = new SaveFileDialog
+                {
+                    Filter = @"Excel file (*.xlsx)|*.xlsx"
+                };
+
+                if (sfd.ShowDialog(this) == DialogResult.OK)
+                {
+                    var builder = new Builder();
+                    builder.BuildFile(sfd.FileName, entityListView, "Tables", this);
+                }
+            }
+            else
             {
-                var builder = new Builder();
-                builder.BuildFile(sfd.FileName, entityListView, "Tables", this);
+                if (lvChoices.Items.Count == 0) return;
+
+                var sfd = new SaveFileDialog
+                {
+                    Filter = @"Excel file (*.xlsx)|*.xlsx"
+                };
+
+                if (sfd.ShowDialog(this) == DialogResult.OK)
+                {
+                    var builder = new Builder();
+                    builder.BuildFile(sfd.FileName, lvChoices, "Choices", this);
+                }
             }
         }
 
@@ -623,14 +763,26 @@ namespace MsCrmTools.MetadataBrowser
 
         private void tsbOpenInWebApp_Click(object sender, EventArgs e)
         {
-            if (entityListView.SelectedItems.Count != 1)
+            if (mainTabControl.SelectedIndex == 0)
             {
-                return;
-            }
+                if (entityListView.SelectedItems.Count != 1)
+                {
+                    return;
+                }
 
-            var emd = (EntityMetadata)entityListView.SelectedItems[0].Tag;
-            Process.Start(
-                $"{ConnectionDetail.WebApplicationUrl}/tools/systemcustomization/Entities/manageEntity.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&entityId=%7b{emd.MetadataId.Value}%7d");
+                var emd = (EntityMetadata)entityListView.SelectedItems[0].Tag;
+                ConnectionDetail.OpenUrlWithBrowserProfile(new Uri($"{ConnectionDetail.WebApplicationUrl}/tools/systemcustomization/Entities/manageEntity.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&entityId=%7b{emd.MetadataId.Value}%7d"));
+            }
+            else
+            {
+                if (lvChoices.SelectedItems.Count != 1)
+                {
+                    return;
+                }
+
+                var omd = (OptionSetMetadata)lvChoices.SelectedItems[0].Tag;
+                ConnectionDetail.OpenUrlWithBrowserProfile(new Uri($"{ConnectionDetail.WebApplicationUrl}/tools/systemcustomization/optionset/optionset.aspx?appSolutionId=%7bfd140aaf-4df4-11dd-bd17-0019b9312238%7d&id=%7b{omd.MetadataId.Value}%7d"));
+            }
         }
 
         private void tsmiLoadEntitiesFromSolution_Click(object sender, EventArgs e)
@@ -663,7 +815,7 @@ namespace MsCrmTools.MetadataBrowser
                 searchThread.Abort();
             }
 
-            searchThread = new Thread(FilterEntityList);
+            searchThread = new Thread(FilterItemsList);
             searchThread.Start(tstxtFilter.Text);
         }
     }

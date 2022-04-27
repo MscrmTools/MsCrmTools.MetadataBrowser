@@ -23,7 +23,9 @@ namespace MsCrmTools.MetadataBrowser.Helpers
 
             foreach (var firstColumn in firstColumns)
             {
-                columns.Add(AddColumnHeaderByProperty(listView, type, firstColumn));
+                var column = AddColumnHeaderByProperty(listView, type, firstColumn);
+                column.Width = 150;
+                columns.Add(column);
             }
 
             if (selectedColumns != null)
@@ -43,7 +45,7 @@ namespace MsCrmTools.MetadataBrowser.Helpers
             {
                 foreach (var prop in type.GetProperties().OrderBy(p => p.Name))
                 {
-                    if (firstColumns.Contains(prop.Name) || columnsToIgnore.Contains(prop.Name))
+                    if (firstColumns.Contains(prop.Name) || (columnsToIgnore?.Contains(prop.Name) ?? false))
                         continue;
 
                     columns.Add(AddColumnHeaderByProperty(listView, type, prop.Name));

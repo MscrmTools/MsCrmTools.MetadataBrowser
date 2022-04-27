@@ -8,6 +8,7 @@ using MsCrmTools.MetadataBrowser.AppCode.Keys;
 using MsCrmTools.MetadataBrowser.AppCode.LabelMd;
 using MsCrmTools.MetadataBrowser.AppCode.ManyToManyRelationship;
 using MsCrmTools.MetadataBrowser.AppCode.OneToManyRelationship;
+using MsCrmTools.MetadataBrowser.AppCode.OptionMd;
 using MsCrmTools.MetadataBrowser.AppCode.SecurityPrivilege;
 using MsCrmTools.MetadataBrowser.Forms;
 using MsCrmTools.MetadataBrowser.Helpers;
@@ -305,6 +306,13 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             {
                 Clipboard.SetText(amd.SchemaName);
             }
+            else if (e.ClickedItem == copyNameForWebApiToolStripMenuItem)
+            {
+                if (amd.AttributeType == AttributeTypeCode.Customer || amd.AttributeType == AttributeTypeCode.Lookup || amd.AttributeType == AttributeTypeCode.Owner)
+                    Clipboard.SetText($"_{amd.LogicalName}_value");
+                else
+                    Clipboard.SetText(amd.LogicalName);
+            }
         }
 
         private void cmsNNRelationship_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -325,6 +333,18 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             else if (e.ClickedItem == tsmiRelNNCopyEntity2NavigationProperty)
             {
                 Clipboard.SetText(amd.Entity2NavigationPropertyName);
+            }
+        }
+
+        private void cmsOptionSet_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == copyValueToolStripMenuItem)
+            {
+                Clipboard.SetText(pgOptionSet.SelectedGridItem.Label);
+            }
+            else if (e.ClickedItem == copyLabelToolStripMenuItem)
+            {
+                Clipboard.SetText(((OptionMetadataInfo)pgOptionSet.SelectedGridItem.Value).Label.UserLocalizedLabel.Label);
             }
         }
 
