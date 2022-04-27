@@ -5,7 +5,7 @@ jobs:
     vmImage: windows-latest
 
   variables:
-   ToolName: 'MsCrmTools.MetadataBrowser'
+    ToolName: 'MsCrmTools.MetadataBrowser'
 
   steps:
   - task: NuGetToolInstaller@0
@@ -46,9 +46,9 @@ jobs:
       #SecretsFilter: "CodeSigning-TanguyTouzard"
 
   - powershell: |
-    # Write your PowerShell commands here.
-    $kvSecretBytes = [System.Convert]::FromBase64String("$(CodeSigning-TanguyTouzard)")
-    [System.IO.File]::WriteAllBytes("$(Build.SourcesDirectory)\certificate.pfx", $kvSecretBytes)
+      # Write your PowerShell commands here.
+      $kvSecretBytes = [System.Convert]::FromBase64String("$(CodeSigning-TanguyTouzard)")
+      [System.IO.File]::WriteAllBytes("$(Build.SourcesDirectory)\certificate.pfx", $kvSecretBytes)
     displayName: 'Store certificate locally'
 
   - task: NuGetCommand@2
@@ -58,9 +58,10 @@ jobs:
       arguments: 'sign "$(Build.ArtifactStagingDirectory)\$(ToolName).$(AssemblyInfo.AssemblyVersion).nupkg" -CertificatePath "$(Build.SourcesDirectory)\certificate.pfx" -Timestamper "http://timestamp.digicert.com"'
 
   - powershell: |
-    # Write your PowerShell commands here.
-    Remove-Item "$(Build.SourcesDirectory)\certificate.pfx"
-    displayName: 'Delete local certificate'
+      # Write your PowerShell commands here.
+      Remove-Item "$(Build.SourcesDirectory)\certificate.pfx"
+    displayName: 'Delete local certificate' 
+      
 
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
