@@ -12,10 +12,7 @@
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
     <releaseNotes>
-      Added Global choices metadata
-      Added possibility to copy value and label of choices to clipboard
-      Added possibility to copy web api column name (useful for lookups only)
-      Opening url now uses browser profile if defined in the connection
+      Fix for CRM 2015 version
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>

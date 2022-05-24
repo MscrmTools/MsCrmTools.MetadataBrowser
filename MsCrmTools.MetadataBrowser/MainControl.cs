@@ -581,10 +581,16 @@ namespace MsCrmTools.MetadataBrowser
                     };
                     var response = (RetrieveEntityResponse)Service.Execute(request);
 
+                    ColumnSet cols = new ColumnSet("rootcomponentbehavior");
+                    if (ConnectionDetail.OrganizationMajorVersion < 8)
+                    {
+                        cols = new ColumnSet();
+                    }
+
                     var solutionComponents = Service.RetrieveMultiple(new QueryExpression("solutioncomponent")
                     {
                         NoLock = true,
-                        ColumnSet = new ColumnSet(true),
+                        ColumnSet = cols,
                         Criteria = new FilterExpression
                         {
                             Conditions =
