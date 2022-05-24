@@ -832,7 +832,7 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                         new ListViewItem.ListViewSubItem{Text =component.GetAttributeValue<AliasedValue>("solution.version").Value.ToString() },
                         new ListViewItem.ListViewSubItem{Text = (bool)component.GetAttributeValue<AliasedValue>("solution.ismanaged").Value ? "Managed" : "Unmanaged" },
                         new ListViewItem.ListViewSubItem{Text = emd.SchemaName },
-                        new ListViewItem.ListViewSubItem{Text = component.FormattedValues["rootcomponentbehavior"] }
+                        new ListViewItem.ListViewSubItem{Text = component.FormattedValues.Contains("rootcomponentbehavior") ? component.FormattedValues["rootcomponentbehavior"] : "" }
                     }
                 };
 

@@ -168,7 +168,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public bool AutoRouteToOwnerQueue => emd.AutoRouteToOwnerQueue.HasValue && emd.AutoRouteToOwnerQueue.Value;
 
-        public bool CanBeInCustomEntityAssociation => emd.CanBeInCustomEntityAssociation.Value;
+        public bool CanBeInCustomEntityAssociation => emd.CanBeInCustomEntityAssociation != null && emd.CanBeInCustomEntityAssociation.Value;
         public bool CanBeInManyToMany => emd.CanBeInManyToMany.Value;
 
         public bool CanBePrimaryEntityInRelationship => emd.CanBePrimaryEntityInRelationship.Value;
