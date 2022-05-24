@@ -584,7 +584,7 @@ namespace MsCrmTools.MetadataBrowser
                     var solutionComponents = Service.RetrieveMultiple(new QueryExpression("solutioncomponent")
                     {
                         NoLock = true,
-                        ColumnSet = new ColumnSet("rootcomponentbehavior"),
+                        ColumnSet = new ColumnSet(true),
                         Criteria = new FilterExpression
                         {
                             Conditions =
