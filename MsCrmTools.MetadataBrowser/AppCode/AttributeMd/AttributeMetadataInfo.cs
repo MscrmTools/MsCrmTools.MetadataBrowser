@@ -58,7 +58,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.AttributeMd
 
         public string EntityLogicalName => amd.EntityLogicalName;
 
-        public string ExtensionData => amd.ExtensionData.ToString();
+        public string ExtensionData => amd.ExtensionData?.ToString();
 
         public bool HasChanged => amd.HasChanged.HasValue && amd.HasChanged.Value;
 
