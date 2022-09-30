@@ -354,11 +354,7 @@ namespace MsCrmTools.MetadataBrowser
 
         private void FilterItemsList(object filter = null)
         {
-            if (mainTabControl.SelectedIndex == 0 && currentAllMetadata == null
-                || mainTabControl.SelectedIndex == 1 && currentAllOptionSet == null)
-            {
-                return;
-            }
+            Thread.Sleep(300);
 
             string filterText = filter?.ToString()?.ToLower();
             if (filter == null)
@@ -368,6 +364,12 @@ namespace MsCrmTools.MetadataBrowser
 
             Invoke(new Action(() =>
             {
+                if (mainTabControl.SelectedIndex == 0 && currentAllMetadata == null
+                    || mainTabControl.SelectedIndex == 1 && currentAllOptionSet == null)
+                {
+                    return;
+                }
+
                 if (mainTabControl.SelectedIndex == 0)
                 {
                     entityListView.Items.Clear();
@@ -816,11 +818,7 @@ namespace MsCrmTools.MetadataBrowser
 
         private void tstxtFilter_TextChanged(object sender, EventArgs e)
         {
-            if (searchThread != null)
-            {
-                searchThread.Abort();
-            }
-
+            searchThread?.Abort();
             searchThread = new Thread(FilterItemsList);
             searchThread.Start(tstxtFilter.Text);
         }
