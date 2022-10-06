@@ -32,24 +32,18 @@ namespace MsCrmTools.MetadataBrowser
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompanionControl));
             this.gbSearch = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.btnClearSearch = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.chkKeys = new System.Windows.Forms.CheckBox();
             this.chkRels = new System.Windows.Forms.CheckBox();
             this.chkColumns = new System.Windows.Forms.CheckBox();
             this.chkEntities = new System.Windows.Forms.CheckBox();
-            this.txtSearch = new System.Windows.Forms.TextBox();
             this.gbSearchResult = new System.Windows.Forms.GroupBox();
             this.lvSearchResult = new System.Windows.Forms.ListView();
             this.chLogicalName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.gbProperties = new System.Windows.Forms.GroupBox();
-            this.scProperties = new System.Windows.Forms.SplitContainer();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.pgOptionSetValues = new System.Windows.Forms.PropertyGrid();
-            this.cmsPicklist = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyDisplayNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.scMain = new System.Windows.Forms.SplitContainer();
             this.cmsMetadata = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiMenuTable = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTableCopyLogicalName = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,12 +54,23 @@ namespace MsCrmTools.MetadataBrowser
             this.tsmiColumnCopySchemaName = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiColumnCopyWabApiLookupName = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiMenuRel = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiRelCopyParentNavigation = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiRelCopyChildNavigation = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRelCopySchemaName = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRelCopyParentNavigation = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRelCopyParentNavigationWithBinding = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRelCopyChildNavigation = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.gbProperties = new System.Windows.Forms.GroupBox();
+            this.scProperties = new System.Windows.Forms.SplitContainer();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.pgOptionSetValues = new System.Windows.Forms.PropertyGrid();
+            this.cmsPicklist = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyDisplayNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scMain = new System.Windows.Forms.SplitContainer();
             this.gbSearch.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.gbSearchResult.SuspendLayout();
+            this.cmsMetadata.SuspendLayout();
             this.gbProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scProperties)).BeginInit();
             this.scProperties.Panel1.SuspendLayout();
@@ -76,30 +81,71 @@ namespace MsCrmTools.MetadataBrowser
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
             this.scMain.SuspendLayout();
-            this.cmsMetadata.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbSearch
             // 
+            this.gbSearch.Controls.Add(this.panel1);
             this.gbSearch.Controls.Add(this.chkKeys);
             this.gbSearch.Controls.Add(this.chkRels);
             this.gbSearch.Controls.Add(this.chkColumns);
             this.gbSearch.Controls.Add(this.chkEntities);
-            this.gbSearch.Controls.Add(this.txtSearch);
             this.gbSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbSearch.Location = new System.Drawing.Point(0, 0);
             this.gbSearch.Name = "gbSearch";
-            this.gbSearch.Size = new System.Drawing.Size(421, 89);
+            this.gbSearch.Size = new System.Drawing.Size(455, 100);
             this.gbSearch.TabIndex = 0;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Search metadata";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.txtSearch);
+            this.panel1.Controls.Add(this.btnClearSearch);
+            this.panel1.Controls.Add(this.btnRefresh);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 22);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(449, 27);
+            this.panel1.TabIndex = 6;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSearch.Location = new System.Drawing.Point(0, 0);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(377, 26);
+            this.txtSearch.TabIndex = 0;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // btnClearSearch
+            // 
+            this.btnClearSearch.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnClearSearch.Image = global::MsCrmTools.MetadataBrowser.Properties.Resources.CloseIcon;
+            this.btnClearSearch.Location = new System.Drawing.Point(377, 0);
+            this.btnClearSearch.Name = "btnClearSearch";
+            this.btnClearSearch.Size = new System.Drawing.Size(36, 27);
+            this.btnClearSearch.TabIndex = 6;
+            this.btnClearSearch.UseVisualStyleBackColor = true;
+            this.btnClearSearch.Click += new System.EventHandler(this.btnClearSearch_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Dock = System.Windows.Forms.DockStyle.Right;
+            this.btnRefresh.Image = global::MsCrmTools.MetadataBrowser.Properties.Resources.arrow_refresh;
+            this.btnRefresh.Location = new System.Drawing.Point(413, 0);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(36, 27);
+            this.btnRefresh.TabIndex = 5;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // chkKeys
             // 
             this.chkKeys.AutoSize = true;
             this.chkKeys.Checked = true;
             this.chkKeys.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkKeys.Location = new System.Drawing.Point(334, 57);
+            this.chkKeys.Location = new System.Drawing.Point(334, 65);
             this.chkKeys.Name = "chkKeys";
             this.chkKeys.Size = new System.Drawing.Size(69, 24);
             this.chkKeys.TabIndex = 4;
@@ -112,7 +158,7 @@ namespace MsCrmTools.MetadataBrowser
             this.chkRels.AutoSize = true;
             this.chkRels.Checked = true;
             this.chkRels.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkRels.Location = new System.Drawing.Point(197, 57);
+            this.chkRels.Location = new System.Drawing.Point(197, 65);
             this.chkRels.Name = "chkRels";
             this.chkRels.Size = new System.Drawing.Size(131, 24);
             this.chkRels.TabIndex = 3;
@@ -125,7 +171,7 @@ namespace MsCrmTools.MetadataBrowser
             this.chkColumns.AutoSize = true;
             this.chkColumns.Checked = true;
             this.chkColumns.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkColumns.Location = new System.Drawing.Point(94, 57);
+            this.chkColumns.Location = new System.Drawing.Point(94, 65);
             this.chkColumns.Name = "chkColumns";
             this.chkColumns.Size = new System.Drawing.Size(97, 24);
             this.chkColumns.TabIndex = 2;
@@ -138,7 +184,7 @@ namespace MsCrmTools.MetadataBrowser
             this.chkEntities.AutoSize = true;
             this.chkEntities.Checked = true;
             this.chkEntities.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEntities.Location = new System.Drawing.Point(6, 57);
+            this.chkEntities.Location = new System.Drawing.Point(6, 65);
             this.chkEntities.Name = "chkEntities";
             this.chkEntities.Size = new System.Drawing.Size(82, 24);
             this.chkEntities.TabIndex = 1;
@@ -146,23 +192,13 @@ namespace MsCrmTools.MetadataBrowser
             this.chkEntities.UseVisualStyleBackColor = true;
             this.chkEntities.MouseClick += new System.Windows.Forms.MouseEventHandler(this.chkEntities_MouseClick);
             // 
-            // txtSearch
-            // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(6, 25);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(409, 26);
-            this.txtSearch.TabIndex = 0;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
             // gbSearchResult
             // 
             this.gbSearchResult.Controls.Add(this.lvSearchResult);
             this.gbSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbSearchResult.Location = new System.Drawing.Point(0, 0);
             this.gbSearchResult.Name = "gbSearchResult";
-            this.gbSearchResult.Size = new System.Drawing.Size(421, 283);
+            this.gbSearchResult.Size = new System.Drawing.Size(455, 279);
             this.gbSearchResult.TabIndex = 1;
             this.gbSearchResult.TabStop = false;
             this.gbSearchResult.Text = "Search result";
@@ -178,7 +214,7 @@ namespace MsCrmTools.MetadataBrowser
             this.lvSearchResult.HideSelection = false;
             this.lvSearchResult.Location = new System.Drawing.Point(3, 22);
             this.lvSearchResult.Name = "lvSearchResult";
-            this.lvSearchResult.Size = new System.Drawing.Size(415, 258);
+            this.lvSearchResult.Size = new System.Drawing.Size(449, 254);
             this.lvSearchResult.SmallImageList = this.imageList1;
             this.lvSearchResult.TabIndex = 0;
             this.lvSearchResult.UseCompatibleStateImageBehavior = false;
@@ -196,106 +232,9 @@ namespace MsCrmTools.MetadataBrowser
             this.chEntity.Text = "Entity";
             this.chEntity.Width = 205;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "ico_16_form.gif");
-            this.imageList1.Images.SetKeyName(1, "text_area (2).png");
-            this.imageList1.Images.SetKeyName(2, "ico_16_relationshipsN21.gif");
-            this.imageList1.Images.SetKeyName(3, "ico_16_relationshipsN2N.gif");
-            this.imageList1.Images.SetKeyName(4, "key.png");
-            // 
-            // gbProperties
-            // 
-            this.gbProperties.Controls.Add(this.scProperties);
-            this.gbProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbProperties.Location = new System.Drawing.Point(0, 0);
-            this.gbProperties.Name = "gbProperties";
-            this.gbProperties.Size = new System.Drawing.Size(421, 1040);
-            this.gbProperties.TabIndex = 2;
-            this.gbProperties.TabStop = false;
-            this.gbProperties.Text = "Properties";
-            // 
-            // scProperties
-            // 
-            this.scProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scProperties.Location = new System.Drawing.Point(3, 22);
-            this.scProperties.Name = "scProperties";
-            this.scProperties.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // scProperties.Panel1
-            // 
-            this.scProperties.Panel1.Controls.Add(this.propertyGrid1);
-            // 
-            // scProperties.Panel2
-            // 
-            this.scProperties.Panel2.Controls.Add(this.pgOptionSetValues);
-            this.scProperties.Size = new System.Drawing.Size(415, 1015);
-            this.scProperties.SplitterDistance = 506;
-            this.scProperties.TabIndex = 1;
-            // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(415, 506);
-            this.propertyGrid1.TabIndex = 0;
-            // 
-            // pgOptionSetValues
-            // 
-            this.pgOptionSetValues.ContextMenuStrip = this.cmsPicklist;
-            this.pgOptionSetValues.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgOptionSetValues.HelpVisible = false;
-            this.pgOptionSetValues.Location = new System.Drawing.Point(0, 0);
-            this.pgOptionSetValues.Name = "pgOptionSetValues";
-            this.pgOptionSetValues.Size = new System.Drawing.Size(415, 505);
-            this.pgOptionSetValues.TabIndex = 0;
-            this.pgOptionSetValues.ToolbarVisible = false;
-            // 
-            // cmsPicklist
-            // 
-            this.cmsPicklist.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.cmsPicklist.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyValueToolStripMenuItem,
-            this.copyDisplayNameToolStripMenuItem});
-            this.cmsPicklist.Name = "cmsPicklist";
-            this.cmsPicklist.Size = new System.Drawing.Size(173, 68);
-            this.cmsPicklist.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cmsPicklist_ItemClicked);
-            // 
-            // copyValueToolStripMenuItem
-            // 
-            this.copyValueToolStripMenuItem.Name = "copyValueToolStripMenuItem";
-            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
-            this.copyValueToolStripMenuItem.Text = "Copy value";
-            // 
-            // copyDisplayNameToolStripMenuItem
-            // 
-            this.copyDisplayNameToolStripMenuItem.Name = "copyDisplayNameToolStripMenuItem";
-            this.copyDisplayNameToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
-            this.copyDisplayNameToolStripMenuItem.Text = "Copy label";
-            // 
-            // scMain
-            // 
-            this.scMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.scMain.Location = new System.Drawing.Point(0, 89);
-            this.scMain.Name = "scMain";
-            this.scMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // scMain.Panel1
-            // 
-            this.scMain.Panel1.Controls.Add(this.gbSearchResult);
-            // 
-            // scMain.Panel2
-            // 
-            this.scMain.Panel2.Controls.Add(this.gbProperties);
-            this.scMain.Size = new System.Drawing.Size(421, 1327);
-            this.scMain.SplitterDistance = 283;
-            this.scMain.TabIndex = 3;
-            // 
             // cmsMetadata
             // 
+            this.cmsMetadata.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.cmsMetadata.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMenuTable,
             this.tsmiTableCopyLogicalName,
@@ -378,11 +317,23 @@ namespace MsCrmTools.MetadataBrowser
             this.tsmiMenuRel.Size = new System.Drawing.Size(519, 32);
             this.tsmiMenuRel.Text = "Relationship";
             // 
+            // tsmiRelCopySchemaName
+            // 
+            this.tsmiRelCopySchemaName.Name = "tsmiRelCopySchemaName";
+            this.tsmiRelCopySchemaName.Size = new System.Drawing.Size(519, 32);
+            this.tsmiRelCopySchemaName.Text = "Copy Schema name";
+            // 
             // tsmiRelCopyParentNavigation
             // 
             this.tsmiRelCopyParentNavigation.Name = "tsmiRelCopyParentNavigation";
             this.tsmiRelCopyParentNavigation.Size = new System.Drawing.Size(519, 32);
             this.tsmiRelCopyParentNavigation.Text = "Copy Web api Parent Navigation property";
+            // 
+            // tsmiRelCopyParentNavigationWithBinding
+            // 
+            this.tsmiRelCopyParentNavigationWithBinding.Name = "tsmiRelCopyParentNavigationWithBinding";
+            this.tsmiRelCopyParentNavigationWithBinding.Size = new System.Drawing.Size(519, 32);
+            this.tsmiRelCopyParentNavigationWithBinding.Text = "Copy Web api Parent Navigation property with binding";
             // 
             // tsmiRelCopyChildNavigation
             // 
@@ -390,17 +341,103 @@ namespace MsCrmTools.MetadataBrowser
             this.tsmiRelCopyChildNavigation.Size = new System.Drawing.Size(519, 32);
             this.tsmiRelCopyChildNavigation.Text = "Copy Web api Child Navigation property";
             // 
-            // tsmiRelCopySchemaName
+            // imageList1
             // 
-            this.tsmiRelCopySchemaName.Name = "tsmiRelCopySchemaName";
-            this.tsmiRelCopySchemaName.Size = new System.Drawing.Size(519, 32);
-            this.tsmiRelCopySchemaName.Text = "Copy Schema name";
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "ico_16_form.gif");
+            this.imageList1.Images.SetKeyName(1, "text_area (2).png");
+            this.imageList1.Images.SetKeyName(2, "ico_16_relationshipsN21.gif");
+            this.imageList1.Images.SetKeyName(3, "ico_16_relationshipsN2N.gif");
+            this.imageList1.Images.SetKeyName(4, "key.png");
             // 
-            // tsmiRelCopyParentNavigationWithBinding
+            // gbProperties
             // 
-            this.tsmiRelCopyParentNavigationWithBinding.Name = "tsmiRelCopyParentNavigationWithBinding";
-            this.tsmiRelCopyParentNavigationWithBinding.Size = new System.Drawing.Size(519, 32);
-            this.tsmiRelCopyParentNavigationWithBinding.Text = "Copy Web api Parent Navigation property with binding";
+            this.gbProperties.Controls.Add(this.scProperties);
+            this.gbProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbProperties.Location = new System.Drawing.Point(0, 0);
+            this.gbProperties.Name = "gbProperties";
+            this.gbProperties.Size = new System.Drawing.Size(455, 1033);
+            this.gbProperties.TabIndex = 2;
+            this.gbProperties.TabStop = false;
+            this.gbProperties.Text = "Properties";
+            // 
+            // scProperties
+            // 
+            this.scProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scProperties.Location = new System.Drawing.Point(3, 22);
+            this.scProperties.Name = "scProperties";
+            this.scProperties.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // scProperties.Panel1
+            // 
+            this.scProperties.Panel1.Controls.Add(this.propertyGrid1);
+            // 
+            // scProperties.Panel2
+            // 
+            this.scProperties.Panel2.Controls.Add(this.pgOptionSetValues);
+            this.scProperties.Size = new System.Drawing.Size(449, 1008);
+            this.scProperties.SplitterDistance = 501;
+            this.scProperties.TabIndex = 1;
+            // 
+            // propertyGrid1
+            // 
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(449, 501);
+            this.propertyGrid1.TabIndex = 0;
+            // 
+            // pgOptionSetValues
+            // 
+            this.pgOptionSetValues.ContextMenuStrip = this.cmsPicklist;
+            this.pgOptionSetValues.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pgOptionSetValues.HelpVisible = false;
+            this.pgOptionSetValues.Location = new System.Drawing.Point(0, 0);
+            this.pgOptionSetValues.Name = "pgOptionSetValues";
+            this.pgOptionSetValues.Size = new System.Drawing.Size(449, 503);
+            this.pgOptionSetValues.TabIndex = 0;
+            this.pgOptionSetValues.ToolbarVisible = false;
+            // 
+            // cmsPicklist
+            // 
+            this.cmsPicklist.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.cmsPicklist.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyValueToolStripMenuItem,
+            this.copyDisplayNameToolStripMenuItem});
+            this.cmsPicklist.Name = "cmsPicklist";
+            this.cmsPicklist.Size = new System.Drawing.Size(173, 68);
+            this.cmsPicklist.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cmsPicklist_ItemClicked);
+            // 
+            // copyValueToolStripMenuItem
+            // 
+            this.copyValueToolStripMenuItem.Name = "copyValueToolStripMenuItem";
+            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
+            this.copyValueToolStripMenuItem.Text = "Copy value";
+            // 
+            // copyDisplayNameToolStripMenuItem
+            // 
+            this.copyDisplayNameToolStripMenuItem.Name = "copyDisplayNameToolStripMenuItem";
+            this.copyDisplayNameToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
+            this.copyDisplayNameToolStripMenuItem.Text = "Copy label";
+            // 
+            // scMain
+            // 
+            this.scMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.scMain.Location = new System.Drawing.Point(0, 100);
+            this.scMain.Name = "scMain";
+            this.scMain.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // scMain.Panel1
+            // 
+            this.scMain.Panel1.Controls.Add(this.gbSearchResult);
+            // 
+            // scMain.Panel2
+            // 
+            this.scMain.Panel2.Controls.Add(this.gbProperties);
+            this.scMain.Size = new System.Drawing.Size(455, 1316);
+            this.scMain.SplitterDistance = 279;
+            this.scMain.TabIndex = 3;
             // 
             // CompanionControl
             // 
@@ -409,10 +446,13 @@ namespace MsCrmTools.MetadataBrowser
             this.Controls.Add(this.scMain);
             this.Controls.Add(this.gbSearch);
             this.Name = "CompanionControl";
-            this.Size = new System.Drawing.Size(421, 1416);
+            this.Size = new System.Drawing.Size(455, 1416);
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.gbSearchResult.ResumeLayout(false);
+            this.cmsMetadata.ResumeLayout(false);
             this.gbProperties.ResumeLayout(false);
             this.scProperties.Panel1.ResumeLayout(false);
             this.scProperties.Panel2.ResumeLayout(false);
@@ -423,7 +463,6 @@ namespace MsCrmTools.MetadataBrowser
             this.scMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).EndInit();
             this.scMain.ResumeLayout(false);
-            this.cmsMetadata.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -463,5 +502,8 @@ namespace MsCrmTools.MetadataBrowser
         private System.Windows.Forms.ToolStripMenuItem tsmiRelCopyChildNavigation;
         private System.Windows.Forms.ToolStripMenuItem tsmiRelCopySchemaName;
         private System.Windows.Forms.ToolStripMenuItem tsmiRelCopyParentNavigationWithBinding;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnClearSearch;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }

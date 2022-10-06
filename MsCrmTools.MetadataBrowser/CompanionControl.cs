@@ -27,6 +27,10 @@ namespace MsCrmTools.MetadataBrowser
         public CompanionControl()
         {
             InitializeComponent();
+
+            var tt = new ToolTip();
+            tt.SetToolTip(btnClearSearch, "Clear search");
+            tt.SetToolTip(btnRefresh, "Refresh metadata from connected environment. It might take a while");
         }
 
         public event EventHandler<MessageBusEventArgs> OnOutgoingMessage;
@@ -105,6 +109,26 @@ namespace MsCrmTools.MetadataBrowser
             base.UpdateConnection(newService, detail, actionName, parameter);
 
             _emds = detail.MetadataCacheLoader.GetAwaiter().GetResult().EntityMetadata;
+        }
+
+        private void btnClearSearch_Click(object sender, EventArgs e)
+        {
+            txtSearch.Text = "";
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Enabled = false;
+                ConnectionDetail.UpdateMetadataCache(true).GetAwaiter().GetResult();
+                _emds = ConnectionDetail.MetadataCacheLoader.GetAwaiter().GetResult().EntityMetadata;
+            }
+            catch { }
+            finally
+            {
+                Enabled = true;
+            }
         }
 
         private void chkEntities_MouseClick(object sender, MouseEventArgs e)
