@@ -370,21 +370,25 @@ namespace MsCrmTools.MetadataBrowser
                     return;
                 }
 
-                if (mainTabControl.SelectedIndex == 0)
+                entityListView.Items.Clear();
+                entityListView.Items.AddRange(
+                    BuildEntityItems(currentAllMetadata.ToList())
+                    .Where(item => MatchItemsByFilter(item, filterText))
+                    .ToArray());
+
+                lvChoices.Items.Clear();
+                lvChoices.Items.AddRange(
+                    BuildOptionSetItems(currentAllOptionSet.ToList())
+                    .Where(item => MatchItemsByFilter(item, filterText))
+                    .ToArray());
+
+                if (entityListView.Items.Count > 0)
                 {
-                    entityListView.Items.Clear();
-                    entityListView.Items.AddRange(
-                        BuildEntityItems(currentAllMetadata.ToList())
-                        .Where(item => MatchItemsByFilter(item, filterText))
-                        .ToArray());
+                    mainTabControl.SelectedIndex = 0;
                 }
-                else if (mainTabControl.SelectedIndex == 1)
+                else if (lvChoices.Items.Count > 0)
                 {
-                    lvChoices.Items.Clear();
-                    lvChoices.Items.AddRange(
-                        BuildOptionSetItems(currentAllOptionSet.ToList())
-                        .Where(item => MatchItemsByFilter(item, filterText))
-                        .ToArray());
+                    mainTabControl.SelectedIndex = 1;
                 }
             }));
         }
@@ -672,6 +676,7 @@ namespace MsCrmTools.MetadataBrowser
             tsbOpenInWebApp.Enabled = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1 || mainTabControl.SelectedTab.Controls[0] is EntityPropertiesControl epc2 && epc2.SelectedTabIndex == 0;
             toolStripSeparator5.Visible = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1;
             tsbExportExcel.Visible = mainTabControl.SelectedIndex == 0 || mainTabControl.SelectedIndex == 1;
+            tsbEntityColumns.Enabled = mainTabControl.SelectedIndex == 0;
         }
 
         private void tsbClose_Click(object sender, EventArgs e)
@@ -721,7 +726,10 @@ namespace MsCrmTools.MetadataBrowser
                 {
                     if (page.TabIndex == 0) continue;
 
-                    ((EntityPropertiesControl)page.Controls[0]).RefreshColumns(lvcSettings);
+                    if (page.Controls[0] is EntityPropertiesControl epc)
+                    {
+                        epc.RefreshColumns(lvcSettings);
+                    }
                 }
             }
             catch (UnauthorizedAccessException error)
