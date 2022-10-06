@@ -12,12 +12,15 @@
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
     <releaseNotes>
-      Added Metadatabrowser companion! Find the metadata right away!
-      Optimized search bar
+      Metadata Browser companion : Added possibility to refresh metadata
+      Metadata Browser companion : Added possibility to clear search
+      Metadata Browser companion : Added literal search. Enclose your search term in double quotes, like "Account Number" to find accountnumber column
+      Metadata Browser : Search works now on global choices too
+      Metadata Browser : Fixed bug when using columns selection dialog with choices list displayed
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2022.4.55" />
+      <dependency id="XrmToolBox" version="1.2022.9.57" />
     </dependencies>
   </metadata>
   <files>
