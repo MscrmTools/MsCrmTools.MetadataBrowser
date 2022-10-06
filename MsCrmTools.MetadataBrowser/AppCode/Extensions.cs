@@ -1,20 +1,43 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MsCrmTools.MetadataBrowser.AppCode
 {
     public static class Extensions
     {
+        public static List<string> GetSearchParts(string searchTerm)
+        {
+            List<string> parts = new List<string>();
+
+            if (searchTerm.IndexOf("\"") >= 0)
+            {
+                var quotedParts = searchTerm.Split(new[] { '\"' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+                if (quotedParts.Length == 2)
+                {
+                    if (quotedParts[0].StartsWith("\"")) quotedParts[0] = quotedParts[0].Remove(0, 1);
+                    if (quotedParts[0].EndsWith("\"")) quotedParts[0] = quotedParts[0].Substring(0, quotedParts[0].Length - 1);
+                    if (quotedParts[1].StartsWith("\"")) quotedParts[1] = quotedParts[1].Remove(0, 1);
+                    if (quotedParts[1].EndsWith("\"")) quotedParts[1] = quotedParts[1].Substring(0, quotedParts[1].Length - 1);
+
+                    quotedParts[0] = quotedParts[0].Trim();
+                    quotedParts[1] = quotedParts[1].Trim();
+                }
+
+                parts = quotedParts.ToList();
+            }
+
+            if (parts.Count == 0)
+                parts = searchTerm.Split(' ').Where(t => !string.IsNullOrEmpty(t)).ToList();
+
+            return parts;
+        }
+
         public static bool Matches(this string toTest, string searchTerm)
         {
-            var parts = searchTerm.Split(' ').Where(t => !string.IsNullOrEmpty(t));
-
-            foreach (var part in parts)
-            {
-                if (toTest.ToLower().IndexOf(part.ToLower()) < 0) return false;
-            }
+            if (toTest.ToLower().IndexOf(searchTerm.ToLower()) < 0) return false;
 
             return true;
         }
@@ -26,7 +49,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public static bool Matches(this RelationshipMetadataBase m, string searchTerm, EntityMetadata[] all)
         {
-            var parts = searchTerm.Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t.ToLower()).ToList();
+            List<string> parts = GetSearchParts(searchTerm);
 
             if (m is OneToManyRelationshipMetadata otmmd)
             {
@@ -117,7 +140,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public static bool Matches(this MetadataBase m, string searchTerm, EntityMetadata[] all)
         {
-            var parts = searchTerm.Split(' ').Where(t => !string.IsNullOrEmpty(t)).Select(t => t.ToLower()).ToList();
+            List<string> parts = GetSearchParts(searchTerm);
 
             if (m is EntityMetadata emd)
             {
@@ -128,23 +151,15 @@ namespace MsCrmTools.MetadataBrowser.AppCode
             else if (m is AttributeMetadata amd)
             {
                 return parts.Count == 1 && (amd.LogicalName.Matches(parts[0]) || amd.DisplayName.Matches(parts[0]) || amd.MetadataId.Value.ToString("B").Matches(parts[0]))
-                    || parts.Count == 2 && (amd.LogicalName.Matches(parts[0]) || amd.DisplayName.Matches(parts[0]) || amd.MetadataId.Value.ToString("B").Matches(parts[0]))
-                    && (amd.EntityLogicalName.IndexOf(parts[1]) >= 0 || all.First(e => e.LogicalName == amd.EntityLogicalName).DisplayName.Matches(parts[1]));
+                       || (parts.Count == 2 && (amd.LogicalName.Matches(parts[0]) || amd.DisplayName.Matches(parts[0]) || amd.MetadataId.Value.ToString("B").Matches(parts[0]))
+                       && (amd.EntityLogicalName.Matches(parts[1]) || all.First(e => e.LogicalName == amd.EntityLogicalName).DisplayName.Matches(parts[1])));
             }
             else if (m is EntityKeyMetadata ekmd)
             {
                 return parts.Count == 1 && (ekmd.LogicalName.Matches(parts[0]) || ekmd.DisplayName.Matches(parts[0]) || ekmd.MetadataId.Value.ToString("B").Matches(parts[0]))
-                    || parts.Count == 2 && (ekmd.LogicalName.Matches(parts[0]) || ekmd.DisplayName.Matches(parts[0]) || ekmd.MetadataId.Value.ToString("B").Matches(parts[0]))
-                     && (ekmd.EntityLogicalName.IndexOf(parts[1]) >= 0 || all.First(e => e.LogicalName == ekmd.EntityLogicalName).DisplayName.Matches(parts[1]));
+                    || (parts.Count == 2 && (ekmd.LogicalName.Matches(parts[0]) || ekmd.DisplayName.Matches(parts[0]) || ekmd.MetadataId.Value.ToString("B").Matches(parts[0]))
+                     && (ekmd.EntityLogicalName.IndexOf(parts[1]) >= 0 || all.First(e => e.LogicalName == ekmd.EntityLogicalName).DisplayName.Matches(parts[1])));
             }
-
-            /*
-             e.SchemaName.Matches(sTerm)
-            || e.ReferencedEntity.Matches(sTerm)
-            || e.ReferencingEntity.Matches(sTerm)
-            || e.ReferencedAttribute.Matches(sTerm)
-            || e.ReferencingAttribute.Matches(sTerm) || e.MetadataId.Value.ToString("B").Matches(sTerm)
-             */
 
             return false;
         }
