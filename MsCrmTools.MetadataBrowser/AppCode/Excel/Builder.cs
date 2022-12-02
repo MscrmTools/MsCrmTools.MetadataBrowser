@@ -1,5 +1,7 @@
-﻿using OfficeOpenXml;
+﻿using Microsoft.Xrm.Sdk.Metadata;
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -36,7 +38,35 @@ namespace MsCrmTools.MetadataBrowser.AppCode.Excel
 
                 foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
                 {
-                    sheet.Cells[row, index++].Value = subItem.Text;
+                    sheet.Cells[row, index].Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                    string text = subItem.Text;
+
+                    if (subItem.Tag != null)
+                    {
+                        if (subItem.Tag is CascadeConfigurationInfo cci)
+                        {
+                            text = $"Assign: {cci.Assign}\rDelete: {cci.Delete}\rMerge: {cci.Merge}\rReparent: {cci.Reparent}\rRollupView: {cci.RollupView}\rShare: {cci.Share}\rUnshare: {cci.Unshare}";
+
+                            sheet.Column(index).Width = 30;
+                            sheet.Cells[row, index].Style.WrapText = true;
+                        }
+                        else if (subItem.Tag is AssociatedMenuConfigurationInfo amci)
+                        {
+                            text = $"Behavior: {amci.Behavior}";
+                            if (amci.Behavior == AssociatedMenuBehavior.UseLabel)
+                            {
+                                text += $"\r\nLabel: {amci.Label?.UserLocalizedLabel?.Label} ({amci.Label?.UserLocalizedLabel?.LanguageCode})";
+                            }
+                            text += $"\r\nGroup: {amci.Group}";
+                            text += $"\r\nOrder: {amci.Order}";
+
+                            sheet.Column(index).Width = 30;
+                            sheet.Cells[row, index].Style.WrapText = true;
+                        }
+                    }
+
+                    sheet.Cells[row, index].Value = text;
+                    sheet.Column(index++).AutoFit();
                 }
 
                 row++;

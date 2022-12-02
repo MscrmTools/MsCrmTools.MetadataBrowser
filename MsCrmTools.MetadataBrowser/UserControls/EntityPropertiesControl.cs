@@ -24,15 +24,17 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 {
     public partial class EntityPropertiesControl : UserControl
     {
+        private static ToolTip toolTip = new ToolTip();
         private ConnectionDetail connectionDetail;
         private EntityMetadata emd;
         private ListViewColumnsSettings lvcSettings;
+        private Point previousPosition = new Point(-1, -1);
         private Thread searchThread;
 
         public EntityPropertiesControl(EntityMetadata emd, EntityCollection components, ListViewColumnsSettings lvcSettings, ConnectionDetail connectionDetail)
         {
             InitializeComponent();
-
+            toolTip.SetToolTip(OneToManyListView, "");
             if (new Version(connectionDetail.OrganizationVersion) < new Version(7, 1))
             {
                 // Hide Keys tab if under CRM 2015 Update 1
@@ -197,15 +199,19 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                     }
                     else if (managedPropertyInfoValue != null)
                     {
-                        item.SubItems.Add(managedPropertyInfoValue.Value.ToString());
+                        item.SubItems.Add(managedPropertyInfoValue.Value.ToString()).Tag = managedPropertyInfoValue;
                     }
                     else if (requiredLevelInfoValue != null)
                     {
-                        item.SubItems.Add(requiredLevelInfoValue.Value.ToString());
+                        item.SubItems.Add(requiredLevelInfoValue.Value.ToString()).Tag = requiredLevelInfoValue;
                     }
-                    else if (cascadeConfigurationInfoValue != null || associatedMenuBehaviorInfoValue != null)
+                    else if (cascadeConfigurationInfoValue != null)
                     {
-                        item.SubItems.Add("(Open row to see details)");
+                        item.SubItems.Add("(Open row to see details)").Tag = cascadeConfigurationInfoValue;
+                    }
+                    else if (associatedMenuBehaviorInfoValue != null)
+                    {
+                        item.SubItems.Add("(Open row to see details)").Tag = associatedMenuBehaviorInfoValue;
                     }
                     else
                     {
@@ -247,15 +253,19 @@ namespace MsCrmTools.MetadataBrowser.UserControls
                         }
                         else if (managedPropertyInfoValue != null)
                         {
-                            item.SubItems.Add(managedPropertyInfoValue.Value.ToString());
+                            item.SubItems.Add(managedPropertyInfoValue.Value.ToString()).Tag = managedPropertyInfoValue;
                         }
                         else if (requiredLevelInfoValue != null)
                         {
-                            item.SubItems.Add(requiredLevelInfoValue.Value.ToString());
+                            item.SubItems.Add(requiredLevelInfoValue.Value.ToString()).Tag = requiredLevelInfoValue;
                         }
-                        else if (cascadeConfigurationInfoValue != null || associatedMenuBehaviorInfoValue != null)
+                        else if (cascadeConfigurationInfoValue != null)
                         {
-                            item.SubItems.Add("(Open row to see details)");
+                            item.SubItems.Add("(Open row to see details)").Tag = cascadeConfigurationInfoValue;
+                        }
+                        else if (associatedMenuBehaviorInfoValue != null)
+                        {
+                            item.SubItems.Add("(Open row to see details)").Tag = associatedMenuBehaviorInfoValue;
                         }
                         else
                         {
@@ -558,6 +568,50 @@ namespace MsCrmTools.MetadataBrowser.UserControls
             var list = (ListView)sender;
             list.Sorting = list.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
             list.ListViewItemSorter = new ListViewItemComparer(e.Column, list.Sorting);
+        }
+
+        private void ListView_MouseMove(object sender, MouseEventArgs e)
+        {
+            var list = (ListView)sender;
+
+            if (IsDisposed || Disposing) return;
+
+            if (e.Location.X == previousPosition.X && e.Location.Y == previousPosition.Y) return;
+            previousPosition = e.Location;
+
+            ListViewItem item = list.GetItemAt(e.X, e.Y);
+            ListViewHitTestInfo info = list.HitTest(e.X, e.Y);
+
+            string text = "";
+            if ((item != null) && (info.SubItem != null) && (info.SubItem.Tag != null))
+            {
+                if (info.SubItem.Tag is CascadeConfigurationInfo cci)
+                {
+                    text = $"Assign: {cci.Assign}{Environment.NewLine}Delete: {cci.Delete}{Environment.NewLine}Merge: {cci.Merge}{Environment.NewLine}Reparent: {cci.Reparent}{Environment.NewLine}RollupView: {cci.RollupView}{Environment.NewLine}Share: {cci.Share}{Environment.NewLine}Unshare: {cci.Unshare}";
+
+                    toolTip.ShowAlways = true;
+                    toolTip.SetToolTip(list, text);
+                    toolTip.Show(text, this, e.Location.X + 30, e.Location.Y);
+                }
+                else if (info.SubItem.Tag is AssociatedMenuConfigurationInfo amci)
+                {
+                    text = $"Behavior: {amci.Behavior}";
+                    if (amci.Behavior == AssociatedMenuBehavior.UseLabel)
+                    {
+                        text += $"\nLabel: {amci.Label?.UserLocalizedLabel?.Label} ({amci.Label?.UserLocalizedLabel?.LanguageCode})";
+                    }
+                    text += $"\nGroup: {amci.Group}";
+                    text += $"\nOrder: {amci.Order}";
+
+                    toolTip.ShowAlways = true;
+                    toolTip.SetToolTip(list, text);
+                    toolTip.Show(text, this, e.Location.X + 30, e.Location.Y);
+                }
+            }
+            else
+            {
+                toolTip.SetToolTip(list, text);
+            }
         }
 
         private void LoadAttributes(IEnumerable<AttributeMetadata> attributes, string filter = null)
@@ -941,6 +995,8 @@ namespace MsCrmTools.MetadataBrowser.UserControls
 
         private void TabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
         {
+            if (IsDisposed || Disposing) return;
+            toolTip.SetToolTip(this, "");
             OnSelectedTabChanged?.Invoke(this, new EventArgs());
         }
 
