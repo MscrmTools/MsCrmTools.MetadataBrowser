@@ -219,6 +219,7 @@ namespace MsCrmTools.MetadataBrowser
             this.lvSearchResult.TabIndex = 0;
             this.lvSearchResult.UseCompatibleStateImageBehavior = false;
             this.lvSearchResult.View = System.Windows.Forms.View.Details;
+            this.lvSearchResult.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvSearchResult_ColumnClick);
             this.lvSearchResult.SelectedIndexChanged += new System.EventHandler(this.lvSearchResult_SelectedIndexChanged);
             this.lvSearchResult.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvSearchResult_MouseClick);
             // 
@@ -234,7 +235,6 @@ namespace MsCrmTools.MetadataBrowser
             // 
             // cmsMetadata
             // 
-            this.cmsMetadata.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.cmsMetadata.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiMenuTable,
             this.tsmiTableCopyLogicalName,
@@ -401,7 +401,6 @@ namespace MsCrmTools.MetadataBrowser
             // 
             // cmsPicklist
             // 
-            this.cmsPicklist.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.cmsPicklist.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyValueToolStripMenuItem,
             this.copyDisplayNameToolStripMenuItem});
@@ -412,13 +411,13 @@ namespace MsCrmTools.MetadataBrowser
             // copyValueToolStripMenuItem
             // 
             this.copyValueToolStripMenuItem.Name = "copyValueToolStripMenuItem";
-            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
+            this.copyValueToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
             this.copyValueToolStripMenuItem.Text = "Copy value";
             // 
             // copyDisplayNameToolStripMenuItem
             // 
             this.copyDisplayNameToolStripMenuItem.Name = "copyDisplayNameToolStripMenuItem";
-            this.copyDisplayNameToolStripMenuItem.Size = new System.Drawing.Size(172, 32);
+            this.copyDisplayNameToolStripMenuItem.Size = new System.Drawing.Size(240, 32);
             this.copyDisplayNameToolStripMenuItem.Text = "Copy label";
             // 
             // scMain

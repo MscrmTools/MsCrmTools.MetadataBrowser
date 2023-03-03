@@ -23,6 +23,7 @@ namespace MsCrmTools.MetadataBrowser
         private EntityMetadata[] _emds;
 
         private Thread searchThread;
+        private int? sortColumn;
 
         public CompanionControl()
         {
@@ -64,12 +65,12 @@ namespace MsCrmTools.MetadataBrowser
                 return;
             }
 
-            var matchingEmds = _emds.Where(e => chkEntities.Checked && e.Matches(sTerm, _emds)).ToList();
-            var matchingAttrs = _emds.SelectMany(e => e.Attributes).Where(e => chkColumns.Checked && e.Matches(sTerm, _emds)).ToList();
-            var matchingOneToManyRels = _emds.SelectMany(e => e.OneToManyRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).ToList();
-            var matchingManyToOneRels = _emds.SelectMany(e => e.ManyToOneRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).ToList();
-            var matchingManyToManyRels = _emds.SelectMany(e => e.ManyToManyRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).ToList();
-            var matchingKeys = _emds.SelectMany(e => e.Keys).Where(e => chkKeys.Checked && (e.Matches(sTerm, _emds) || e.KeyAttributes.Any(k => k.Matches(sTerm)))).ToList();
+            var matchingEmds = _emds.Where(e => chkEntities.Checked && e.Matches(sTerm, _emds)).OrderBy(e => e.SchemaName).ToList();
+            var matchingAttrs = _emds.SelectMany(e => e.Attributes).Where(e => chkColumns.Checked && e.Matches(sTerm, _emds)).OrderBy(e => e.SchemaName).ToList();
+            var matchingOneToManyRels = _emds.SelectMany(e => e.OneToManyRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).OrderBy(e => e.SchemaName).ToList();
+            var matchingManyToOneRels = _emds.SelectMany(e => e.ManyToOneRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).OrderBy(e => e.SchemaName).ToList();
+            var matchingManyToManyRels = _emds.SelectMany(e => e.ManyToManyRelationships).Where(e => chkRels.Checked && e.Matches(sTerm, _emds)).OrderBy(e => e.SchemaName).ToList();
+            var matchingKeys = _emds.SelectMany(e => e.Keys).Where(e => chkKeys.Checked && (e.Matches(sTerm, _emds) || e.KeyAttributes.Any(k => k.Matches(sTerm)))).OrderBy(e => e.SchemaName).ToList();
 
             var list = new List<ListViewItem>();
             foreach (var matchingEmd in matchingEmds)
@@ -108,7 +109,7 @@ namespace MsCrmTools.MetadataBrowser
         {
             base.UpdateConnection(newService, detail, actionName, parameter);
 
-            _emds = detail.MetadataCacheLoader.GetAwaiter().GetResult().EntityMetadata;
+            LoadMetadataCache(false);
         }
 
         private void btnClearSearch_Click(object sender, EventArgs e)
@@ -118,17 +119,7 @@ namespace MsCrmTools.MetadataBrowser
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Enabled = false;
-                ConnectionDetail.UpdateMetadataCache(true).GetAwaiter().GetResult();
-                _emds = ConnectionDetail.MetadataCacheLoader.GetAwaiter().GetResult().EntityMetadata;
-            }
-            catch { }
-            finally
-            {
-                Enabled = true;
-            }
+            LoadMetadataCache(true);
         }
 
         private void chkEntities_MouseClick(object sender, MouseEventArgs e)
@@ -151,6 +142,44 @@ namespace MsCrmTools.MetadataBrowser
             {
                 Clipboard.SetText(((OptionMetadataInfo)pgOptionSetValues.SelectedGridItem.Value).Label.UserLocalizedLabel.Label);
             }
+        }
+
+        private void LoadMetadataCache(bool force)
+        {
+            SetWorkingState(true);
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Loading metadata...",
+                MessageWidth = 300,
+                Work = (bw, evt) =>
+                {
+                    if (force || (ConnectionDetail.MetadataCache?.Length ?? 0) == 0)
+                    {
+                        ConnectionDetail.UpdateMetadataCache(true).GetAwaiter().GetResult();
+                    }
+                    _emds = ConnectionDetail.MetadataCacheLoader.GetAwaiter().GetResult().EntityMetadata;
+                },
+                PostWorkCallBack = evt =>
+                {
+                    SetWorkingState(false);
+
+                    if (evt.Error != null)
+                    {
+                        MessageBox.Show(this, "An error occured when loading metadata: " + evt.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            });
+        }
+
+        private void lvSearchResult_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            var lv = (ListView)sender;
+
+            lv.Sorting = e.Column == (sortColumn ?? -1) ? (lv.Sorting == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending) : SortOrder.Ascending;
+            lv.ListViewItemSorter = new ListViewItemComparer(e.Column, lv.Sorting);
+
+            sortColumn = e.Column;
         }
 
         private void lvSearchResult_MouseClick(object sender, MouseEventArgs e)
@@ -289,6 +318,12 @@ namespace MsCrmTools.MetadataBrowser
             }
 
             scProperties.Visible = true;
+        }
+
+        private void SetWorkingState(bool working)
+        {
+            gbSearch.Enabled = !working;
+            gbSearchResult.Enabled = !working;
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)

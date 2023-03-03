@@ -53,17 +53,17 @@
     <Reference Include="EPPlus, Version=5.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.5.1.0\lib\net45\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="McTools.Xrm.Connection, Version=1.2022.7.53, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
-      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2022.7.53\lib\net462\McTools.Xrm.Connection.dll</HintPath>
+    <Reference Include="McTools.Xrm.Connection, Version=1.2022.10.54, Culture=neutral, PublicKeyToken=96037217801d9658, processorArchitecture=MSIL">
+      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2022.10.54\lib\net462\McTools.Xrm.Connection.dll</HintPath>
     </Reference>
-    <Reference Include="McTools.Xrm.Connection.WinForms, Version=1.2022.7.53, Culture=neutral, PublicKeyToken=f1559f79cf894e27, processorArchitecture=MSIL">
-      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2022.7.53\lib\net462\McTools.Xrm.Connection.WinForms.dll</HintPath>
+    <Reference Include="McTools.Xrm.Connection.WinForms, Version=1.2022.10.54, Culture=neutral, PublicKeyToken=f1559f79cf894e27, processorArchitecture=MSIL">
+      <HintPath>..\packages\MscrmTools.Xrm.Connection.1.2022.10.54\lib\net462\McTools.Xrm.Connection.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.45\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.46\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="microsoft.identitymodel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.7.0.0\lib\net35\microsoft.identitymodel.dll</HintPath>
@@ -72,7 +72,7 @@
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.5.2.9\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Rest.ClientRuntime, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.0.110\lib\net462\Microsoft.Rest.ClientRuntime.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.1.1\lib\net462\Microsoft.Rest.ClientRuntime.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.1343.22, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.1343.22\lib\net45\Microsoft.Web.WebView2.Core.dll</HintPath>
@@ -87,7 +87,7 @@
       <HintPath>..\packages\Microsoft.Web.Xdt.3.0.0\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.45\lib\net462\Microsoft.Xrm.Sdk.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.46\lib\net462\Microsoft.Xrm.Sdk.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Sdk.Deployment, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.Deployment.9.0.2.25\lib\net462\Microsoft.Xrm.Sdk.Deployment.dll</HintPath>
@@ -96,16 +96,16 @@
       <HintPath>..\packages\Microsoft.CrmSdk.Workflow.9.0.2.42\lib\net462\Microsoft.Xrm.Sdk.Workflow.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.Connector, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.0.110\lib\net462\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.CoreAssembly.9.1.1.1\lib\net462\Microsoft.Xrm.Tooling.Connector.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.CrmConnectControl, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.0.110\lib\net462\Microsoft.Xrm.Tooling.CrmConnectControl.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.1.1\lib\net462\Microsoft.Xrm.Tooling.CrmConnectControl.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.Ui.Styles, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.0.110\lib\net462\Microsoft.Xrm.Tooling.Ui.Styles.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.1.1\lib\net462\Microsoft.Xrm.Tooling.Ui.Styles.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xrm.Tooling.WebResourceUtility, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.0.110\lib\net462\Microsoft.Xrm.Tooling.WebResourceUtility.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CrmSdk.XrmTooling.WpfControls.9.1.1.1\lib\net462\Microsoft.Xrm.Tooling.WebResourceUtility.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -228,14 +228,14 @@
     <Reference Include="WeifenLuo.WinFormsUI.Docking.ThemeVS2015, Version=3.0.6.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <HintPath>..\packages\DockPanelSuite.ThemeVS2015.3.0.6\lib\net40\WeifenLuo.WinFormsUI.Docking.ThemeVS2015.dll</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox, Version=1.2022.9.57, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2022.9.57\lib\net462\XrmToolBox.exe</HintPath>
+    <Reference Include="XrmToolBox, Version=1.2022.10.58, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2022.10.58\lib\net462\XrmToolBox.exe</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox.Extensibility, Version=1.2022.9.57, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2022.9.57\lib\net462\XrmToolBox.Extensibility.dll</HintPath>
+    <Reference Include="XrmToolBox.Extensibility, Version=1.2022.10.58, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2022.10.58\lib\net462\XrmToolBox.Extensibility.dll</HintPath>
     </Reference>
-    <Reference Include="XrmToolBox.PluginsStore, Version=1.2022.9.57, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XrmToolBoxPackage.1.2022.9.57\lib\net462\XrmToolBox.PluginsStore.dll</HintPath>
+    <Reference Include="XrmToolBox.PluginsStore, Version=1.2022.10.58, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\XrmToolBoxPackage.1.2022.10.58\lib\net462\XrmToolBox.PluginsStore.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -386,7 +386,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_ConfigurationName="Release" />
+      <UserProperties BuildVersion_ConfigurationName="Release" BuildVersion_BuildVersioningStyle="None.YearStamp.MonthStamp.DayStamp" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

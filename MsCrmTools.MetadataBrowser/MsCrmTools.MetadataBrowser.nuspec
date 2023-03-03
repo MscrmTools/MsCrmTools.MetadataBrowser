@@ -12,7 +12,8 @@
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
     <releaseNotes>
-      Metadata Browser : Add aggregated columns to the display or to the excel export (#30)
+      Metadata Browser Companion : Added sorting to result view
+      Metadata Browser Companion : Making metadata cache reload not blocking main XrmToolBox UI
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>
