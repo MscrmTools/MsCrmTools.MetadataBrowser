@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -341,23 +342,46 @@ namespace MsCrmTools.MetadataBrowser
             {
                 propertyGrid1.SelectedObject = new AttributeMetadataInfo(amd);
 
+                try
+                {
+                    Type[] arguments = new Type[] { md.GetType() };
+                    var targetType = Assembly.GetAssembly(typeof(Companion)).GetTypes().FirstOrDefault(t => t.Name == $"{amd.GetType().Name}Info");
+                    ConstructorInfo constructor = targetType.GetConstructor(arguments);
+                    if (constructor != null)
+                    {
+                        propertyGrid1.SelectedObject = constructor.Invoke(new object[] { md });
+                    }
+                }
+                catch
+                {
+                    // If we can't instantiate specific type, we keep the base one
+                }
+
                 if (amd is PicklistAttributeMetadata plmd)
                 {
+                    propertyGrid1.SelectedObject = new PicklistAttributeMetadataInfo(plmd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(plmd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
                 }
+                else if (amd is BooleanAttributeMetadata bamd)
+                {
+                    propertyGrid1.SelectedObject = new BooleanAttributeMetadataInfo(bamd);
+                }
                 else if (amd is MultiSelectPicklistAttributeMetadata mplmd)
                 {
+                    propertyGrid1.SelectedObject = new MultiSelectPicklistAttributeMetadataInfo(mplmd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(mplmd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
                 }
                 else if (amd is StateAttributeMetadata smd)
                 {
+                    propertyGrid1.SelectedObject = new StateAttributeMetadataInfo(smd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(smd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
                 }
                 else if (amd is StatusAttributeMetadata smd2)
                 {
+                    propertyGrid1.SelectedObject = new StatusAttributeMetadataInfo(smd2);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(smd2.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
                 }
