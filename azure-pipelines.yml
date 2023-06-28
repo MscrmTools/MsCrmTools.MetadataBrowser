@@ -23,7 +23,7 @@ jobs:
     displayName: 'Build solution **\*.sln'
     inputs:
       solution: '$(Parameters.solution)'
-      vsVersion: "15.0"
+      vsVersion: "17.0"
       platform: 'any cpu'
       configuration: 'release'
 
