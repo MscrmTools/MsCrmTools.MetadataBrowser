@@ -10,7 +10,10 @@ using MsCrmTools.MetadataBrowser.AppCode.OptionMd;
 using MsCrmTools.MetadataBrowser.AppCode.OptionSetMd;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using XrmToolBox.Extensibility;
@@ -115,6 +118,61 @@ namespace MsCrmTools.MetadataBrowser
         private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Text = "";
+        }
+
+        private void btnExportToCSV_Click(object sender, EventArgs e)
+        {
+            if (lvSearchResult.Items.Count == 0) return;
+
+            using (var sfd = new SaveFileDialog
+            {
+                Title = "Choose a file destination",
+                Filter = "CSV File (*.csv)|*.csv"
+            })
+            {
+                if (sfd.ShowDialog(this) == DialogResult.OK)
+                {
+                    using (StreamWriter writer = new StreamWriter(sfd.FileName, false, Encoding.Default))
+                    {
+                        writer.WriteLine(string.Join(",", lvSearchResult.Columns.Cast<ColumnHeader>().Select(ch => ch.Text)));
+
+                        foreach (ListViewItem item in lvSearchResult.Items)
+                        {
+                            string type = "";
+                            switch (item.ImageIndex)
+                            {
+                                case 0:
+                                    type = "Table";
+                                    break;
+
+                                case 1:
+                                    type = "Column";
+                                    break;
+
+                                case 2:
+                                    type = "Relationship";
+                                    break;
+
+                                case 3:
+                                    type = "NN Relationship";
+                                    break;
+
+                                case 4:
+                                    type = "Key";
+                                    break;
+                            }
+
+                            writer.WriteLine($"{type},{string.Join(",", item.SubItems.Cast<ListViewItem.ListViewSubItem>().Select(si => si.Text))}");
+                        }
+                    }
+
+                    var result = MessageBox.Show(this, $"File saved to {sfd.FileName}\r\n\r\nWould you like to open it now?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (result == DialogResult.Yes)
+                    {
+                        Process.Start($"\"{sfd.FileName}\"");
+                    }
+                }
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
