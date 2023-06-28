@@ -12,8 +12,9 @@
     <description>Browse metadata from your Dynamics CRM organization</description>
     <summary>Browse metadata from your Dynamics CRM organization</summary>
     <releaseNotes>
-      Metadata Browser Companion : Added sorting to result view
-      Metadata Browser Companion : Making metadata cache reload not blocking main XrmToolBox UI
+      Metadata Browser Companion : Added Export to CSV feature
+      Metadata Browser Companion : Display of specific column properties depending on the type
+      Metadata Browser Companion : Use of all available space when selected item is not a choice
     </releaseNotes>
     <tags>XrmToolBox Plugin MetadataBrowser</tags>
     <dependencies>
