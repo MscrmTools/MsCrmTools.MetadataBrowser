@@ -333,6 +333,7 @@ namespace MsCrmTools.MetadataBrowser
                 return;
             }
             pgOptionSetValues.Visible = false;
+            scProperties.Panel2Collapsed = true;
             var md = lv.SelectedItems[0].Tag;
             if (md is EntityMetadata emd)
             {
@@ -359,31 +360,27 @@ namespace MsCrmTools.MetadataBrowser
 
                 if (amd is PicklistAttributeMetadata plmd)
                 {
-                    propertyGrid1.SelectedObject = new PicklistAttributeMetadataInfo(plmd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(plmd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
-                }
-                else if (amd is BooleanAttributeMetadata bamd)
-                {
-                    propertyGrid1.SelectedObject = new BooleanAttributeMetadataInfo(bamd);
+                    scProperties.Panel2Collapsed = false;
                 }
                 else if (amd is MultiSelectPicklistAttributeMetadata mplmd)
                 {
-                    propertyGrid1.SelectedObject = new MultiSelectPicklistAttributeMetadataInfo(mplmd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(mplmd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
+                    scProperties.Panel2Collapsed = false;
                 }
                 else if (amd is StateAttributeMetadata smd)
                 {
-                    propertyGrid1.SelectedObject = new StateAttributeMetadataInfo(smd);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(smd.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
+                    scProperties.Panel2Collapsed = false;
                 }
                 else if (amd is StatusAttributeMetadata smd2)
                 {
-                    propertyGrid1.SelectedObject = new StatusAttributeMetadataInfo(smd2);
                     pgOptionSetValues.SelectedObject = new OptionSetMetadataInfo(smd2.OptionSet).Options;
                     pgOptionSetValues.Visible = true;
+                    scProperties.Panel2Collapsed = false;
                 }
             }
             else if (md is OneToManyRelationshipMetadata otmd1)

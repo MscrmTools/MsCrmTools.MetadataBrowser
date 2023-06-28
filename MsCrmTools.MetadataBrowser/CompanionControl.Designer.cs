@@ -373,6 +373,7 @@ namespace MsCrmTools.MetadataBrowser
             this.pgOptionSetValues.Size = new System.Drawing.Size(449, 503);
             this.pgOptionSetValues.TabIndex = 0;
             this.pgOptionSetValues.ToolbarVisible = false;
+            this.pgOptionSetValues.Visible = false;
             // 
             // cmsPicklist
             // 
