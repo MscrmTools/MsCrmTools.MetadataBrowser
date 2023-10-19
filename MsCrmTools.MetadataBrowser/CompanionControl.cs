@@ -188,7 +188,96 @@ namespace MsCrmTools.MetadataBrowser
 
         private void cmsMetadata_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            Clipboard.SetText(e.ClickedItem.ToolTipText);
+            if (lvSearchResult.SelectedItems.Count == 0) return;
+
+            var item = lvSearchResult.SelectedItems[0].Tag;
+
+            if (e.ClickedItem == tsmiTableCopyLogicalName)
+            {
+                Clipboard.SetText(((EntityMetadata)item).LogicalName);
+            }
+            else if (e.ClickedItem == tsmiTableCopyLogicalCollectionName)
+            {
+                Clipboard.SetText(((EntityMetadata)item).LogicalCollectionName);
+            }
+            else if (e.ClickedItem == tsmiTableCopySchemaName)
+            {
+                Clipboard.SetText(((EntityMetadata)item).SchemaName);
+            }
+            else if (e.ClickedItem == tsmiColumnCopyLogicalName)
+            {
+                Clipboard.SetText(((AttributeMetadata)item).LogicalName);
+            }
+            else if (e.ClickedItem == tsmiColumnCopySchemaName)
+            {
+                Clipboard.SetText(((AttributeMetadata)item).SchemaName);
+            }
+            else if (e.ClickedItem == tsmiColumnCopyWabApiLookupName)
+            {
+                var amd = (AttributeMetadata)item;
+                if (amd.AttributeType == AttributeTypeCode.Customer || amd.AttributeType == AttributeTypeCode.Lookup || amd.AttributeType == AttributeTypeCode.Owner)
+                    Clipboard.SetText($"_{amd.LogicalName}_value");
+                else
+                    Clipboard.SetText(amd.LogicalName);
+            }
+            else if (e.ClickedItem == tsmiRelCopySchemaName)
+            {
+                Clipboard.SetText(((RelationshipMetadataBase)item).SchemaName);
+            }
+            else if (e.ClickedItem == tsmiRelCopyParentNavigation)
+            {
+                if (item is OneToManyRelationshipMetadata omrm)
+                {
+                    Clipboard.SetText(omrm.ReferencingEntityNavigationPropertyName);
+                }
+                else if (item is ManyToManyRelationshipMetadata mtmr)
+                {
+                    Clipboard.SetText(mtmr.Entity1NavigationPropertyName);
+                }
+            }
+            else if (e.ClickedItem == tsmiRelCopyParentNavigationWithBinding)
+            {
+                if (item is OneToManyRelationshipMetadata omrm)
+                {
+                    Clipboard.SetText($"{omrm.ReferencingEntityNavigationPropertyName}@odata.bind");
+                }
+            }
+            else if (e.ClickedItem == tsmiRelCopyChildNavigation)
+            {
+                if (item is OneToManyRelationshipMetadata omrm)
+                {
+                    Clipboard.SetText(omrm.ReferencedEntityNavigationPropertyName);
+                }
+                else if (item is ManyToManyRelationshipMetadata mtmr)
+                {
+                    Clipboard.SetText(mtmr.Entity2NavigationPropertyName);
+                }
+            }
+        }
+
+        private void cmsMetadata_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (lvSearchResult.SelectedItems.Count == 0) return;
+
+            var isAttribute = lvSearchResult.SelectedItems[0].Tag is AttributeMetadata;
+            var isEntity = lvSearchResult.SelectedItems[0].Tag is EntityMetadata;
+            var isRelationship = lvSearchResult.SelectedItems[0].Tag is OneToManyRelationshipMetadata || lvSearchResult.SelectedItems[0].Tag is ManyToManyRelationshipMetadata;
+
+            tsmiTableCopyLogicalCollectionName.Visible = isEntity;
+            tsmiTableCopyLogicalName.Visible = isEntity;
+            tsmiTableCopySchemaName.Visible = isEntity;
+            tsmiMenuTable.Visible = isEntity;
+
+            tsmiMenuColumn.Visible = isAttribute;
+            tsmiColumnCopyLogicalName.Visible = isAttribute;
+            tsmiColumnCopySchemaName.Visible = isAttribute;
+            tsmiColumnCopyWabApiLookupName.Visible = isAttribute;
+
+            tsmiMenuRel.Visible = isRelationship;
+            tsmiRelCopyChildNavigation.Visible = isRelationship;
+            tsmiRelCopyParentNavigation.Visible = isRelationship;
+            tsmiRelCopyParentNavigationWithBinding.Visible = isRelationship;
+            tsmiRelCopySchemaName.Visible = isRelationship;
         }
 
         private void cmsPicklist_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

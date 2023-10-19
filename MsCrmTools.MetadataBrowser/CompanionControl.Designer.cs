@@ -41,6 +41,9 @@ namespace MsCrmTools.MetadataBrowser
             this.chkColumns = new System.Windows.Forms.CheckBox();
             this.chkEntities = new System.Windows.Forms.CheckBox();
             this.gbSearchResult = new System.Windows.Forms.GroupBox();
+            this.lvSearchResult = new System.Windows.Forms.ListView();
+            this.chLogicalName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmsMetadata = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsmiMenuTable = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTableCopyLogicalName = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +59,8 @@ namespace MsCrmTools.MetadataBrowser
             this.tsmiRelCopyParentNavigationWithBinding = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRelCopyChildNavigation = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pnlTools = new System.Windows.Forms.Panel();
+            this.btnExportToCSV = new System.Windows.Forms.Button();
             this.gbProperties = new System.Windows.Forms.GroupBox();
             this.scProperties = new System.Windows.Forms.SplitContainer();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
@@ -64,15 +69,11 @@ namespace MsCrmTools.MetadataBrowser
             this.copyValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyDisplayNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scMain = new System.Windows.Forms.SplitContainer();
-            this.pnlTools = new System.Windows.Forms.Panel();
-            this.lvSearchResult = new System.Windows.Forms.ListView();
-            this.chLogicalName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnExportToCSV = new System.Windows.Forms.Button();
             this.gbSearch.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbSearchResult.SuspendLayout();
             this.cmsMetadata.SuspendLayout();
+            this.pnlTools.SuspendLayout();
             this.gbProperties.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scProperties)).BeginInit();
             this.scProperties.Panel1.SuspendLayout();
@@ -83,7 +84,6 @@ namespace MsCrmTools.MetadataBrowser
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
             this.scMain.SuspendLayout();
-            this.pnlTools.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbSearch
@@ -207,6 +207,34 @@ namespace MsCrmTools.MetadataBrowser
             this.gbSearchResult.TabStop = false;
             this.gbSearchResult.Text = "Search result";
             // 
+            // lvSearchResult
+            // 
+            this.lvSearchResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chLogicalName,
+            this.chEntity});
+            this.lvSearchResult.ContextMenuStrip = this.cmsMetadata;
+            this.lvSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvSearchResult.FullRowSelect = true;
+            this.lvSearchResult.HideSelection = false;
+            this.lvSearchResult.Location = new System.Drawing.Point(3, 22);
+            this.lvSearchResult.Name = "lvSearchResult";
+            this.lvSearchResult.Size = new System.Drawing.Size(449, 209);
+            this.lvSearchResult.SmallImageList = this.imageList1;
+            this.lvSearchResult.TabIndex = 2;
+            this.lvSearchResult.UseCompatibleStateImageBehavior = false;
+            this.lvSearchResult.View = System.Windows.Forms.View.Details;
+            this.lvSearchResult.SelectedIndexChanged += new System.EventHandler(this.lvSearchResult_SelectedIndexChanged);
+            // 
+            // chLogicalName
+            // 
+            this.chLogicalName.Text = "Logical name";
+            this.chLogicalName.Width = 156;
+            // 
+            // chEntity
+            // 
+            this.chEntity.Text = "Entity";
+            this.chEntity.Width = 205;
+            // 
             // cmsMetadata
             // 
             this.cmsMetadata.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -226,6 +254,7 @@ namespace MsCrmTools.MetadataBrowser
             this.tsmiRelCopyChildNavigation});
             this.cmsMetadata.Name = "cmsMetadata";
             this.cmsMetadata.Size = new System.Drawing.Size(520, 420);
+            this.cmsMetadata.Opening += new System.ComponentModel.CancelEventHandler(this.cmsMetadata_Opening);
             this.cmsMetadata.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.cmsMetadata_ItemClicked);
             // 
             // tsmiMenuTable
@@ -326,6 +355,27 @@ namespace MsCrmTools.MetadataBrowser
             this.imageList1.Images.SetKeyName(3, "ico_16_relationshipsN2N.gif");
             this.imageList1.Images.SetKeyName(4, "key.png");
             // 
+            // pnlTools
+            // 
+            this.pnlTools.Controls.Add(this.btnExportToCSV);
+            this.pnlTools.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlTools.Location = new System.Drawing.Point(3, 231);
+            this.pnlTools.Name = "pnlTools";
+            this.pnlTools.Padding = new System.Windows.Forms.Padding(4);
+            this.pnlTools.Size = new System.Drawing.Size(449, 45);
+            this.pnlTools.TabIndex = 1;
+            // 
+            // btnExportToCSV
+            // 
+            this.btnExportToCSV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExportToCSV.Location = new System.Drawing.Point(4, 4);
+            this.btnExportToCSV.Name = "btnExportToCSV";
+            this.btnExportToCSV.Size = new System.Drawing.Size(441, 37);
+            this.btnExportToCSV.TabIndex = 0;
+            this.btnExportToCSV.Text = "Export to CSV";
+            this.btnExportToCSV.UseVisualStyleBackColor = true;
+            this.btnExportToCSV.Click += new System.EventHandler(this.btnExportToCSV_Click);
+            // 
             // gbProperties
             // 
             this.gbProperties.Controls.Add(this.scProperties);
@@ -415,55 +465,6 @@ namespace MsCrmTools.MetadataBrowser
             this.scMain.SplitterDistance = 279;
             this.scMain.TabIndex = 3;
             // 
-            // pnlTools
-            // 
-            this.pnlTools.Controls.Add(this.btnExportToCSV);
-            this.pnlTools.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlTools.Location = new System.Drawing.Point(3, 231);
-            this.pnlTools.Name = "pnlTools";
-            this.pnlTools.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlTools.Size = new System.Drawing.Size(449, 45);
-            this.pnlTools.TabIndex = 1;
-            // 
-            // lvSearchResult
-            // 
-            this.lvSearchResult.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chLogicalName,
-            this.chEntity});
-            this.lvSearchResult.ContextMenuStrip = this.cmsMetadata;
-            this.lvSearchResult.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lvSearchResult.FullRowSelect = true;
-            this.lvSearchResult.HideSelection = false;
-            this.lvSearchResult.Location = new System.Drawing.Point(3, 22);
-            this.lvSearchResult.Name = "lvSearchResult";
-            this.lvSearchResult.Size = new System.Drawing.Size(449, 209);
-            this.lvSearchResult.SmallImageList = this.imageList1;
-            this.lvSearchResult.TabIndex = 2;
-            this.lvSearchResult.UseCompatibleStateImageBehavior = false;
-            this.lvSearchResult.View = System.Windows.Forms.View.Details;
-            this.lvSearchResult.SelectedIndexChanged += new System.EventHandler(this.lvSearchResult_SelectedIndexChanged);
-            // 
-            // chLogicalName
-            // 
-            this.chLogicalName.Text = "Logical name";
-            this.chLogicalName.Width = 156;
-            // 
-            // chEntity
-            // 
-            this.chEntity.Text = "Entity";
-            this.chEntity.Width = 205;
-            // 
-            // btnExportToCSV
-            // 
-            this.btnExportToCSV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExportToCSV.Location = new System.Drawing.Point(4, 4);
-            this.btnExportToCSV.Name = "btnExportToCSV";
-            this.btnExportToCSV.Size = new System.Drawing.Size(441, 37);
-            this.btnExportToCSV.TabIndex = 0;
-            this.btnExportToCSV.Text = "Export to CSV";
-            this.btnExportToCSV.UseVisualStyleBackColor = true;
-            this.btnExportToCSV.Click += new System.EventHandler(this.btnExportToCSV_Click);
-            // 
             // CompanionControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -478,6 +479,7 @@ namespace MsCrmTools.MetadataBrowser
             this.panel1.PerformLayout();
             this.gbSearchResult.ResumeLayout(false);
             this.cmsMetadata.ResumeLayout(false);
+            this.pnlTools.ResumeLayout(false);
             this.gbProperties.ResumeLayout(false);
             this.scProperties.Panel1.ResumeLayout(false);
             this.scProperties.Panel2.ResumeLayout(false);
@@ -488,7 +490,6 @@ namespace MsCrmTools.MetadataBrowser
             this.scMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).EndInit();
             this.scMain.ResumeLayout(false);
-            this.pnlTools.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
