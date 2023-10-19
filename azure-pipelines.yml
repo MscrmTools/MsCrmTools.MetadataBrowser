@@ -9,9 +9,9 @@ jobs:
 
   steps:
   - task: NuGetToolInstaller@0
-    displayName: 'Use NuGet 4.6.0'
+    displayName: 'Use NuGet 6.6.1'
     inputs:
-      versionSpec: 4.6.0
+      versionSpec: 6.6.1
       checkLatest: true
 
   - task: NuGetCommand@2
@@ -23,7 +23,7 @@ jobs:
     displayName: 'Build solution **\*.sln'
     inputs:
       solution: '$(Parameters.solution)'
-      vsVersion: "15.0"
+      vsVersion: "17.0"
       platform: 'any cpu'
       configuration: 'release'
 
