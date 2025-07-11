@@ -36,7 +36,6 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionMd
         public string ExtensionData => amd.ExtensionData?.ToString() ?? "";
 
         public string ExternalValue => amd.ExternalValue;
-
         public bool HasChanged => amd.HasChanged.HasValue && amd.HasChanged.Value;
 
         public string InvariantName
@@ -53,6 +52,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode.OptionMd
             }
         }
 
+        public bool IsHidden => amd.IsHidden;
         public bool IsManaged => amd.IsManaged.HasValue && amd.IsManaged.Value;
 
         [TypeConverter(typeof(ExpandableObjectConverter))]
