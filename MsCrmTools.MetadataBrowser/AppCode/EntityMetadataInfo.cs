@@ -198,8 +198,8 @@ namespace MsCrmTools.MetadataBrowser.AppCode
 
         public bool ChangeTrackingEnabled => emd.ChangeTrackingEnabled.HasValue && emd.ChangeTrackingEnabled.Value;
 
+        public EntityClusterMode ClusterMode => emd.ClusterMode.Value;
         public string CollectionSchemaName => emd.CollectionSchemaName;
-
         public Guid? DataProviderId => emd.DataProviderId;
         public Guid? DataSourceId => emd.DataSourceId;
 
@@ -439,6 +439,7 @@ namespace MsCrmTools.MetadataBrowser.AppCode
         public string SchemaName => emd.SchemaName;
 
         public bool SyncToExternalSearchIndex => emd.SyncToExternalSearchIndex.HasValue && emd.SyncToExternalSearchIndex.Value;
+        public string TableType => emd.TableType;
 
         public bool UsesBusinessDataLabelTable => emd.UsesBusinessDataLabelTable.HasValue &&
                                                   emd.UsesBusinessDataLabelTable.Value;
